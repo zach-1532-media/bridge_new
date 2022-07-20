@@ -1,0 +1,233 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/forbid-prop-types */
+/* eslint-disable object-shorthand */
+/* eslint-disable react/jsx-filename-extension */
+import { React, useState, useEffect } from 'react';
+
+import { useRouter } from 'next/router';
+
+import PropTypes from 'prop-types';
+
+import dbConnect from '../../../../../lib/dbConnect';
+import User from '../../../../../models/User';
+import Job from '../../../../../models/Job';
+
+import PagiAndPerPage from '../../../../../components/shared/pagiAndPerPage';
+import usePagination from '../../../../../lib/Pagination';
+import {
+  JobBlockWrapper,
+  JobBlockWrapperGrid,
+} from '../../../../../components/shared/JobBlock/new';
+import JobHero from '../../../../../components/shared/JobHero';
+import Container from '../../../../../components/front_components/container';
+import Dash from '../../../../../layouts/dash';
+import SearchBar from '../../../../../components/shared/searchbar';
+import { GeneralSnack } from '../../../../../components/shared/snackbars';
+import JobCard from '../../../../../components/shared/jobCard';
+import LQV from '../../../../../components/shared/listingQuickView';
+import FavoriteButton from '../../../../../components/shared/buttons/favoriteButton';
+import ApplyButton from '../../../../../components/shared/buttons/applyButton';
+
+const DashJobSearch = ({ user, jobs }) => {
+  const [search, setSearch] = useState(' ');
+  const [applyId, setApplyId] = useState('');
+  const [favoriteId, setFavoriteId] = useState('');
+  const [deleteFavoriteId, setDeleteFavoriteId] = useState('');
+  const [generalError, setGeneralError] = useState(false);
+  const [cardsPerPage, setCardsPerPage] = useState(9);
+
+  const router = useRouter();
+
+  const _DATA = usePagination(jobs, cardsPerPage);
+
+  const deleteFavorite = async () => {
+    try {
+      const deleteInfo = {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jobId: deleteFavoriteId,
+        }),
+      };
+      const response = await fetch(`/api/favorite/${user._id}`, deleteInfo);
+      const data = await response.json();
+      if (data.status === 200) {
+        router.replace(router.asPath);
+        setDeleteFavoriteId('');
+      } else if (data.status === 400) {
+        setGeneralError(true);
+      }
+    } catch (err) {
+      setGeneralError(true);
+    }
+  };
+
+  const favorite = async () => {
+    try {
+      const favoriteInfo = {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jobId: favoriteId,
+        }),
+      };
+      const response = await fetch(`/api/favorite/${user._id}`, favoriteInfo);
+      const data = await response.json();
+      if (data.status === 200) {
+        router.replace(router.asPath);
+        setFavoriteId('');
+      } else if (data.status === 400) {
+        setGeneralError(true);
+      }
+    } catch (err) {
+      setGeneralError(true);
+    }
+  };
+
+  const apply = async () => {
+    try {
+      const applyInfo = {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jobId: applyId,
+        }),
+      };
+      const response = await fetch(`/api/apply/${user._id}`, applyInfo);
+      const data = await response.json();
+      if (data.status === 200) {
+        router.replace(router.asPath);
+        setApplyId('');
+      } else if (data.status === 400) {
+        setGeneralError(true);
+      }
+    } catch (err) {
+      setGeneralError(true);
+    }
+  };
+
+  useEffect(() => {
+    if (applyId) {
+      apply();
+    } else if (favoriteId) {
+      favorite();
+    } else if (deleteFavoriteId) {
+      deleteFavorite();
+    }
+  }, [applyId, favoriteId, deleteFavoriteId]);
+
+  return (
+    <Dash user={user} userPage>
+      <Container>
+        <JobHero
+          search={search}
+          setSearch={setSearch}
+          searchBar={<SearchBar search={search} setSearch={setSearch} />}
+          image={<></>}
+          exploreButton={<></>}
+        />
+      </Container>
+      <Container>
+        <JobBlockWrapperGrid>
+          {_DATA.currentData().map((job) => {
+            return (
+              <JobBlockWrapper key={`JobBlockWrapper: ${job._id}`}>
+                <JobCard
+                  job={job}
+                  height={1}
+                  width={1}
+                  key={`JobCard: ${job._id}`}
+                >
+                  <LQV job={job} key={`LQV: ${job._id}`}>
+                    <FavoriteButton
+                      favoriteJobs={user.favoriteJobs}
+                      setFavoriteId={setFavoriteId}
+                      setDeleteFavoriteId={setDeleteFavoriteId}
+                      id={job._id}
+                    />
+                    <ApplyButton
+                      appliedJobs={user.appliedJobs}
+                      id={job._id}
+                      setApplyId={setApplyId}
+                    />
+                    <GeneralSnack
+                      generalError={generalError}
+                      setGeneralError={setGeneralError}
+                    />
+                  </LQV>
+                </JobCard>
+              </JobBlockWrapper>
+            );
+          })}
+        </JobBlockWrapperGrid>
+        {jobs.length > cardsPerPage ? (
+          <PagiAndPerPage
+            jobs={jobs}
+            cardsPerPage={cardsPerPage}
+            setCardsPerPage={setCardsPerPage}
+            _DATA={_DATA}
+          />
+        ) : (
+          <></>
+        )}
+      </Container>
+    </Dash>
+  );
+};
+
+export async function getServerSideProps({ query: { id, search } }) {
+  await dbConnect();
+  // eslint-disable-next-line global-require
+  require('../../../../../models/Business');
+
+  const user = await User.findById(id);
+
+  const jobs = !search
+    ? await Job.aggregate().lookup({
+        from: 'businesses',
+        localField: 'businessID',
+        foreignField: '_id',
+        as: 'business',
+      })
+    : await Job.aggregate()
+        .search({
+          index: 'Job Search',
+          text: {
+            query: search,
+            path: ['jobTitle', 'description'],
+            fuzzy: {},
+          },
+        })
+        .lookup({
+          from: 'businesses',
+          localField: 'businessID',
+          foreignField: '_id',
+          as: 'business',
+        });
+
+  const jobsReverse = jobs.reverse();
+
+  return {
+    props: {
+      user: JSON.parse(JSON.stringify(user)),
+      jobs: JSON.parse(JSON.stringify(jobsReverse)),
+    },
+  };
+}
+
+DashJobSearch.propTypes = {
+  user: PropTypes.object.isRequired,
+  jobs: PropTypes.array.isRequired,
+};
+
+export default DashJobSearch;
