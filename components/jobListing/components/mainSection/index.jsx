@@ -61,13 +61,13 @@ const MainSection = ({ job, business }) => {
       <Grid container spacing={isMd ? 4 : 2}>
         <Grid item xs={12} md={8}>
           <Box marginBottom={3}>
-            <Typography variant="h5" fontWeight={700} gutterBottom>
+            <Typography variant="h5" fontWeight={700}>
               Who we are
             </Typography>
             <Typography component="p">{business.bio}</Typography>
           </Box>
           <Box marginBottom={3}>
-            <Typography variant="h5" fontWeight={700} gutterBottom>
+            <Typography variant="h5" fontWeight={700}>
               What we’re looking for
             </Typography>
             <Typography component="p">{job.description}</Typography>

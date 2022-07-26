@@ -11,7 +11,7 @@ import Dash from '../../../../../layouts/dash';
 import JobStepper from '../../../../../components/dash/business/JobStepper';
 
 const PostAJob = ({ business }) => (
-  <Dash business={business}>
+  <Dash business={business} userPage={false}>
     <JobStepper business={business} />
   </Dash>
 );

@@ -1,7 +1,3 @@
-/* eslint-disable arrow-body-style */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/jsx-filename-extension */
 import { React, useState } from 'react';
 
 import PropTypes from 'prop-types';
@@ -13,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import Divider from '@mui/material/Divider';
 
 import Dash from '../../../../layouts/dash';
 import dbConnect from '../../../../lib/dbConnect';
@@ -20,14 +17,14 @@ import Business from '../../../../models/Business';
 import Job from '../../../../models/Job';
 import User from '../../../../models/User';
 import { modalStyle } from '../../../../components/shared/data';
-import PDFViewer from '../../../../components/shared/pdfViewer';
 import CustomNoRowsOverlay from '../../../../components/shared/noRows';
 
 import Container from '../../../../components/front_components/container';
+import PDFViewer from '../../../../components/pdf/singlePage';
 
 const ViewApplicants = ({ business, job, applicants }) => {
   const [open, setOpen] = useState(false);
-  const [url, setUrl] = useState('');
+  const [resumeUrl, setResumeUrl] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const theme = useTheme();
@@ -62,7 +59,7 @@ const ViewApplicants = ({ business, job, applicants }) => {
             <Button
               sx={{ '&:hover': { backgroundColor: 'transparent' } }}
               onClick={() => {
-                setUrl(params.value.url);
+                setResumeUrl(params.value.resumeUrl);
                 handleOpen();
               }}
             >
@@ -83,17 +80,29 @@ const ViewApplicants = ({ business, job, applicants }) => {
     },
     email: applicant.email,
     resume: {
-      url: applicant.resume,
+      resumeUrl: applicant.resume,
     },
   }));
 
   return (
     <Dash business={business} userPage={false}>
-      <Container>
-        <Box sx={{ boxShadow: 2, height: 400, width: '100%' }}>
-          <Typography sx={{ mb: '2em' }} variant="h3">
+      <Container sx={{ mt: '-3em' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <Typography variant="h2" fontWeight={600}>
             Applicants for {job.jobTitle}
           </Typography>
+          <Typography variant="body1" fontWeight={500}>
+            Review applicants below.
+          </Typography>
+        </Box>
+        <Box width={1}>
+          <Divider sx={{ marginY: 4 }} />
           <DataGrid
             rows={newRows}
             columns={columns}
@@ -106,8 +115,21 @@ const ViewApplicants = ({ business, job, applicants }) => {
               NoRowsOverlay: CustomNoRowsOverlay,
             }}
             sx={{
+              boxShadow: `0 3px 5px 2px rgba(128, 128, 128, .3)`,
+              background: `linear-gradient(45deg, ${theme.palette.primary.lighter} 20%, ${theme.palette.tertiary.lighter} 90%)`,
               '& .MuiDataGrid-row:hover': {
-                backgroundColor: theme.palette.primary.lighter,
+                backgroundColor: theme.palette.alternate.main,
+              },
+              '& .MuiDataGrid-row:selected': {
+                backgroundColor: theme.palette.tertiary.main,
+              },
+              '& .MuiDataGrid-row': {
+                '&.Mui-selected': {
+                  backgroundColor: theme.palette.alternate.main,
+                },
+                '&.Mui-selected:hover': {
+                  backgroundColor: theme.palette.alternate.main,
+                },
               },
             }}
           />
@@ -118,8 +140,8 @@ const ViewApplicants = ({ business, job, applicants }) => {
           aria-labelledby="resume-modal"
           aria-describedby="pop-up-to-view-resume"
         >
-          <Box sx={{ ...modalStyle }}>
-            <PDFViewer url={url} />
+          <Box sx={{ ...modalStyle, width: 'auto' }}>
+            <PDFViewer pdf={resumeUrl} />
           </Box>
         </Modal>
       </Container>

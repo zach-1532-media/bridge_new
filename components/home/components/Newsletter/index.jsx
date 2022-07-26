@@ -10,7 +10,7 @@ import Typed from 'react-typed';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/loadingButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -22,7 +22,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 
 const Newsletter = ({
-  setOpenBackdrop,
   setOpenSuccess,
   setExistingNewsletterError,
   setGeneralError,
@@ -37,6 +36,7 @@ const Newsletter = ({
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Existing User Newsletter
   const existingUserNewsletter = async () => {
@@ -56,12 +56,12 @@ const Newsletter = ({
       const data = await response.json();
       if (data.status === 200) {
         setIsSubmitting(false);
-        setOpenBackdrop(false);
+        setIsLoading(false);
         setOpenSuccess(true);
       }
     } catch (err) {
       setIsSubmitting(false);
-      setOpenBackdrop(false);
+      setIsLoading(false);
       setGeneralError(true);
     }
   };
@@ -81,27 +81,27 @@ const Newsletter = ({
       const data = await response.json();
       if (data.status === 'User with newsletter') {
         setIsSubmitting(false);
-        setOpenBackdrop(false);
+        setIsLoading(false);
         setExistingNewsletterError(true);
       } else if (data.status === 'User without newsletter') {
         setIsSubmitting(false);
         existingUserNewsletter();
       } else if (data.status === 'existing newsletter') {
         setIsSubmitting(false);
-        setOpenBackdrop(false);
+        setIsLoading(false);
         setExistingNewsletterError(true);
       } else if (data.status === 'success') {
         setIsSubmitting(false);
-        setOpenBackdrop(false);
+        setIsLoading(false);
         setOpenSuccess(true);
       } else if (data.status === 'error') {
         setIsSubmitting(false);
-        setOpenBackdrop(false);
+        setIsLoading(false);
         setGeneralError(false);
       }
     } catch (err) {
       setIsSubmitting(false);
-      setOpenBackdrop(false);
+      setIsLoading(false);
       setGeneralError(false);
     }
   };
@@ -109,7 +109,7 @@ const Newsletter = ({
   useEffect(() => {
     if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
-        setOpenBackdrop(true);
+        setIsLoading(true);
         createNewsletter();
       } else setIsSubmitting(false);
     }
@@ -257,15 +257,16 @@ const Newsletter = ({
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Button
+                    <LoadingButton
                       variant="contained"
                       color="primary"
                       size="large"
                       fullWidth
                       onClick={formSubmit}
+                      loading={isLoading}
                     >
                       Submit
-                    </Button>
+                    </LoadingButton>
                   </Grid>
                 </Grid>
               </CardContent>
@@ -352,7 +353,6 @@ const Newsletter = ({
 };
 
 Newsletter.propTypes = {
-  setOpenBackdrop: PropTypes.func.isRequired,
   setOpenSuccess: PropTypes.func.isRequired,
   setExistingNewsletterError: PropTypes.func.isRequired,
   setGeneralError: PropTypes.func.isRequired,

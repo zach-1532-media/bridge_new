@@ -5,6 +5,7 @@ const newsletterSchema = new mongoose.Schema({
   lastName: String,
   email: String,
   newsletter: Boolean,
+  dateCreated: Date,
 });
 
 module.exports =

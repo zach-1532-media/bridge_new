@@ -9,6 +9,8 @@ import Head from 'next/head';
 
 import { Provider } from 'next-auth/client';
 
+import { PostAJobContextProvider } from '../components/contexts/postAJob';
+
 import Page from '../components/front_components/page';
 
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -26,9 +28,12 @@ const MyApp = ({ Component, pageProps }) => (
       />
       <title>The Bridge</title>
     </Head>
+
     <Provider session={pageProps.session}>
       <Page>
-        <Component {...pageProps} />
+        <PostAJobContextProvider>
+          <Component {...pageProps} />
+        </PostAJobContextProvider>
       </Page>
     </Provider>
   </>

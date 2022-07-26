@@ -168,7 +168,7 @@ const ProfileCover = ({ data, userPage }) => (
 
 ProfileCover.propTypes = {
   data: PropTypes.object.isRequired,
-  userPage: PropTypes.bool.isRequired,
+  userPage: PropTypes.bool,
 };
 
 export default ProfileCover;

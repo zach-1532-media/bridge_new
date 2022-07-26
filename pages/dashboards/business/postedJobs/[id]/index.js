@@ -27,10 +27,11 @@ import {
 import JobCard from '../../../../../components/shared/jobCard';
 import LQV from '../../../../../components/shared/listingQuickView';
 
-const BusinessDash = ({ activeJobs, inActiveJobs, business }) => {
+const BusinessDash = ({ activeJobs, inActiveJobs, business, oobiedoobie }) => {
   const jobs = [activeJobs, inActiveJobs];
   const [value, setValue] = useState(0);
   const [cardsPerPage, setCardsPerPage] = useState(9);
+  console.log(business);
 
   const currentData = jobs[value];
 
@@ -41,7 +42,7 @@ const BusinessDash = ({ activeJobs, inActiveJobs, business }) => {
   };
 
   return (
-    <Dash business={business}>
+    <Dash business={business} userPage={false}>
       <PostedJobs
         title="Your Posted Jobs"
         subTitle="Toggle between your Active and Inactive job posts."
@@ -99,10 +100,10 @@ export async function getServerSideProps({ query: { id } }) {
   require('../../../../../models/Business');
 
   const businesses = await Business.findById(id);
-  const businessJobs = await Business.findById(id).select('jobs');
-  const jobsArray = businessJobs.jobs;
+  const oobiedoobie = await Job.find({ businessID: id }).select('_id');
+  const oobieArray = oobiedoobie.map((oobie) => oobie._id);
   const jobs = await Job.aggregate()
-    .match({ _id: { $in: jobsArray } })
+    .match({ _id: { $in: oobieArray } })
     .lookup({
       from: 'businesses',
       localField: 'businessID',
@@ -117,6 +118,7 @@ export async function getServerSideProps({ query: { id } }) {
       business: JSON.parse(JSON.stringify(businesses)),
       activeJobs: JSON.parse(JSON.stringify(jobsReverse)),
       inActiveJobs: JSON.parse(JSON.stringify(jobsReverse)),
+      oobiedoobie: JSON.parse(JSON.stringify(oobiedoobie)),
     },
   };
 }

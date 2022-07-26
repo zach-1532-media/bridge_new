@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
   emailVerified: Boolean,
   avatar: String,
   resume: String,
+  dateCreated: Date,
   profileImage: {
     data: Buffer,
     contentType: String,

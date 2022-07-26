@@ -21,6 +21,7 @@ const JobSchema = new mongoose.Schema({
   },
   responsibilities: mongoose.Schema.Types.Mixed,
   qualifications: mongoose.Schema.Types.Mixed,
+  initialPaymentIntentId: String,
 });
 
 module.exports = mongoose.models.Job || mongoose.model('Job', JobSchema);

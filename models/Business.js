@@ -33,6 +33,7 @@ const BusinessSchema = new mongoose.Schema({
   verifyEmail: String,
   emailVerified: Boolean,
   jobs: Array,
+  dateCreated: Date,
 });
 
 module.exports =

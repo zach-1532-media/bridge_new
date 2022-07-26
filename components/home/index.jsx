@@ -12,7 +12,6 @@ import Reviews from './components/Reviews';
 import Services from './components/Services';
 import Newsletter from './components/Newsletter';
 import BottomCOA from './components/BottomCOA';
-import Backdrop from '../shared/backdrop';
 import {
   SuccessSnack,
   ExistingNewsletterSnack,
@@ -21,8 +20,6 @@ import {
 
 const Home = () => {
   const theme = useTheme();
-
-  const [openBackdrop, setOpenBackdrop] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [existingNewsletterError, setExistingNewsletterError] = useState(false);
   const [generalError, setGeneralError] = useState(false);
@@ -71,7 +68,6 @@ const Home = () => {
       <Box bgcolor="alternate.main">
         <Container>
           <Newsletter
-            setOpenBackdrop={setOpenBackdrop}
             setOpenSuccess={setOpenSuccess}
             setExistingNewsletterError={setExistingNewsletterError}
             setGeneralError={setGeneralError}
@@ -116,7 +112,6 @@ const Home = () => {
           <BottomCOA />
         </Container>
       </Box>
-      <Backdrop openBackdrop={openBackdrop} />
       <SuccessSnack
         openSuccess={openSuccess}
         setOpenSuccess={setOpenSuccess}

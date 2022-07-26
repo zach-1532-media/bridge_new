@@ -43,7 +43,6 @@ const PostedJobs = ({
           {subTitle}
         </Typography>
       </Box>
-      <Divider sx={{ mb: '2em', mt: '2em' }} />
       <Box
         sx={{
           display: 'flex',

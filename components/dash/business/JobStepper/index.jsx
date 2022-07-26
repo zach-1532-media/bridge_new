@@ -1,10 +1,13 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/forbid-prop-types */
-import { React, useState } from 'react';
+import { React, useEffect, useState, useContext } from 'react';
 
 import PropTypes from 'prop-types';
 
 import { useRouter } from 'next/router';
+
+import PostAJobContext from '../../../contexts/postAJob';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -19,18 +22,18 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 
 import { SuccessSnack, GeneralSnack } from '../../../shared/snackbars';
-import Backdrop from '../../../shared/backdrop';
 import JobCard from '../../../shared/jobCard';
-import Listing from './components/listing';
-import Selector from './components/selector';
+import JobWorkType from './components/jobWorkType';
+import JobInformation from './components/listing/new';
 import { steps } from '../../../shared/data';
 import LQV from '../../../shared/listingQuickView';
+import ProfileCard from '../../../shared/profileCard';
 
 const JobStepper = ({ business }) => {
   const router = useRouter();
-  const { id } = router.query;
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
+  const [errors, setErrors] = useState({});
   const [responsibilities, setResponsibilities] = useState([]);
   const [qualifications, setQualifications] = useState([]);
   const [completed, setCompleted] = useState({});
@@ -46,7 +49,6 @@ const JobStepper = ({ business }) => {
     travel: '',
     jobTitle: '',
   });
-  const [openBackdrop, setOpenBackdrop] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [generalError, setGeneralError] = useState(false);
 
@@ -54,106 +56,12 @@ const JobStepper = ({ business }) => {
     ...form,
     responsibilities: responsibilities,
     qualifications: qualifications,
-    business: [business],
-  };
-
-  const createJob = async () => {
-    try {
-      const newJob = {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...form,
-          dateCreated: new Date(),
-          businessID: id,
-          responsibilities: responsibilities,
-          qualifications: qualifications,
-        }),
-      };
-      const response = await fetch('/api/jobs', newJob);
-      const data = await response.json();
-      if (data.status === 200) {
-        setOpenBackdrop(false);
-        setOpenSuccess(true);
-        router.push(`/dashboards/business/postedJobs/${id}`);
-      } else if (data.status === 400) {
-        setOpenBackdrop(false);
-        setGeneralError(true);
-      }
-    } catch (err) {
-      setOpenBackdrop(false);
-      setGeneralError(true);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setOpenBackdrop(true);
-    createJob();
   };
 
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
-
-  const getStepContent = (step) => {
-    switch (step) {
-      case 0:
-        return <Selector form={form} setForm={setForm} />;
-      case 1:
-        return (
-          <Listing
-            responsibilities={responsibilities}
-            setResponsibilities={setResponsibilities}
-            qualifications={qualifications}
-            setQualifications={setQualifications}
-            form={form}
-            setForm={setForm}
-            business={business}
-          />
-        );
-      case 2:
-        return (
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            spacing={4}
-          >
-            <Grid item xs={12} sm={6} md={4}>
-              <Box
-                display="block"
-                width={1}
-                height={1}
-                sx={{
-                  textDecoration: 'none',
-                  transition: 'all .2s ease-in-out',
-                  '&:hover': {
-                    transform: `translateY(-${theme.spacing(1 / 2)})`,
-                  },
-                }}
-              >
-                <JobCard job={jobs} height={1} width={1}>
-                  <LQV job={jobs} />
-                </JobCard>
-              </Box>
-            </Grid>
-          </Grid>
-        );
-      case 3:
-        return (
-          <Button variant="contained" onClick={handleSubmit}>
-            Pay And Post
-          </Button>
-        );
-      default:
-        return <></>;
-    }
-  };
 
   const totalSteps = () => steps.length;
 
@@ -182,9 +90,170 @@ const JobStepper = ({ business }) => {
     setActiveStep(step);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
+  const validate1 = () => {
+    const err = {};
+
+    if (!form.job) {
+      err.job = 'Please select job.';
+    }
+
+    if (!form.workType) {
+      err.workType = 'Please select work type';
+    }
+
+    return err;
+  };
+
+  const validate2 = () => {
+    const err = {};
+
+    if (!form.jobTitle) {
+      err.jobTitle = 'Please enter a jobTitle';
+    }
+
+    if (!form.salary) {
+      err.salary =
+        form.job === 'Full-Time' ? 'Please select a salary range' : null;
+    }
+
+    if (!form.hourlyRate) {
+      err.hourlyRate =
+        form.job === 'Part-Time' ? 'Please select an hourly rate range' : null;
+    }
+
+    if (!form.city) {
+      err.city = 'Please enter a city';
+    }
+
+    if (!form.state) {
+      err.state = 'Please select a State';
+    }
+
+    if (form.travel === false) {
+    } else if (!form.travel) {
+      err.travel = 'Please select yes or no';
+    }
+
+    if (form.benefits === false) {
+    } else if (!form.benefits) {
+      err.benefits = 'Please select yes or no';
+    }
+
+    if (!form.description) {
+      err.description = 'Please describe this job';
+    }
+
+    return err;
+  };
+
+  const formCtx = useContext(PostAJobContext);
+
+  const checkout = () => {
+    router.replace(`/dashboards/business/checkout/${business._id}`);
+    formCtx.newForm({
+      ...jobs,
+    });
+  };
+
+  useEffect(() => {
+    if (isSubmitting) {
+      if (activeStep === 0) {
+        if (Object.keys(errors).length === 0) {
+          handleNext();
+          setIsSubmitting(false);
+        }
+      } else if (activeStep === 1) {
+        if (Object.keys(errors).length === 1) {
+          handleNext();
+          setIsSubmitting(false);
+        }
+      } else if (activeStep === 2) {
+        checkout();
+        setIsSubmitting(false);
+      }
+    } else {
+      setIsSubmitting(false);
+    }
+  });
+
+  const handleEverything = (e) => {
+    e.preventDefault();
+    if (activeStep === 0) {
+      setErrors(validate1);
+      setIsSubmitting(true);
+    }
+    if (activeStep === 1) {
+      setErrors(validate2);
+      setIsSubmitting(true);
+    }
+    if (activeStep === 2) {
+      setIsSubmitting(true);
+    }
+  };
+
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <ProfileCard title="Select Job and WorkType">
+            <JobWorkType form={form} setForm={setForm} errors={errors} />
+          </ProfileCard>
+        );
+      case 1:
+        return (
+          <ProfileCard
+            title="Job Details"
+            subtitle="Please fill out the job details below"
+          >
+            <JobInformation
+              responsibilities={responsibilities}
+              setResponsibilities={setResponsibilities}
+              qualifications={qualifications}
+              setQualifications={setQualifications}
+              form={form}
+              setForm={setForm}
+              bio={business.bio}
+              errors={errors}
+            />
+          </ProfileCard>
+        );
+      case 2:
+        return (
+          <ProfileCard
+            title="Review Your Listing"
+            subtitle="Review and confirm your listing before you checkout"
+          >
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              spacing={4}
+            >
+              <Grid item xs={12} sm={6} md={4}>
+                <Box
+                  display="block"
+                  width={1}
+                  height={1}
+                  sx={{
+                    mb: '2em',
+                    textDecoration: 'none',
+                    transition: 'all .2s ease-in-out',
+                    '&:hover': {
+                      transform: `translateY(-${theme.spacing(1 / 2)})`,
+                    },
+                  }}
+                >
+                  <JobCard job={jobs} height={1} width={1}>
+                    <LQV job={jobs} business={business} />
+                  </JobCard>
+                </Box>
+              </Grid>
+            </Grid>
+          </ProfileCard>
+        );
+      default:
+        return <></>;
+    }
   };
 
   return (
@@ -247,48 +316,40 @@ const JobStepper = ({ business }) => {
             </Step>
           ))}
         </Stepper>
-        {activeStep === steps.length ? (
-          <>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button variant="contained" disableRipple onClick={handleReset}>
-                Submit
-              </Button>
-            </Box>
-          </>
-        ) : (
-          <>
-            <Box
-              sx={{
-                mt: 2,
-                mb: 1,
-                p: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                alignContent: 'center',
-                alignItems: 'cetner',
-              }}
+        <>
+          <Box
+            sx={{
+              mt: 2,
+              mb: 1,
+              p: 2,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'cetner',
+            }}
+          >
+            {getStepContent(activeStep)}
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button
+              color="inherit"
+              variant="outlined"
+              disableRipple
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
             >
-              {getStepContent(activeStep)}
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Button
-                color="inherit"
-                variant="outlined"
-                disableRipple
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button disableRipple variant="contained" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-            </Box>
-          </>
-        )}
+              Back
+            </Button>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button
+              disableRipple
+              variant="contained"
+              onClick={handleEverything}
+            >
+              {activeStep === 2 ? 'Checkout' : 'Next'}
+            </Button>
+          </Box>
+        </>
       </Box>
       <GeneralSnack
         generalError={generalError}
@@ -299,7 +360,6 @@ const JobStepper = ({ business }) => {
         setOpenSuccess={setOpenSuccess}
         message="jobPost"
       />
-      <Backdrop openBackdrop={openBackdrop} />
     </Container>
   );
 };

@@ -86,7 +86,7 @@ function Profile({ business, user, userPage }) {
 Profile.propTypes = {
   business: PropTypes.object,
   user: PropTypes.object,
-  userPage: PropTypes.bool.isRequired,
+  userPage: PropTypes.bool,
 };
 
 Profile.defaultProps = {

@@ -1,21 +1,36 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
   "extends": [
-    "plugin:react/recommended",
     "airbnb",
-    "prettier",
+    "plugin:prettier/recommended",
+    "prettier/react",
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "next",
     "plugin:@next/next/recommended"
   ],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": "latest",
-    "sourceType": "module"
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
   },
-  "plugins": ["react"],
-  "rules": {}
+  "rules": {
+    "jsx-a11y/href-no-hash": ["off"],
+    "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
+    "max-len": [
+      "warn",
+      {
+        "code": 80,
+        "tabWidth": 2,
+        "comments": 80,
+        "ignoreComments": false,
+        "ignoreTrailingComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ]
+  }
 }

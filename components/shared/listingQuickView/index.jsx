@@ -14,11 +14,11 @@ import ListItem from '@mui/material/ListItem';
 
 import Checkbox from '../myCheckBox';
 
-const LQV = ({ job, children }) => {
+const LQV = ({ job, children, business }) => {
   const listItems = [
     {
       text: 'Who we are:',
-      value: job.business[0].bio,
+      value: !business ? job.business[0].bio : business.bio,
     },
     {
       text: "What we're looking for: ",
@@ -26,39 +26,47 @@ const LQV = ({ job, children }) => {
     },
     {
       text: 'Responsibilities',
-      value: job.responsibilities.map((item) => (
-        <Box
-          component={ListItem}
-          disableGutters
-          width="auto"
-          padding={0}
-          key={item.id}
-          sx={{ mb: '1em' }}
-        >
-          <Checkbox />
-          <Typography variant="body1" sx={{ ml: '1em' }}>
-            {item.responsibility}
-          </Typography>
-        </Box>
-      )),
+      value: !job.responsibilities ? (
+        <></>
+      ) : (
+        job.responsibilities.map((item) => (
+          <Box
+            component={ListItem}
+            disableGutters
+            width="auto"
+            padding={0}
+            key={item.id}
+            sx={{ mb: '1em' }}
+          >
+            <Checkbox />
+            <Typography variant="body1" sx={{ ml: '1em' }}>
+              {item.responsibility}
+            </Typography>
+          </Box>
+        ))
+      ),
     },
     {
       text: 'Qualifications',
-      value: job.qualifications.map((item) => (
-        <Box
-          component={ListItem}
-          disableGutters
-          width="auto"
-          padding={0}
-          key={item.id}
-          sx={{ mb: '1em' }}
-        >
-          <Checkbox />
-          <Typography variant="body1" sx={{ ml: '1em' }}>
-            {item.qualification}
-          </Typography>
-        </Box>
-      )),
+      value: !job.qualifications ? (
+        <></>
+      ) : (
+        job.qualifications.map((item) => (
+          <Box
+            component={ListItem}
+            disableGutters
+            width="auto"
+            padding={0}
+            key={item.id}
+            sx={{ mb: '1em' }}
+          >
+            <Checkbox />
+            <Typography variant="body1" sx={{ ml: '1em' }}>
+              {item.qualification}
+            </Typography>
+          </Box>
+        ))
+      ),
     },
   ];
   return (
@@ -86,8 +94,8 @@ const LQV = ({ job, children }) => {
         </Box>
       </Box>
       <Divider sx={{ marginY: 4 }} />
-      {listItems.map((item) => (
-        <Box sx={{ mb: 3 }}>
+      {listItems.map((item, i) => (
+        <Box sx={{ mb: 3 }} key={i}>
           <Typography variant="h5" fontWeight={700} sx={{ mb: 1.5 }}>
             {item.text}
           </Typography>
@@ -102,6 +110,7 @@ const LQV = ({ job, children }) => {
 
 LQV.propTypes = {
   job: PropTypes.object.isRequired,
+  business: PropTypes.object,
   children: PropTypes.node,
 };
 
