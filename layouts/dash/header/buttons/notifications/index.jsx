@@ -41,7 +41,7 @@ const AnimatedBadge = styled(Badge)(
               content: "";
           }
       }
-  `
+  `,
 );
 
 const NotificationsBadge = styled(Badge)(
@@ -65,14 +65,14 @@ const NotificationsBadge = styled(Badge)(
               content: "";
           }
       }
-  `
+  `,
 );
 
 const IconButtonWrapper = styled(IconButton)(
   ({ theme }) => `
           width: ${theme.spacing(6)};
           height: ${theme.spacing(6)};
-  `
+  `,
 );
 
 function HeaderNotifications() {

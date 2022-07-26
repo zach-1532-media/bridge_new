@@ -16,7 +16,7 @@ import Logo from '../../../components/shared/logo';
 const SidebarWrapper = styled(Card)(
   ({ theme }) => `
     width: ${theme.sidebar.width};
-    background: ${theme.sidebar.background};
+    background: ${theme.palette.tertiary.light};
     height: 100%;
     
     @media (min-width: ${theme.breakpoints.values.lg}px) {
@@ -26,7 +26,7 @@ const SidebarWrapper = styled(Card)(
         z-index: 10;
         border-radius: ${theme.general.borderRadius};
     }
-`
+`,
 );
 
 const TopSection = styled(Box)(
@@ -36,7 +36,7 @@ const TopSection = styled(Box)(
         align-items: center;
         margin: 0 ${theme.spacing(2)};
         border-bottom: ${theme.sidebar.dividerBg} solid 1px;
-`
+`,
 );
 
 function Sidebar({ data, userPage }) {

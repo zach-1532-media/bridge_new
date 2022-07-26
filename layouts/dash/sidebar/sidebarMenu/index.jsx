@@ -37,7 +37,7 @@ const MenuWrapper = styled(Box)(
         padding: ${theme.spacing(1, 3.5)};
         line-height: 1.4;
       }
-  `
+  `,
 );
 
 const SidebarMenu = ({ data, userPage }) => {
@@ -96,10 +96,13 @@ const SidebarMenu = ({ data, userPage }) => {
                     fullWidth
                     startIcon={item.icon}
                     variant={router.asPath === item.link ? 'outlined' : 'text'}
-                    color="tertiary"
+                    color="primary"
                     sx={{
                       justifyContent: 'stretch',
-                      color: theme.sidebar.textColor,
+                      color:
+                        router.asPath === item.link
+                          ? theme.colors.primary.main
+                          : 'black',
                       '&:hover': {
                         background: 'transparent',
                         color: theme.colors.primary.main,

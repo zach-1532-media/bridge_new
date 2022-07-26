@@ -10,7 +10,7 @@ import Typed from 'react-typed';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import LoadingButton from '@mui/lab/loadingButton';
+import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -51,7 +51,7 @@ const Newsletter = ({
       };
       const response = await fetch(
         '/api/newsletter/setUserNewsletter',
-        existingNewsletter
+        existingNewsletter,
       );
       const data = await response.json();
       if (data.status === 200) {
@@ -118,7 +118,7 @@ const Newsletter = ({
   const validate = () => {
     const err = {};
     const regEmail = new RegExp(
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
     ).test(form.email);
 
     if (!form.firstName) {
