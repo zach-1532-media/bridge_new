@@ -26,47 +26,43 @@ const LQV = ({ job, children, business }) => {
     },
     {
       text: 'Responsibilities',
-      value: !job.responsibilities ? (
-        <></>
-      ) : (
-        job.responsibilities.map((item) => (
-          <Box
-            component={ListItem}
-            disableGutters
-            width="auto"
-            padding={0}
-            key={item.id}
-            sx={{ mb: '1em' }}
-          >
-            <Checkbox />
-            <Typography variant="body1" sx={{ ml: '1em' }}>
-              {item.responsibility}
-            </Typography>
-          </Box>
-        ))
-      ),
+      value: !job.responsibilities
+        ? null
+        : job.responsibilities.map((item) => (
+            <Box
+              component={ListItem}
+              disableGutters
+              width="auto"
+              padding={0}
+              key={item.id}
+              sx={{ mb: '1em' }}
+            >
+              <Checkbox />
+              <Typography variant="body1" sx={{ ml: '1em' }}>
+                {item.responsibility}
+              </Typography>
+            </Box>
+          )),
     },
     {
       text: 'Qualifications',
-      value: !job.qualifications ? (
-        <></>
-      ) : (
-        job.qualifications.map((item) => (
-          <Box
-            component={ListItem}
-            disableGutters
-            width="auto"
-            padding={0}
-            key={item.id}
-            sx={{ mb: '1em' }}
-          >
-            <Checkbox />
-            <Typography variant="body1" sx={{ ml: '1em' }}>
-              {item.qualification}
-            </Typography>
-          </Box>
-        ))
-      ),
+      value: !job.qualifications
+        ? null
+        : job.qualifications.map((item) => (
+            <Box
+              component={ListItem}
+              disableGutters
+              width="auto"
+              padding={0}
+              key={item.id}
+              sx={{ mb: '1em' }}
+            >
+              <Checkbox />
+              <Typography variant="body1" sx={{ ml: '1em' }}>
+                {item.qualification}
+              </Typography>
+            </Box>
+          )),
     },
   ];
   return (

@@ -14,7 +14,7 @@ export default async (req, res) => {
         {
           new: true,
           runValidators: true,
-        }
+        },
       );
       if (!job) {
         res.status(400).json({ status: 400, message: 'Job does not exist' });

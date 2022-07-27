@@ -71,7 +71,7 @@ const VerifyEmail = () => {
     };
     const response = await fetch(
       `/api/emailVerification/setVerified/user/${email}`,
-      updateVerified
+      updateVerified,
     );
     const data = await response.json();
     if (data.status === 200) {
@@ -93,7 +93,7 @@ const VerifyEmail = () => {
     };
     const response = await fetch(
       `/api/emailVerification/verifyCode/${email}`,
-      verifyEmail
+      verifyEmail,
     );
     const data = await response.json();
     if (data.status === 200) {

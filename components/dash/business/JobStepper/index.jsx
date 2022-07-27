@@ -21,10 +21,11 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 
+import PostAJobContext from '../../../contexts/postAJob';
 import { SuccessSnack, GeneralSnack } from '../../../shared/snackbars';
 import JobCard from '../../../shared/jobCard';
 import JobWorkType from './components/jobWorkType';
-import JobInformation from './components/listing/new';
+import JobInformation from './components/listing';
 import { steps } from '../../../shared/data';
 import LQV from '../../../shared/listingQuickView';
 import ProfileCard from '../../../shared/profileCard';
@@ -54,8 +55,8 @@ const JobStepper = ({ business }) => {
 
   const jobs = {
     ...form,
-    responsibilities: responsibilities,
-    qualifications: qualifications,
+    responsibilities,
+    qualifications,
   };
 
   const theme = useTheme();
@@ -72,14 +73,7 @@ const JobStepper = ({ business }) => {
   const allStepsCompleted = () => completedSteps() === totalSteps();
 
   const handleNext = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
-
-    setActiveStep(newActiveStep);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
@@ -108,7 +102,7 @@ const JobStepper = ({ business }) => {
     const err = {};
 
     if (!form.jobTitle) {
-      err.jobTitle = 'Please enter a jobTitle';
+      err.jobTitle = 'Please enter a job title';
     }
 
     if (!form.salary) {

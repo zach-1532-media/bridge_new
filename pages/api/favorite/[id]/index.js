@@ -26,7 +26,7 @@ export default async (req, res) => {
           {
             new: true,
             runValidators: true,
-          }
+          },
         );
 
         res
@@ -39,7 +39,7 @@ export default async (req, res) => {
       try {
         await User.updateOne(
           { _id: id },
-          { $addToSet: { favoriteJobs: jobObjectId } }
+          { $addToSet: { favoriteJobs: jobObjectId } },
         );
 
         res.status(200).json({
@@ -55,7 +55,7 @@ export default async (req, res) => {
     try {
       await User.updateOne(
         { _id: id },
-        { $pull: { favoriteJobs: jobObjectId } }
+        { $pull: { favoriteJobs: jobObjectId } },
       );
 
       res

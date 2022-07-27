@@ -10,15 +10,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import CardContent from '@mui/material/CardContent';
 
-const ProfileCard = ({
-  children,
-  title,
-  subtitle,
-  data,
-  business,
-  setEdit,
-  button,
-}) => (
+const ProfileCard = ({ children, title, subtitle, button, noHeader }) => (
   <Card sx={{ minWidth: '95%' }}>
     <Box
       p={3}
@@ -34,7 +26,7 @@ const ProfileCard = ({
       </Box>
       {button}
     </Box>
-    <Divider />
+    {!noHeader ? <Divider /> : <></>}
 
     <CardContent
       sx={{

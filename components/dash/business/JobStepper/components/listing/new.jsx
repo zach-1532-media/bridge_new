@@ -32,7 +32,7 @@ const JobInformation = ({
   qualifications,
   setQualifications,
 }) => {
-  const addResponsibility = (id) => {
+  const addResponsibility = () => {
     setResponsibilities([
       ...responsibilities,
       { id: responsibilities.length + 1, responsibility: '' },
@@ -46,7 +46,7 @@ const JobInformation = ({
   };
 
   // eslint-disable-next-line no-unused-vars
-  const addQualification = (id) => {
+  const addQualification = () => {
     setQualifications([
       ...qualifications,
       { id: qualifications.length + 1, qualification: '' },
