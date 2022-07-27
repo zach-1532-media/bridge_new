@@ -1,5 +1,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable react/jsx-key */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -49,7 +53,7 @@ const EditUserFields = ({
     } = event;
     setUserJob(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
+      typeof value === 'string' ? value.split(',') : value,
     );
   };
   const handleSalaryChange = (event) => {
@@ -58,7 +62,7 @@ const EditUserFields = ({
     } = event;
     setUserSalary(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
+      typeof value === 'string' ? value.split(',') : value,
     );
   };
   const handleHourlyChange = (event) => {
@@ -67,7 +71,7 @@ const EditUserFields = ({
     } = event;
     setUserHourlyRate(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
+      typeof value === 'string' ? value.split(',') : value,
     );
   };
   const handleWorkTypeChange = (event) => {
@@ -76,7 +80,7 @@ const EditUserFields = ({
     } = event;
     setUserWorkType(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
+      typeof value === 'string' ? value.split(',') : value,
     );
   };
 

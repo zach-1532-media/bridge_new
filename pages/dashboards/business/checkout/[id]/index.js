@@ -12,10 +12,9 @@ import Dash from '../../../../../layouts/dash';
 
 const BusinessCheckout = ({ business }) => {
   const form = useContext(PostAJobContext);
-  console.log(form);
 
   useEffect(() => {
-    const postAJob = async () => {
+    const postAJob = () => {
       const jobData = {
         method: 'POST',
         headers: {
@@ -38,8 +37,7 @@ const BusinessCheckout = ({ business }) => {
           qualifications: form.postAJobform.qualifications,
         }),
       };
-      const res = await fetch('/api/postAJob', jobData);
-      const data = await res.json();
+      fetch('/api/postAJob', jobData);
     };
     postAJob();
   });
@@ -64,6 +62,7 @@ export async function getServerSideProps({ query: { id } }) {
 }
 
 BusinessCheckout.propTypes = {
+  /* eslint-disable react/forbid-prop-types */
   business: PropTypes.object.isRequired,
 };
 

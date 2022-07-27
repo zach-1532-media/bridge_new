@@ -1,9 +1,14 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable no-shadow */
+
 import { React, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import workerSrc from '../../../lib/pdf-worker';
+
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+
+import workerSrc from '../../../lib/pdf-worker';
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 

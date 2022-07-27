@@ -49,13 +49,11 @@ export default async (req, res) => {
         res.status(400).json({ status: 400, success: false });
       }
     } else if (existingBusiness) {
-      res
-        .status(409)
-        .json({
-          status: 409,
-          success: false,
-          message: 'Business Already Exists',
-        });
+      res.status(409).json({
+        status: 409,
+        success: false,
+        message: 'Business Already Exists',
+      });
     }
   }
 };

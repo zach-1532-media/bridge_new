@@ -12,12 +12,12 @@ import Dash from '../../../../../layouts/dash';
 
 const JobConfirmation = ({ business, job }) => {
   const router = useRouter();
-  const id = router.query.id;
+  const { id } = router.query;
   const paymentID = router.query.payment_intent;
 
   useEffect(() => {
-    const verifyJob = async () => {
-      const res = await fetch('/api/verifyJobPost', {
+    const verifyJob = () => {
+      fetch('/api/verifyJobPost', {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -25,10 +25,9 @@ const JobConfirmation = ({ business, job }) => {
         },
         body: JSON.stringify({
           jobID: job[0]._id,
-          paymentID: paymentID,
+          paymentID,
         }),
       });
-      const data = await res.json();
     };
     verifyJob();
   });
@@ -57,8 +56,11 @@ export async function getServerSideProps({ query: { id } }) {
 }
 
 JobConfirmation.propTypes = {
+  /* eslint-disable react/forbid-prop-types */
   business: PropTypes.object.isRequired,
-  job: PropTypes.array,
+  job: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType(PropTypes.number, PropTypes.string)),
+  ).isRequired,
 };
 
 export default JobConfirmation;

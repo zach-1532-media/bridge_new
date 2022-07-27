@@ -1,5 +1,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable prettier/prettier */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -47,7 +49,7 @@ const TextWrapper = styled('span')(
           color: ${theme.palette.info.main}
         }
       }
-`
+`,
 );
 
 const Text = ({ className, color = 'secondary', flex, children, ...rest }) => (

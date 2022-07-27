@@ -1,5 +1,8 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable prettier/prettier */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -31,7 +34,7 @@ const AvatarWrapper = styled(Card)(
       width: ${theme.spacing(16)};
       height: ${theme.spacing(16)};
     }
-`
+`,
 );
 
 const ButtonUploadWrapper = styled(Box)(
@@ -55,7 +58,7 @@ const ButtonUploadWrapper = styled(Box)(
         background: ${theme.colors.primary.dark};
       }
     }
-`
+`,
 );
 
 const CardCover = styled(Card)(
@@ -65,7 +68,7 @@ const CardCover = styled(Card)(
     .MuiCardMedia-root {
       height: ${theme.spacing(26)};
     }
-`
+`,
 );
 
 const CardCoverAction = styled(Box)(
@@ -73,7 +76,7 @@ const CardCoverAction = styled(Box)(
     position: absolute;
     right: ${theme.spacing(2)};
     bottom: ${theme.spacing(2)};
-`
+`,
 );
 
 const ProfileCover = ({ data, userPage }) => (

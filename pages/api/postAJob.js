@@ -1,7 +1,7 @@
 import dbConnect from '../../lib/dbConnect';
 import Job from '../../models/Job';
 
-export default async (req, res) => {
+const PostAJob = async (req, res) => {
   dbConnect();
 
   const { method } = req;
@@ -24,19 +24,19 @@ export default async (req, res) => {
   try {
     if (method === 'POST') {
       await Job.create({
-        businessID: businessID,
-        job: job,
-        city: city,
-        state: state,
-        benefits: benefits,
-        salary: salary,
-        workType: workType,
-        description: description,
-        jobTitle: jobTitle,
-        travel: travel,
-        hourlyRate: hourlyRate,
-        responsibilities: responsibilities,
-        qualifications: qualifications,
+        businessID,
+        job,
+        city,
+        state,
+        benefits,
+        salary,
+        workType,
+        description,
+        jobTitle,
+        travel,
+        hourlyRate,
+        responsibilities,
+        qualifications,
         dateCreated: new Date(),
       });
 
@@ -46,3 +46,5 @@ export default async (req, res) => {
     res.status(400).json({ status: 400, message: 'no worky' });
   }
 };
+
+export default PostAJob;

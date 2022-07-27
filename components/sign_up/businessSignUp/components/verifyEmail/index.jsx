@@ -1,6 +1,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
 import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
@@ -71,7 +74,7 @@ const VerifyEmail = () => {
     };
     const response = await fetch(
       `/api/emailVerification/setVerified/business/${id}`,
-      updateVerified
+      updateVerified,
     );
     const data = await response.json();
     if (data.status === 200) {
@@ -93,7 +96,7 @@ const VerifyEmail = () => {
     };
     const response = await fetch(
       `/api/emailVerification/verifyCode/${id}`,
-      verifyEmail
+      verifyEmail,
     );
     const data = await response.json();
     if (data.status === 200) {

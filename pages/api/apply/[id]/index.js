@@ -32,7 +32,7 @@ export default async (req, res) => {
           {
             new: true,
             runValidators: true,
-          }
+          },
         );
 
         res.status(200).json({ status: 200, success: true });
@@ -46,7 +46,7 @@ export default async (req, res) => {
       try {
         await User.updateOne(
           { _id: id },
-          { $addToSet: { appliedJobs: jobObjectId } }
+          { $addToSet: { appliedJobs: jobObjectId } },
         );
 
         res.status(200).json({ status: 200, success: true });
@@ -60,7 +60,7 @@ export default async (req, res) => {
         await Job.findOneAndUpdate(
           jobId,
           { applicants: userArray },
-          { new: true, runValidators: true }
+          { new: true, runValidators: true },
         );
 
         res.status(200).json({ status: 201, success: true });
@@ -71,7 +71,7 @@ export default async (req, res) => {
       try {
         await Job.updateOne(
           { _id: jobId },
-          { $addToSet: { applicants: userObjectId } }
+          { $addToSet: { applicants: userObjectId } },
         );
       } catch (err) {
         res.status(400).json({ status: 401, success: true });

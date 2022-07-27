@@ -1,11 +1,10 @@
-/* eslint-disable import/no-anonymous-default-export */
 import dbConnect from '../../../../lib/dbConnect';
 import User from '../../../../models/User';
 
 const mongoose = require('mongoose');
 
-export default async (req, res) => {
-  dbConnect();
+const FavoriteHandler = async (req, res) => {
+  await dbConnect();
   const {
     query: { id },
     method,
@@ -58,15 +57,15 @@ export default async (req, res) => {
         { $pull: { favoriteJobs: jobObjectId } },
       );
 
-      res
-        .status(200)
-        .json({
-          status: 200,
-          success: true,
-          message: 'Favorite job has been deleted!',
-        });
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: 'Favorite job has been deleted!',
+      });
     } catch (err) {
       res.status(400).json({ status: 400, success: true });
     }
   }
 };
+
+export default FavoriteHandler;

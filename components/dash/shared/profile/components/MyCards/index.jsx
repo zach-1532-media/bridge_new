@@ -1,4 +1,6 @@
 /* eslint-disable no-useless-concat */
+/* eslint-disable prettier/prettier */
+
 import { React, useState } from 'react';
 
 import Box from '@mui/material/Box';
@@ -24,7 +26,7 @@ const AvatarAddWrapper = styled(Avatar)(
         color: ${theme.colors.primary.main};
         width: ${theme.spacing(8)};
         height: ${theme.spacing(8)};
-`
+`,
 );
 
 const CardLogo = styled('img')(
@@ -34,7 +36,7 @@ const CardLogo = styled('img')(
       padding: ${theme.spacing(1)};
       margin-right: ${theme.spacing(2)};
       background: ${theme.colors.alpha.white[100]};
-`
+`,
 );
 
 const CardAddAction = styled(Card)(
@@ -59,7 +61,7 @@ const CardAddAction = styled(Card)(
         &:hover {
           border-color: ${theme.colors.alpha.black[70]};
         }
-`
+`,
 );
 
 const IconButtonError = styled(IconButton)(
@@ -71,7 +73,7 @@ const IconButtonError = styled(IconButton)(
      &:hover {
       background: ${lighten(theme.colors.error.lighter, 0.4)};
      }
-`
+`,
 );
 
 const CardCc = styled(Card)(
@@ -79,7 +81,7 @@ const CardCc = styled(Card)(
      border: 1px solid ${theme.colors.alpha.black[30]};
      background: ${theme.colors.alpha.black[5]};
      box-shadow: none;
-`
+`,
 );
 
 function MyCards() {

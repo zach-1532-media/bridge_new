@@ -1,5 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
+/* eslint-disable prefer-regex-literals */
 import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
@@ -181,7 +185,7 @@ const EditDetailsCard = ({
   const businessValidate = () => {
     const err = {};
     const regEmail = new RegExp(
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
     ).test(businessForm.email);
 
     if (!businessForm.businessName) {
@@ -200,7 +204,7 @@ const EditDetailsCard = ({
   const userValidate = () => {
     const err = {};
     const regEmail = new RegExp(
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
     ).test(userForm.email);
 
     if (!userForm.email) {

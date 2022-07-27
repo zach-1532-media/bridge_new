@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PaymentIcon from '@mui/icons-material/Payment';
 
-const Orders = ({ setIsSubmitting, isLoading, form }) => {
+const Orders = ({ setIsSubmitting, isLoading, job }) => {
   const partTime =
     'https://connectatthebridge.nyc3.cdn.digitaloceanspaces.com/site-assets/partTime.svg';
   const fullTime =
@@ -17,7 +17,6 @@ const Orders = ({ setIsSubmitting, isLoading, form }) => {
   const fullTimePrice = 300;
   const partTimePrice = 200;
   const salesTaxPercent = 0.075;
-  const job = form.postAJobform.job;
 
   const salesTax = () => {
     let tax;
@@ -42,7 +41,6 @@ const Orders = ({ setIsSubmitting, isLoading, form }) => {
 
   const tax = salesTax().toFixed(2);
   const total = orderTotal().toFixed(2);
-  const stripeTotal = total * 100;
 
   return (
     <Box>
@@ -100,7 +98,7 @@ const Orders = ({ setIsSubmitting, isLoading, form }) => {
             bgcolor: 'background.paper',
           },
         }}
-      ></Box>
+      />
       <Stack spacing={2} marginY={{ xs: 2, sm: 4 }}>
         <Box display="flex" justifyContent="space-between">
           <Typography color="text.secondary">Subtotal</Typography>
@@ -115,7 +113,7 @@ const Orders = ({ setIsSubmitting, isLoading, form }) => {
           </Typography>
         </Box>
         <Divider />
-        <Box display="flex" justifyContent={'space-between'}>
+        <Box display="flex" justifyContent="space-between">
           <Typography variant="h6" fontWeight={700}>
             Order total
           </Typography>
@@ -141,9 +139,9 @@ const Orders = ({ setIsSubmitting, isLoading, form }) => {
 };
 
 Orders.propTypes = {
-  setIsSubmitting: PropTypes.func,
-  isLoading: PropTypes.bool,
-  form: PropTypes.object,
+  setIsSubmitting: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  job: PropTypes.string.isRequired,
 };
 
 export default Orders;

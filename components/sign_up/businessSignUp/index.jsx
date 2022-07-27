@@ -1,5 +1,8 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prefer-regex-literals */
 import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';

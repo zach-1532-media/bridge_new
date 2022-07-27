@@ -19,7 +19,7 @@ export const config = {
   },
 };
 
-export default async function handler(req, res) {
+const UploadHandler = async (req, res) => {
   const form = formidable();
   form.parse(req, async (err, fields, files) => {
     if (!files.demo) {
@@ -34,10 +34,12 @@ export default async function handler(req, res) {
           Key: files.demo.originalFilename,
           Body: fs.createReadStream(files.demo.filepath),
         },
-        async () => res.status(201).send('File uploaded')
+        async () => res.status(201).send('File uploaded'),
       );
     } catch (err) {
       res.status(500).send('Error uploading file');
     }
   });
-}
+};
+
+export default UploadHandler;

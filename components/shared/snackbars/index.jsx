@@ -1,3 +1,4 @@
+/* eslint-disable react/function-component-definition */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/require-default-props */
 /* eslint-disable import/prefer-default-export */

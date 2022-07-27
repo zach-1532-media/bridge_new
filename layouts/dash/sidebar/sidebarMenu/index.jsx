@@ -96,16 +96,16 @@ const SidebarMenu = ({ data, userPage }) => {
                     fullWidth
                     startIcon={item.icon}
                     variant={router.asPath === item.link ? 'outlined' : 'text'}
-                    color="primary"
+                    color="tertiary"
                     sx={{
                       justifyContent: 'stretch',
                       color:
                         router.asPath === item.link
-                          ? theme.colors.primary.main
-                          : 'black',
+                          ? theme.palette.tertiary.main
+                          : theme.sidebar.textColor,
                       '&:hover': {
                         background: 'transparent',
-                        color: theme.colors.primary.main,
+                        color: theme.palette.tertiary.main,
                       },
                     }}
                   >

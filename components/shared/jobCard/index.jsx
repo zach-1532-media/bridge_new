@@ -1,5 +1,3 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/forbid-prop-types */
 import { React, useState } from 'react';
 
 import PropTypes from 'prop-types';
@@ -104,10 +102,21 @@ const JobCard = ({ job, height, width, children }) => {
 };
 
 JobCard.propTypes = {
-  job: PropTypes.object,
-  height: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
+  job: PropTypes.shape({
+    job: PropTypes.string,
+    jobTitle: PropTypes.string,
+    workType: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+  }).isRequired,
+  height: PropTypes.number,
+  width: PropTypes.number,
   children: PropTypes.node.isRequired,
+};
+
+JobCard.defaultProps = {
+  height: 1,
+  width: 1,
 };
 
 export default JobCard;

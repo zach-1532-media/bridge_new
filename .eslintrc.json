@@ -17,6 +17,10 @@
   },
   "rules": {
     "jsx-a11y/href-no-hash": ["off"],
+    "no-underscore-dangle": 0,
+    "react/no-unescaped-entities": "off",
+    "react/function-component-definition": ["off"],
+    "@next/next/no-page-custom-font": "off",
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "max-len": [
       "warn",

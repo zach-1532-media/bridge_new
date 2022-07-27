@@ -1,5 +1,8 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-bind */
+/* eslint-disable prettier/prettier */
+/* eslint-disable prefer-regex-literals */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
@@ -64,10 +67,10 @@ const Form = () => {
   const validate = () => {
     const err = {};
     const regEmail = new RegExp(
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
     ).test(form.email);
     const regPassword = new RegExp(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
     ).test(form.password);
 
     if (!form.email) {

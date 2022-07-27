@@ -1,3 +1,4 @@
+/* eslint-disable react/function-component-definition */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';

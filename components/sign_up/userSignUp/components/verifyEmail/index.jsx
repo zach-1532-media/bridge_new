@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/function-component-definition */
 import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';

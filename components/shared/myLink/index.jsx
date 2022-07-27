@@ -1,5 +1,6 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/display-name */
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';

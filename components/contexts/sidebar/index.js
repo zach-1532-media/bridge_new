@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/jsx-no-constructed-context-values */
 import { React, useState, createContext } from 'react';
 
 import PropTypes from 'prop-types';
@@ -7,6 +8,7 @@ export const SidebarContext = createContext({});
 
 export const SidebarProvider = ({ children }) => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
+
   const toggleSidebar = () => {
     setSidebarToggle(!sidebarToggle);
   };

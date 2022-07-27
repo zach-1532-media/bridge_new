@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/forbid-prop-types */
+
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -18,7 +18,7 @@ const JobPage = ({ jobs }) => (
   <Main>
     <Container>
       <JobHero
-        searchBar={<></>}
+        searchBar={null}
         image={<HeroImage />}
         exploreButton={<ExploreButton />}
       />
@@ -34,12 +34,18 @@ export async function getServerSideProps() {
   // eslint-disable-next-line global-require
   require('../models/Business');
 
-  const jobs = await Job.aggregate().lookup({
-    from: 'businesses',
-    localField: 'businessID',
-    foreignField: '_id',
-    as: 'business',
-  });
+  const jobs = await Job.aggregate()
+    .lookup({
+      from: 'businesses',
+      localField: 'businessID',
+      foreignField: '_id',
+      as: 'business',
+    })
+    .unwind('business')
+    .project(
+      'jobTitle business.bio job workType city state responsibilities qualifications',
+    )
+    .limit(9);
   const jobsReverse = jobs.reverse();
 
   return {
@@ -50,7 +56,31 @@ export async function getServerSideProps() {
 }
 
 JobPage.propTypes = {
-  jobs: PropTypes.array.isRequired,
+  jobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
 };
 
 export default JobPage;

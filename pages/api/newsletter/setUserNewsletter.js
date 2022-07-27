@@ -1,10 +1,8 @@
-/* eslint-disable import/no-anonymous-default-export */
-/* eslint-disable no-unused-expressions */
 /* eslint-disable object-shorthand */
 import dbConnect from '../../../lib/dbConnect';
 import User from '../../../models/User';
 
-export default async (req, res) => {
+const NewsletterHandler = async (req, res) => {
   dbConnect();
   const { method } = req;
   const { email } = req.body;
@@ -17,7 +15,7 @@ export default async (req, res) => {
         {
           new: true,
           runValidators: true,
-        }
+        },
       );
       res.status(200).json({ status: 200, success: true });
     } catch (err) {
@@ -25,3 +23,5 @@ export default async (req, res) => {
     }
   }
 };
+
+export default NewsletterHandler;

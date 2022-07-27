@@ -1,5 +1,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react/jsx-no-useless-fragment */
 import { React, useState } from 'react';
 
 import PropTypes from 'prop-types';

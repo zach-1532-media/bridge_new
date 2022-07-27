@@ -1,4 +1,6 @@
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/jsx-key */
+/* eslint-disable react/function-component-definition */
 import React from 'react';
 
 import PropTypes from 'prop-types';

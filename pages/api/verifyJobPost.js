@@ -1,7 +1,7 @@
 import dbConnect from '../../lib/dbConnect';
 import Job from '../../models/Job';
 
-export default async (req, res) => {
+const VerifyHandler = async (req, res) => {
   dbConnect();
   const { method } = req;
   const { jobID, paymentID } = req.body;
@@ -26,3 +26,5 @@ export default async (req, res) => {
     }
   }
 };
+
+export default VerifyHandler;

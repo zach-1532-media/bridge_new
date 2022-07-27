@@ -3,6 +3,8 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
@@ -17,7 +19,7 @@ export default function PDFViewer({ url }) {
           path: '/webviewer/lib',
           initialDoc: `${url}`,
         },
-        viewer.current
+        viewer.current,
       ).then((instance) => {
         const { docViewer } = instance;
         // you can now call WebViewer APIs here...

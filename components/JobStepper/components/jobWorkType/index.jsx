@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 
-import { workTypes, jobs } from '../../../../../shared/data';
+import { workTypes, jobs } from '../../../shared/data';
 
 const JobWorkType = ({ form, setForm, errors }) => {
   const handleChange = (e) => {
@@ -33,8 +33,8 @@ const JobWorkType = ({ form, setForm, errors }) => {
           error={errors.job ? true : null}
           helperText={errors.job ? errors.job : null}
         >
-          {jobs.map((job, i) => (
-            <MenuItem key={`job: ${job.job}${i}`} value={job.job}>
+          {jobs.map((job) => (
+            <MenuItem key={job.job} value={job.job}>
               {job.job}
             </MenuItem>
           ))}
@@ -55,8 +55,8 @@ const JobWorkType = ({ form, setForm, errors }) => {
           error={errors.workType ? true : null}
           helperText={errors.workType ? errors.workType : null}
         >
-          {workTypes.map((type, i) => (
-            <MenuItem key={`WorkType: ${type.type}${i}`} value={type.type}>
+          {workTypes.map((type) => (
+            <MenuItem key={type.type} value={type.type}>
               {type.type}
             </MenuItem>
           ))}
@@ -67,8 +67,8 @@ const JobWorkType = ({ form, setForm, errors }) => {
 
   return (
     <>
-      {fields.map((field, i) => (
-        <Typography variant="subtitle2" key={i}>
+      {fields.map((field) => (
+        <Typography variant="subtitle2" key={field.fieldName}>
           <Grid container spacing={0}>
             <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
               <Box sx={{ pr: 3, pb: 2 }}>{field.fieldName}</Box>
@@ -84,9 +84,22 @@ const JobWorkType = ({ form, setForm, errors }) => {
 };
 
 JobWorkType.propTypes = {
-  form: PropTypes.object.isRequired,
+  form: PropTypes.shape({
+    job: PropTypes.string,
+    workType: PropTypes.string,
+  }).isRequired,
   setForm: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
+  errors: PropTypes.shape({
+    job: PropTypes.string,
+    workType: PropTypes.string,
+  }),
+};
+
+JobWorkType.defaultProps = {
+  errors: {
+    job: '',
+    workType: '',
+  },
 };
 
 export default JobWorkType;

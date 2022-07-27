@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/function-component-definition */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -52,7 +54,7 @@ const LabelWrapper = styled('span')(
           color: ${theme.palette.info.main}
         }
       }
-`
+`,
 );
 
 const Label = ({ className, color = 'secondary', children, ...rest }) => (

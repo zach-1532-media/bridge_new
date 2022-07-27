@@ -1,11 +1,4 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable arrow-body-style */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable object-shorthand */
-/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
@@ -146,7 +139,7 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
         handleChange={handleChange}
       >
         {jobs.map((job, i) => (
-          <TabPanel value={value} index={i} key={`TabPanel: ${i}`}>
+          <TabPanel value={value} index={i} key={`TabPanel: ${job}`}>
             <Container>
               <JobBlockWrapperGrid>
                 {_DATA.currentData().map((data) => {
@@ -187,9 +180,7 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
                   setCardsPerPage={setCardsPerPage}
                   _DATA={_DATA}
                 />
-              ) : (
-                <></>
-              )}
+              ) : null}
             </Container>
           </TabPanel>
         ))}
@@ -215,7 +206,11 @@ export async function getServerSideProps({ query: { id } }) {
       localField: 'businessID',
       foreignField: '_id',
       as: 'business',
-    });
+    })
+    .unwind('business')
+    .project(
+      'jobTitle business.bio job workType city state responsibilities qualifications',
+    );
 
   const jobsFavorited = await User.findById(id).select('favoriteJobs');
   const favoriteJobsArray = jobsFavorited.favoriteJobs;
@@ -227,7 +222,11 @@ export async function getServerSideProps({ query: { id } }) {
       localField: 'businessID',
       foreignField: '_id',
       as: 'business',
-    });
+    })
+    .unwind('business')
+    .project(
+      'jobTitle business.bio job workType city state responsibilities qualifications',
+    );
 
   const currentJobsReverse = currentJobs.reverse();
   const favoriteJobsReverse = favoriteJobs.reverse();
@@ -244,10 +243,83 @@ export async function getServerSideProps({ query: { id } }) {
 }
 
 MyJobs.propTypes = {
+  /* eslint-disable react/forbid-prop-types */
   user: PropTypes.object.isRequired,
-  currentJobs: PropTypes.array.isRequired,
-  favoriteJobs: PropTypes.array.isRequired,
-  inactiveJobs: PropTypes.array.isRequired,
+  currentJobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
+  favoriteJobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
+  inactiveJobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
 };
 
 export default MyJobs;

@@ -3,6 +3,8 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/jsx-no-useless-fragment */
+
 import { React, useState } from 'react';
 
 import { useRouter } from 'next/router';

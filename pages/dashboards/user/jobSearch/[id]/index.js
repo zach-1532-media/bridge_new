@@ -1,8 +1,4 @@
-/* eslint-disable arrow-body-style */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable object-shorthand */
-/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
@@ -133,8 +129,8 @@ const DashJobSearch = ({ user, jobs }) => {
           search={search}
           setSearch={setSearch}
           searchBar={<SearchBar search={search} setSearch={setSearch} />}
-          image={<></>}
-          exploreButton={<></>}
+          image={null}
+          exploreButton={null}
         />
       </Container>
       <Container>
@@ -177,9 +173,7 @@ const DashJobSearch = ({ user, jobs }) => {
             setCardsPerPage={setCardsPerPage}
             _DATA={_DATA}
           />
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Container>
     </Dash>
   );
@@ -193,12 +187,17 @@ export async function getServerSideProps({ query: { id, search } }) {
   const user = await User.findById(id);
 
   const jobs = !search
-    ? await Job.aggregate().lookup({
-        from: 'businesses',
-        localField: 'businessID',
-        foreignField: '_id',
-        as: 'business',
-      })
+    ? await Job.aggregate()
+        .lookup({
+          from: 'businesses',
+          localField: 'businessID',
+          foreignField: '_id',
+          as: 'business',
+        })
+        .unwind('business')
+        .project(
+          'jobTitle business.bio job workType city state responsibilities qualifications',
+        )
     : await Job.aggregate()
         .search({
           index: 'Job Search',
@@ -213,7 +212,11 @@ export async function getServerSideProps({ query: { id, search } }) {
           localField: 'businessID',
           foreignField: '_id',
           as: 'business',
-        });
+        })
+        .unwind('business')
+        .project(
+          'jobTitle business.bio job workType city state responsibilities qualifications',
+        );
 
   const jobsReverse = jobs.reverse();
 
@@ -226,8 +229,33 @@ export async function getServerSideProps({ query: { id, search } }) {
 }
 
 DashJobSearch.propTypes = {
+  /* eslint-disable react/forbid-prop-types */
   user: PropTypes.object.isRequired,
-  jobs: PropTypes.array.isRequired,
+  jobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
 };
 
 export default DashJobSearch;

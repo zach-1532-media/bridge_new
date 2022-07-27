@@ -1,5 +1,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-useless-fragment */
+
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -29,7 +31,7 @@ const JobHero = ({ searchBar, image, exploreButton }) => {
         >
           <Box
             data-aos={
-              searchBar === <></> ? (isMd ? 'fade-right' : 'fade-up') : null
+              searchBar === null ? (isMd ? 'fade-right' : 'fade-up') : null
             }
             marginBottom={4}
           >
@@ -54,9 +56,15 @@ const JobHero = ({ searchBar, image, exploreButton }) => {
 };
 
 JobHero.propTypes = {
-  searchBar: PropTypes.node.isRequired,
-  image: PropTypes.node.isRequired,
-  exploreButton: PropTypes.node.isRequired,
+  searchBar: PropTypes.node,
+  image: PropTypes.node,
+  exploreButton: PropTypes.node,
+};
+
+JobHero.defaultProps = {
+  image: null,
+  exploreButton: null,
+  searchBar: null,
 };
 
 export default JobHero;

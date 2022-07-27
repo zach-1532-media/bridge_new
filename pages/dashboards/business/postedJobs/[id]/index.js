@@ -1,8 +1,4 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable arrow-body-style */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/jsx-filename-extension */
 import { React, useState } from 'react';
 
 import Link from 'next/link';
@@ -27,11 +23,10 @@ import {
 import JobCard from '../../../../../components/shared/jobCard';
 import LQV from '../../../../../components/shared/listingQuickView';
 
-const BusinessDash = ({ activeJobs, inActiveJobs, business, oobiedoobie }) => {
+const BusinessDash = ({ activeJobs, inActiveJobs, business }) => {
   const jobs = [activeJobs, inActiveJobs];
   const [value, setValue] = useState(0);
   const [cardsPerPage, setCardsPerPage] = useState(9);
-  console.log(business);
 
   const currentData = jobs[value];
 
@@ -51,7 +46,7 @@ const BusinessDash = ({ activeJobs, inActiveJobs, business, oobiedoobie }) => {
         handleChange={handleChange}
       >
         {jobs.map((job, i) => (
-          <TabPanel value={value} index={i} key={`TabPanel: ${i}`}>
+          <TabPanel value={value} index={i} key={`TabPanel: ${job}${i}`}>
             <Container>
               <JobBlockWrapperGrid>
                 {_DATA.currentData().map((data) => {
@@ -83,9 +78,7 @@ const BusinessDash = ({ activeJobs, inActiveJobs, business, oobiedoobie }) => {
                   setCardsPerPage={setCardsPerPage}
                   _DATA={_DATA}
                 />
-              ) : (
-                <></>
-              )}
+              ) : null}
             </Container>
           </TabPanel>
         ))}
@@ -100,17 +93,20 @@ export async function getServerSideProps({ query: { id } }) {
   require('../../../../../models/Business');
 
   const businesses = await Business.findById(id);
-  const oobiedoobie = await Job.find({ businessID: id }).select('_id');
-  const oobieArray = oobiedoobie.map((oobie) => oobie._id);
+  const jobId = await Job.find({ businessID: id }).select('_id');
+  const jobIdArray = jobId.map((job) => job._id);
   const jobs = await Job.aggregate()
-    .match({ _id: { $in: oobieArray } })
+    .match({ _id: { $in: jobIdArray } })
     .lookup({
       from: 'businesses',
       localField: 'businessID',
       foreignField: '_id',
       as: 'business',
-    });
-
+    })
+    .unwind('business')
+    .project(
+      'jobTitle business.bio job workType city state responsibilities qualifications',
+    );
   const jobsReverse = jobs.reverse();
 
   return {
@@ -118,14 +114,62 @@ export async function getServerSideProps({ query: { id } }) {
       business: JSON.parse(JSON.stringify(businesses)),
       activeJobs: JSON.parse(JSON.stringify(jobsReverse)),
       inActiveJobs: JSON.parse(JSON.stringify(jobsReverse)),
-      oobiedoobie: JSON.parse(JSON.stringify(oobiedoobie)),
     },
   };
 }
 
 BusinessDash.propTypes = {
-  activeJobs: PropTypes.array.isRequired,
-  inActiveJobs: PropTypes.array.isRequired,
+  activeJobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
+  inActiveJobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
+  /* eslint-disable react/forbid-prop-types */
   business: PropTypes.object.isRequired,
 };
 

@@ -16,7 +16,7 @@ const setVerified = async (req, res) => {
       const updateUser = await User.findByIdAndUpdate(
         user.id,
         { emailVerified: true },
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       );
       res.status(200).json({
         status: 200,

@@ -2,7 +2,7 @@
 import dbConnect from '../../../../lib/dbConnect';
 import User from '../../../../models/User';
 
-export default async (req, res) => {
+const EmaileHandler = async (req, res) => {
   dbConnect();
   const {
     query: { email },
@@ -26,3 +26,5 @@ export default async (req, res) => {
     }
   }
 };
+
+export default EmaileHandler;

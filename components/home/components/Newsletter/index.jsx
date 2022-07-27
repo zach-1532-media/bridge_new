@@ -1,5 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prefer-regex-literals */
 import React, { useState, useEffect } from 'react';
 
 import PropTypes from 'prop-types';

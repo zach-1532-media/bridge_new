@@ -16,7 +16,7 @@ import Logo from '../../../components/shared/logo';
 const SidebarWrapper = styled(Card)(
   ({ theme }) => `
     width: ${theme.sidebar.width};
-    background: ${theme.palette.tertiary.light};
+    background: ${theme.palette.primary.lighter};
     height: 100%;
     
     @media (min-width: ${theme.breakpoints.values.lg}px) {

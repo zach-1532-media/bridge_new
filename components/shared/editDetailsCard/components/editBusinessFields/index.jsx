@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react/jsx-key */
 import React from 'react';
 
 import PropTypes from 'prop-types';

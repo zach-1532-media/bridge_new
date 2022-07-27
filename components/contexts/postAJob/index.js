@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import { React, createContext, useState } from 'react';
 
 const PostAJobContext = createContext({
@@ -26,7 +27,7 @@ export const PostAJobContextProvider = ({ children }) => {
   };
 
   const context = {
-    postAJobform: postAJobform,
+    postAJobform,
     newForm: addFormHandler,
   };
 

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/forbid-prop-types */
+
 import { React, useState } from 'react';
 
 import PropTypes from 'prop-types';
@@ -23,8 +23,8 @@ const JobSearchPage = ({ jobs }) => {
           search={search}
           setSearch={setSearch}
           searchBar={<SearchBar search={search} setSearch={setSearch} />}
-          image={<></>}
-          exploreButton={<></>}
+          image={null}
+          exploreButton={null}
         />
       </Container>
       <Container>
@@ -39,12 +39,17 @@ export async function getServerSideProps({ query: { search } }) {
   require('../models/Business');
 
   const jobs = !search
-    ? await Job.aggregate().lookup({
-        from: 'businesses',
-        localField: 'businessID',
-        foreignField: '_id',
-        as: 'business',
-      })
+    ? await Job.aggregate()
+        .lookup({
+          from: 'businesses',
+          localField: 'businessID',
+          foreignField: '_id',
+          as: 'business',
+        })
+        .unwind('business')
+        .project(
+          'jobTitle business.bio job workType city state responsibilities qualifications',
+        )
     : await Job.aggregate()
         .search({
           index: 'Job Search',
@@ -59,7 +64,11 @@ export async function getServerSideProps({ query: { search } }) {
           localField: 'businessID',
           foreignField: '_id',
           as: 'business',
-        });
+        })
+        .unwind('business')
+        .project(
+          'jobTitle business.bio job workType city state responsibilities qualifications',
+        );
 
   const jobsReverse = jobs.reverse();
 
@@ -71,7 +80,31 @@ export async function getServerSideProps({ query: { search } }) {
 }
 
 JobSearchPage.propTypes = {
-  jobs: PropTypes.array.isRequired,
+  jobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
 };
 
 export default JobSearchPage;

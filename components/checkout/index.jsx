@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { React, useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
@@ -34,7 +35,7 @@ const Checkout = ({ form }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const id = router.query.id;
+  const { id } = router.query;
 
   useEffect(() => {
     fetch(`/api/create_payment_intent`, {
@@ -45,7 +46,7 @@ const Checkout = ({ form }) => {
       },
       body: JSON.stringify({
         jobType: `${form.postAJobform.job}`,
-        id: id,
+        id,
       }),
     })
       .then((res) => res.json())
@@ -112,7 +113,7 @@ const Checkout = ({ form }) => {
               <Orders
                 setIsSubmitting={setIsSubmitting}
                 isLoading={isLoading}
-                form={form}
+                job={form.postAJobform.job}
               />
               <Box
                 sx={{
@@ -123,7 +124,7 @@ const Checkout = ({ form }) => {
                   bgcolor: 'alternate.main',
                 }}
               >
-                <Stack direction={'row'} spacing={2}>
+                <Stack direction="row" spacing={2}>
                   <Button
                     sx={{
                       color: 'text.secondary',

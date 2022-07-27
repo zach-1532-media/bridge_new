@@ -19,8 +19,13 @@ import User from '../../../../models/User';
 import { modalStyle } from '../../../../components/shared/data';
 import CustomNoRowsOverlay from '../../../../components/shared/noRows';
 
+import ProfileCard from '../../../../components/shared/profileCard';
 import Container from '../../../../components/front_components/container';
 import PDFViewer from '../../../../components/pdf/singlePage';
+
+const handleMail = (email) => {
+  window.location.href = `mailto:${email}?subject=Job posting follow up.`;
+};
 
 const ViewApplicants = ({ business, job, applicants }) => {
   const [open, setOpen] = useState(false);
@@ -30,10 +35,9 @@ const ViewApplicants = ({ business, job, applicants }) => {
   const theme = useTheme();
 
   const columns = [
-    { field: 'id', headerName: 'ID', minWidth: 70 },
     {
-      field: 'user',
-      headerName: 'User',
+      field: 'applicant',
+      headerName: 'Applicant',
       minWidth: 230,
       flex: 1,
       renderCell: (params) => {
@@ -47,7 +51,24 @@ const ViewApplicants = ({ business, job, applicants }) => {
         );
       },
     },
-    { field: 'email', headerName: 'E-mail', minWidth: 130, flex: 1 },
+    {
+      field: 'email',
+      headerName: 'E-mail',
+      renderCell: (params) => {
+        return (
+          <Button
+            sx={{ '&:hover': { backgroundColor: 'transparent' } }}
+            onClick={() => {
+              handleMail(params.value.email);
+            }}
+          >
+            {params.value.email}
+          </Button>
+        );
+      },
+      minWidth: 130,
+      flex: 1,
+    },
     {
       field: 'resume',
       headerName: '',
@@ -55,17 +76,15 @@ const ViewApplicants = ({ business, job, applicants }) => {
       flex: 1,
       renderCell: (params) => {
         return (
-          <>
-            <Button
-              sx={{ '&:hover': { backgroundColor: 'transparent' } }}
-              onClick={() => {
-                setResumeUrl(params.value.resumeUrl);
-                handleOpen();
-              }}
-            >
-              View Resume
-            </Button>
-          </>
+          <Button
+            sx={{ '&:hover': { backgroundColor: 'transparent' } }}
+            onClick={() => {
+              setResumeUrl(params.value.resumeUrl);
+              handleOpen();
+            }}
+          >
+            View Resume
+          </Button>
         );
       },
     },
@@ -73,12 +92,12 @@ const ViewApplicants = ({ business, job, applicants }) => {
 
   const newRows = applicants.map((applicant, i) => ({
     id: i,
-    user: {
+    applicant: {
       username: `${applicant.firstName} ${applicant.lastName}`,
       avatar: applicant.avatar,
       initial: applicant.firstName[0],
     },
-    email: applicant.email,
+    email: { email: applicant.email },
     resume: {
       resumeUrl: applicant.resume,
     },
@@ -94,7 +113,7 @@ const ViewApplicants = ({ business, job, applicants }) => {
             justifyContent: 'flex-start',
           }}
         >
-          <Typography variant="h2" fontWeight={600}>
+          <Typography variant="h2" fontWeight={600} sx={{ mb: '1em' }}>
             Applicants for {job.jobTitle}
           </Typography>
           <Typography variant="body1" fontWeight={500}>
@@ -103,36 +122,41 @@ const ViewApplicants = ({ business, job, applicants }) => {
         </Box>
         <Box width={1}>
           <Divider sx={{ marginY: 4 }} />
-          <DataGrid
-            rows={newRows}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-            disableSelectionOnClick
-            autoHeight={applicants.length !== 0}
-            components={{
-              NoRowsOverlay: CustomNoRowsOverlay,
-            }}
-            sx={{
-              boxShadow: `0 3px 5px 2px rgba(128, 128, 128, .3)`,
-              background: `linear-gradient(45deg, ${theme.palette.primary.lighter} 20%, ${theme.palette.tertiary.lighter} 90%)`,
-              '& .MuiDataGrid-row:hover': {
-                backgroundColor: theme.palette.alternate.main,
-              },
-              '& .MuiDataGrid-row:selected': {
-                backgroundColor: theme.palette.tertiary.main,
-              },
-              '& .MuiDataGrid-row': {
-                '&.Mui-selected': {
+          <ProfileCard noHeader>
+            <DataGrid
+              rows={newRows}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              checkboxSelection
+              disableSelectionOnClick
+              autoHeight={applicants.length !== 0}
+              components={{
+                NoRowsOverlay: CustomNoRowsOverlay,
+              }}
+              sx={{
+                mb: '4.5em',
+                ml: '3em',
+                mr: '3em',
+                boxShadow: `0 3px 5px 2px rgba(128, 128, 128, .3)`,
+                background: `linear-gradient(45deg, ${theme.palette.primary.lighter} 20%, ${theme.palette.tertiary.lighter} 90%)`,
+                '& .MuiDataGrid-row:hover': {
                   backgroundColor: theme.palette.alternate.main,
                 },
-                '&.Mui-selected:hover': {
-                  backgroundColor: theme.palette.alternate.main,
+                '& .MuiDataGrid-row:selected': {
+                  backgroundColor: theme.palette.tertiary.main,
                 },
-              },
-            }}
-          />
+                '& .MuiDataGrid-row': {
+                  '&.Mui-selected': {
+                    backgroundColor: theme.palette.alternate.main,
+                  },
+                  '&.Mui-selected:hover': {
+                    backgroundColor: theme.palette.alternate.main,
+                  },
+                },
+              }}
+            />
+          </ProfileCard>
         </Box>
         <Modal
           open={open}
@@ -153,7 +177,7 @@ export async function getServerSideProps({ query: { id, jobId } }) {
   await dbConnect();
 
   const businesses = await Business.findById(id);
-  const job = await Job.findById(jobId);
+  const job = await Job.findById(jobId).select('jobTitle');
   const applicantField = await Job.findById(jobId).select('applicants');
   const applicantArray = applicantField.applicants;
 
@@ -171,9 +195,10 @@ export async function getServerSideProps({ query: { id, jobId } }) {
 }
 
 ViewApplicants.propTypes = {
+  /* eslint-disable react/forbid-prop-types */
   business: PropTypes.object.isRequired,
-  job: PropTypes.object.isRequired,
-  applicants: PropTypes.array.isRequired,
+  job: PropTypes.string.isRequired,
+  applicants: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default ViewApplicants;

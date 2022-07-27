@@ -1,13 +1,8 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable object-shorthand */
-/* eslint-disable react/forbid-prop-types */
 import { React, useEffect, useState, useContext } from 'react';
 
 import PropTypes from 'prop-types';
 
 import { useRouter } from 'next/router';
-
-import PostAJobContext from '../../../contexts/postAJob';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -21,23 +16,22 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 
-import PostAJobContext from '../../../contexts/postAJob';
-import { SuccessSnack, GeneralSnack } from '../../../shared/snackbars';
-import JobCard from '../../../shared/jobCard';
+import PostAJobContext from '../contexts/postAJob';
+import { SuccessSnack, GeneralSnack } from '../shared/snackbars';
+import JobCard from '../shared/jobCard';
 import JobWorkType from './components/jobWorkType';
 import JobInformation from './components/listing';
-import { steps } from '../../../shared/data';
-import LQV from '../../../shared/listingQuickView';
-import ProfileCard from '../../../shared/profileCard';
+import { steps } from '../shared/data';
+import LQV from '../shared/listingQuickView';
+import ProfileCard from '../shared/profileCard';
 
-const JobStepper = ({ business }) => {
+const JobStepper = ({ id, bio }) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [errors, setErrors] = useState({});
   const [responsibilities, setResponsibilities] = useState([]);
   const [qualifications, setQualifications] = useState([]);
-  const [completed, setCompleted] = useState({});
   const [form, setForm] = useState({
     job: '',
     city: '',
@@ -63,14 +57,6 @@ const JobStepper = ({ business }) => {
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
-
-  const totalSteps = () => steps.length;
-
-  const completedSteps = () => Object.keys(completed).length;
-
-  const isLastStep = () => activeStep === totalSteps() - 1;
-
-  const allStepsCompleted = () => completedSteps() === totalSteps();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -124,11 +110,13 @@ const JobStepper = ({ business }) => {
     }
 
     if (form.travel === false) {
+      err.travel = '';
     } else if (!form.travel) {
       err.travel = 'Please select yes or no';
     }
 
     if (form.benefits === false) {
+      err.travel = '';
     } else if (!form.benefits) {
       err.benefits = 'Please select yes or no';
     }
@@ -143,7 +131,7 @@ const JobStepper = ({ business }) => {
   const formCtx = useContext(PostAJobContext);
 
   const checkout = () => {
-    router.replace(`/dashboards/business/checkout/${business._id}`);
+    router.replace(`/dashboards/business/checkout/${id}`);
     formCtx.newForm({
       ...jobs,
     });
@@ -161,16 +149,13 @@ const JobStepper = ({ business }) => {
           handleNext();
           setIsSubmitting(false);
         }
-      } else if (activeStep === 2) {
-        checkout();
-        setIsSubmitting(false);
       }
     } else {
       setIsSubmitting(false);
     }
-  });
+  }, [errors, activeStep, isSubmitting]);
 
-  const handleEverything = (e) => {
+  const handleErrors = (e) => {
     e.preventDefault();
     if (activeStep === 0) {
       setErrors(validate1);
@@ -178,9 +163,6 @@ const JobStepper = ({ business }) => {
     }
     if (activeStep === 1) {
       setErrors(validate2);
-      setIsSubmitting(true);
-    }
-    if (activeStep === 2) {
       setIsSubmitting(true);
     }
   };
@@ -204,9 +186,9 @@ const JobStepper = ({ business }) => {
               setResponsibilities={setResponsibilities}
               qualifications={qualifications}
               setQualifications={setQualifications}
-              form={form}
               setForm={setForm}
-              bio={business.bio}
+              form={form}
+              bio={bio}
               errors={errors}
             />
           </ProfileCard>
@@ -238,7 +220,7 @@ const JobStepper = ({ business }) => {
                   }}
                 >
                   <JobCard job={jobs} height={1} width={1}>
-                    <LQV job={jobs} business={business} />
+                    <LQV job={jobs} bio={bio} />
                   </JobCard>
                 </Box>
               </Grid>
@@ -246,7 +228,7 @@ const JobStepper = ({ business }) => {
           </ProfileCard>
         );
       default:
-        return <></>;
+        return null;
     }
   };
 
@@ -275,7 +257,6 @@ const JobStepper = ({ business }) => {
           {steps.map((step, index) => (
             <Step
               key={step.label}
-              completed={completed[index]}
               sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -302,11 +283,9 @@ const JobStepper = ({ business }) => {
                 },
               }}
             >
-              <>
-                <StepButton onClick={handleStep(index)}>
-                  {isMd ? step.label : ''}
-                </StepButton>
-              </>
+              <StepButton onClick={handleStep(index)}>
+                {isMd ? step.label : ''}
+              </StepButton>
             </Step>
           ))}
         </Stepper>
@@ -338,7 +317,7 @@ const JobStepper = ({ business }) => {
             <Button
               disableRipple
               variant="contained"
-              onClick={handleEverything}
+              onClick={activeStep === 2 ? checkout : handleErrors}
             >
               {activeStep === 2 ? 'Checkout' : 'Next'}
             </Button>
@@ -359,7 +338,12 @@ const JobStepper = ({ business }) => {
 };
 
 JobStepper.propTypes = {
-  business: PropTypes.object.isRequired,
+  bio: PropTypes.string,
+  id: PropTypes.string.isRequired,
+};
+
+JobStepper.defaultProps = {
+  bio: '',
 };
 
 export default JobStepper;

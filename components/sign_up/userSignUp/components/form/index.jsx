@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/function-component-definition */
 import React from 'react';
 
 import Stack from '@mui/material/Stack';

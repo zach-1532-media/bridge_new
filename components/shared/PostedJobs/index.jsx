@@ -10,7 +10,6 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Divider from '@mui/material/Divider';
 
 function a11yProps(index) {
   return {

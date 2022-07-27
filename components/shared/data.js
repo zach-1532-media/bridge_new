@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/function-component-definition */
 import React from 'react';
 
 import Box from '@mui/material/Box';

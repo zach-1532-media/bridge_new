@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-boolean-value */
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -13,14 +15,14 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListItem from '@mui/material/ListItem';
 
-import CheckBox from '../../../../../shared/myCheckBox';
+import CheckBox from '../../../shared/myCheckBox';
 
 import {
   hourlyRateBands,
   salaryBands,
   usStates,
   yesNo,
-} from '../../../../../shared/data';
+} from '../../../shared/data';
 
 const JobInformation = ({
   form,
@@ -78,7 +80,7 @@ const JobInformation = ({
     });
   };
 
-  const fullTime = form.job === 'Full-Time' ? true : false;
+  const fullTime = form.job === 'Full-Time';
 
   const fields = [
     {
@@ -262,9 +264,7 @@ const JobInformation = ({
             >
               <AddIcon />
             </IconButton>
-            {responsibilities.length === 0 ? (
-              <></>
-            ) : (
+            {responsibilities.length === 0 ? null : (
               <IconButton
                 onClick={deleteResponsibility}
                 disableRipple
@@ -291,7 +291,6 @@ const JobInformation = ({
                 <TextField
                   sx={{ width: '75%', ml: '1em' }}
                   variant="standard"
-                  size="small"
                   size="small"
                   name="responsibility"
                   value={responsibility.responsibility}
@@ -327,9 +326,7 @@ const JobInformation = ({
             >
               <AddIcon />
             </IconButton>
-            {qualifications.length === 0 ? (
-              <></>
-            ) : (
+            {qualifications.length === 0 ? null : (
               <IconButton
                 onClick={deleteQualification}
                 disableRipple
@@ -388,14 +385,55 @@ const JobInformation = ({
 };
 
 JobInformation.propTypes = {
-  form: PropTypes.object,
-  setForm: PropTypes.func,
-  errors: PropTypes.object,
+  form: PropTypes.shape({
+    job: PropTypes.string,
+    jobTitle: PropTypes.string,
+    salary: PropTypes.string,
+    hourlyRate: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    travel: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+    benefits: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+    description: PropTypes.string,
+  }).isRequired,
+  setForm: PropTypes.func.isRequired,
+  errors: PropTypes.shape({
+    jobTitle: PropTypes.string,
+    salary: PropTypes.string,
+    hourlyRate: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    travel: PropTypes.string,
+    benefits: PropTypes.string,
+    description: PropTypes.string,
+  }),
   bio: PropTypes.string,
-  responsibilities: PropTypes.array,
-  qualifications: PropTypes.array,
-  setResponsibilities: PropTypes.func,
-  setQualifications: PropTypes.func,
+  responsibilities: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    ),
+  ).isRequired,
+  qualifications: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    ),
+  ).isRequired,
+  setResponsibilities: PropTypes.func.isRequired,
+  setQualifications: PropTypes.func.isRequired,
+};
+
+JobInformation.defaultProps = {
+  bio: '',
+  errors: {
+    jobTitle: '',
+    salary: '',
+    hourlyRate: '',
+    city: '',
+    state: '',
+    travel: '',
+    benefits: '',
+    description: '',
+  },
 };
 
 export default JobInformation;

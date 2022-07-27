@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-expressions */
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 
 import PropTypes from 'prop-types';

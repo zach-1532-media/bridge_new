@@ -1,7 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -14,11 +10,11 @@ import ListItem from '@mui/material/ListItem';
 
 import Checkbox from '../myCheckBox';
 
-const LQV = ({ job, children, business }) => {
+const LQV = ({ job, children, bio }) => {
   const listItems = [
     {
       text: 'Who we are:',
-      value: !business ? job.business[0].bio : business.bio,
+      value: !bio ? job.business.bio : bio,
     },
     {
       text: "What we're looking for: ",
@@ -90,8 +86,8 @@ const LQV = ({ job, children, business }) => {
         </Box>
       </Box>
       <Divider sx={{ marginY: 4 }} />
-      {listItems.map((item, i) => (
-        <Box sx={{ mb: 3 }} key={i}>
+      {listItems.map((item) => (
+        <Box sx={{ mb: 3 }} key={item.text}>
           <Typography variant="h5" fontWeight={700} sx={{ mb: 1.5 }}>
             {item.text}
           </Typography>
@@ -105,9 +101,31 @@ const LQV = ({ job, children, business }) => {
 };
 
 LQV.propTypes = {
-  job: PropTypes.object.isRequired,
-  business: PropTypes.object,
+  job: PropTypes.shape({
+    jobTitle: PropTypes.string,
+    job: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    workType: PropTypes.string,
+    description: PropTypes.string,
+    responsibilities: PropTypes.arrayOf(
+      PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ),
+    ),
+    qualifications: PropTypes.arrayOf(
+      PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ),
+    ),
+  }).isRequired,
+  bio: PropTypes.string,
   children: PropTypes.node,
+};
+
+LQV.defaultProps = {
+  bio: '',
+  children: null,
 };
 
 export default LQV;

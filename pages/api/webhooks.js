@@ -1,8 +1,5 @@
 import Stripe from 'stripe';
 
-import dbConnect from '../../lib/dbConnect';
-import Job, { db } from '../../models/Job';
-
 import { buffer } from 'micro';
 
 export const config = {
@@ -18,21 +15,19 @@ export default async function webhookHandler(req, res) {
     const sig = req.headers['stripe-signature'];
     const webhookSecret = process.env.STRIPE_WEBHOOK_SIGNING_SECRET;
 
-    let event;
-
     if (!sig || !webhookSecret) {
       return;
     }
 
-    event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
+    const event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
 
     switch (event.type) {
       case 'payment_intent.succeeded':
-        // Then define and call a function to handle the event payment_intent.succeeded
+        // Then define and call a function to handle the event
         break;
       // ... handle other event types
       default:
-        console.log(`Unhandled event type ${event.type}`);
+      // do something
     }
 
     res.status(200).send();

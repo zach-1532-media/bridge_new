@@ -1,4 +1,6 @@
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/jsx-no-useless-fragment */
 import { React, useState } from 'react';
 
 import PropTypes from 'prop-types';
@@ -20,7 +22,7 @@ const TabsWrapper = styled(Tabs)(
     .MuiTabs-scrollableX {
       overflow-x: auto !important;
     }
-`
+`,
 );
 
 function Profile({ business, user, userPage }) {
