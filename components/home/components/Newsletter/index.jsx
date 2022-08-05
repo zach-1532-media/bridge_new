@@ -23,11 +23,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 
-const Newsletter = ({
-  setOpenSuccess,
-  setExistingNewsletterError,
-  setGeneralError,
-}) => {
+const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
   const theme = useTheme();
 
   const [form, setForm] = useState({
@@ -42,26 +38,25 @@ const Newsletter = ({
 
   // Existing User Newsletter
   const existingUserNewsletter = async () => {
-    try {
-      const existingNewsletter = {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      };
-      const response = await fetch(
-        '/api/newsletter/setUserNewsletter',
-        existingNewsletter,
-      );
-      const data = await response.json();
-      if (data.status === 200) {
-        setIsSubmitting(false);
-        setIsLoading(false);
-        setOpenSuccess(true);
-      }
-    } catch (err) {
+    const existingNewsletter = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+    };
+    const res = await fetch(
+      '/api/newsletter/setUserNewsletter',
+      existingNewsletter,
+    );
+    const data = await res.json();
+    if (data.case === 1) {
+      setIsSubmitting(false);
+      setIsLoading(false);
+      setMessage(data.message);
+      setOpenSuccess(true);
+    } else if (data.case === 2) {
       setIsSubmitting(false);
       setIsLoading(false);
       setGeneralError(true);
@@ -70,38 +65,35 @@ const Newsletter = ({
 
   // Sign up for newsletter
   const createNewsletter = async () => {
-    try {
-      const newNewsletter = {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      };
-      const response = await fetch('/api/newsletter', newNewsletter);
-      const data = await response.json();
-      if (data.status === 'User with newsletter') {
-        setIsSubmitting(false);
-        setIsLoading(false);
-        setExistingNewsletterError(true);
-      } else if (data.status === 'User without newsletter') {
-        setIsSubmitting(false);
-        existingUserNewsletter();
-      } else if (data.status === 'existing newsletter') {
-        setIsSubmitting(false);
-        setIsLoading(false);
-        setExistingNewsletterError(true);
-      } else if (data.status === 'success') {
-        setIsSubmitting(false);
-        setIsLoading(false);
-        setOpenSuccess(true);
-      } else if (data.status === 'error') {
-        setIsSubmitting(false);
-        setIsLoading(false);
-        setGeneralError(false);
-      }
-    } catch (err) {
+    const newNewsletter = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+    };
+    const res = await fetch('/api/newsletter', newNewsletter);
+    const data = await res.json();
+    if (data.case === 1) {
+      setIsSubmitting(false);
+      setIsLoading(false);
+      setMessage(data.message);
+      setGeneralError(true);
+    } else if (data.case === 2) {
+      setIsSubmitting(false);
+      existingUserNewsletter();
+    } else if (data.case === 3) {
+      setIsSubmitting(false);
+      setIsLoading(false);
+      setMessage(data.message);
+      setGeneralError(true);
+    } else if (data.case === 4) {
+      setIsSubmitting(false);
+      setIsLoading(false);
+      setMessage(data.message);
+      setOpenSuccess(true);
+    } else if (data.case === 5) {
       setIsSubmitting(false);
       setIsLoading(false);
       setGeneralError(false);
@@ -356,7 +348,6 @@ const Newsletter = ({
 
 Newsletter.propTypes = {
   setOpenSuccess: PropTypes.func.isRequired,
-  setExistingNewsletterError: PropTypes.func.isRequired,
   setGeneralError: PropTypes.func.isRequired,
 };
 

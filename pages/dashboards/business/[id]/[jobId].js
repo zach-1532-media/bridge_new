@@ -1,15 +1,20 @@
 import { React, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
+import Iframe from 'react-iframe';
+
 import PropTypes from 'prop-types';
 
-import { DataGrid } from '@mui/x-data-grid';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 
 import Dash from '../../../../layouts/dash';
 import dbConnect from '../../../../lib/dbConnect';
@@ -17,91 +22,89 @@ import Business from '../../../../models/Business';
 import Job from '../../../../models/Job';
 import User from '../../../../models/User';
 import { modalStyle } from '../../../../components/shared/data';
-import CustomNoRowsOverlay from '../../../../components/shared/noRows';
 
-import ProfileCard from '../../../../components/shared/profileCard';
+import ApplicantGrid from '../../../../components/applicantGrid';
+import {
+  SuccessSnack,
+  GeneralSnack,
+} from '../../../../components/shared/snackbars';
 import Container from '../../../../components/front_components/container';
-import PDFViewer from '../../../../components/pdf/singlePage';
-
-const handleMail = (email) => {
-  window.location.href = `mailto:${email}?subject=Job posting follow up.`;
-};
 
 const ViewApplicants = ({ business, job, applicants }) => {
   const [open, setOpen] = useState(false);
   const [resumeUrl, setResumeUrl] = useState('');
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [generalError, setGeneralError] = useState(false);
+  const [message, setMessage] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const theme = useTheme();
+  const router = useRouter();
 
-  const columns = [
-    {
-      field: 'applicant',
-      headerName: 'Applicant',
-      minWidth: 230,
-      flex: 1,
-      renderCell: (params) => {
-        return (
-          <>
-            <Avatar sx={{ mr: '1em' }} src={params.value.avatar}>
-              {!params.value.avatar ? params.value.initial : null}
-            </Avatar>
-            {params.value.username}
-          </>
-        );
+  const updateApplicants = async (data, operation) => {
+    const res = await fetch(`/api/jobs/${job._id}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-    },
-    {
-      field: 'email',
-      headerName: 'E-mail',
-      renderCell: (params) => {
-        return (
-          <Button
-            sx={{ '&:hover': { backgroundColor: 'transparent' } }}
-            onClick={() => {
-              handleMail(params.value.email);
-            }}
-          >
-            {params.value.email}
-          </Button>
-        );
-      },
-      minWidth: 130,
-      flex: 1,
-    },
-    {
-      field: 'resume',
-      headerName: '',
-      minWidth: 90,
-      flex: 1,
-      renderCell: (params) => {
-        return (
-          <Button
-            sx={{ '&:hover': { backgroundColor: 'transparent' } }}
-            onClick={() => {
-              setResumeUrl(params.value.resumeUrl);
-              handleOpen();
-            }}
-          >
-            View Resume
-          </Button>
-        );
-      },
-    },
-  ];
+      body: JSON.stringify({
+        operation,
+        data,
+      }),
+    });
+    const resData = await res.json();
+    if (resData.case === 1) {
+      router.replace(router.asPath);
+      setOpenSuccess(true);
+    } else if (resData.case === 2) {
+      setGeneralError(true);
+    }
+  };
 
-  const newRows = applicants.map((applicant, i) => ({
-    id: i,
-    applicant: {
-      username: `${applicant.firstName} ${applicant.lastName}`,
-      avatar: applicant.avatar,
-      initial: applicant.firstName[0],
-    },
-    email: { email: applicant.email },
-    resume: {
-      resumeUrl: applicant.resume,
-    },
-  }));
+  const emailApplicants = async (data, operation, jobTitle) => {
+    const res = await fetch('/api/emails/jobs', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        operation,
+        data,
+        jobTitle,
+      }),
+    });
+    const resData = await res.json();
+    if (resData.case === 1) {
+      router.replace(router.asPath);
+      setMessage(resData.message);
+      setOpenSuccess(true);
+    } else if (resData.case === 2) {
+      setGeneralError(true);
+    }
+  };
+
+  const handleClick = (e) => {
+    const operation = e.currentTarget.name;
+    if (operation === 'Delete') {
+      updateApplicants(
+        selectedRows.map((row) => row.id),
+        operation,
+      );
+      emailApplicants(
+        selectedRows.map((row) => row.email.email),
+        'Reject',
+        job.jobTitle,
+      );
+    } else {
+      emailApplicants(
+        selectedRows.map((row) => row.email.email),
+        operation,
+        job.jobTitle,
+      );
+    }
+  };
 
   return (
     <Dash business={business} userPage={false}>
@@ -122,41 +125,52 @@ const ViewApplicants = ({ business, job, applicants }) => {
         </Box>
         <Box width={1}>
           <Divider sx={{ marginY: 4 }} />
-          <ProfileCard noHeader>
-            <DataGrid
-              rows={newRows}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              checkboxSelection
-              disableSelectionOnClick
-              autoHeight={applicants.length !== 0}
-              components={{
-                NoRowsOverlay: CustomNoRowsOverlay,
-              }}
+          <ApplicantGrid
+            setSelectedRows={setSelectedRows}
+            selectedRows={selectedRows}
+            applicants={applicants}
+            handleOpen={handleOpen}
+            setResumeUrl={setResumeUrl}
+          />
+          {selectedRows.length > 0 ? (
+            <Box
               sx={{
-                mb: '4.5em',
-                ml: '3em',
-                mr: '3em',
-                boxShadow: `0 3px 5px 2px rgba(128, 128, 128, .3)`,
-                background: `linear-gradient(45deg, ${theme.palette.primary.lighter} 20%, ${theme.palette.tertiary.lighter} 90%)`,
-                '& .MuiDataGrid-row:hover': {
-                  backgroundColor: theme.palette.alternate.main,
-                },
-                '& .MuiDataGrid-row:selected': {
-                  backgroundColor: theme.palette.tertiary.main,
-                },
-                '& .MuiDataGrid-row': {
-                  '&.Mui-selected': {
-                    backgroundColor: theme.palette.alternate.main,
-                  },
-                  '&.Mui-selected:hover': {
-                    backgroundColor: theme.palette.alternate.main,
-                  },
-                },
+                display: 'flex',
+                justifyContent: 'right',
+                alignItems: 'center',
               }}
-            />
-          </ProfileCard>
+            >
+              <Stack direction="row" spacing={2}>
+                <Button
+                  startIcon={<ThumbDownOffAltIcon />}
+                  variant="contained"
+                  color="error"
+                  name="Delete"
+                  onClick={handleClick}
+                >
+                  Send Rejection Email
+                </Button>
+                <Button
+                  startIcon={<QuestionAnswerIcon />}
+                  variant="contained"
+                  color="primary"
+                  name="Interview"
+                  onClick={handleClick}
+                >
+                  Send Interview Email
+                </Button>
+                <Button
+                  startIcon={<HandshakeIcon />}
+                  variant="contained"
+                  color="success"
+                  name="Offer"
+                  onClick={handleClick}
+                >
+                  Send Offer Email
+                </Button>
+              </Stack>
+            </Box>
+          ) : null}
         </Box>
         <Modal
           open={open}
@@ -164,10 +178,29 @@ const ViewApplicants = ({ business, job, applicants }) => {
           aria-labelledby="resume-modal"
           aria-describedby="pop-up-to-view-resume"
         >
-          <Box sx={{ ...modalStyle, width: 'auto' }}>
-            <PDFViewer pdf={resumeUrl} />
+          <Box sx={{ ...modalStyle }}>
+            {resumeUrl ? (
+              <Iframe
+                url={resumeUrl}
+                height="100%"
+                width="100%"
+                position="relative"
+              />
+            ) : (
+              <Typography>No resume supplied</Typography>
+            )}
           </Box>
         </Modal>
+        <SuccessSnack
+          openSuccess={openSuccess}
+          setOpenSuccess={setOpenSuccess}
+          message={message}
+        />
+        <GeneralSnack
+          generalError={generalError}
+          setGeneralError={setGeneralError}
+          message={message}
+        />
       </Container>
     </Dash>
   );
@@ -181,9 +214,13 @@ export async function getServerSideProps({ query: { id, jobId } }) {
   const applicantField = await Job.findById(jobId).select('applicants');
   const applicantArray = applicantField.applicants;
 
-  const applicants = await User.aggregate().match({
-    _id: { $in: applicantArray },
-  });
+  const applicants = await User.aggregate()
+    .match({
+      _id: { $in: applicantArray },
+    })
+    .project(
+      'firstName lastName email avatar resume twitter instagram linkedin',
+    );
 
   return {
     props: {
@@ -197,8 +234,22 @@ export async function getServerSideProps({ query: { id, jobId } }) {
 ViewApplicants.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   business: PropTypes.object.isRequired,
-  job: PropTypes.string.isRequired,
-  applicants: PropTypes.arrayOf(PropTypes.string).isRequired,
+  job: PropTypes.shape({
+    _id: PropTypes.string,
+    jobTitle: PropTypes.string,
+  }).isRequired,
+  applicants: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      email: PropTypes.string,
+      avatar: PropTypes.string,
+      resume: PropTypes.string,
+      twitter: PropTypes.string,
+      instagram: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default ViewApplicants;

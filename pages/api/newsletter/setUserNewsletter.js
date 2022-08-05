@@ -17,9 +17,13 @@ const NewsletterHandler = async (req, res) => {
           runValidators: true,
         },
       );
-      res.status(200).json({ status: 200, success: true });
+      res.status(200).json({
+        case: 1,
+        success: true,
+        message: "Success! You're all signed up!",
+      });
     } catch (err) {
-      res.status(400).json({ status: 400, success: false });
+      res.status(400).json({ case: 2, success: false });
     }
   }
 };

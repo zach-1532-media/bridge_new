@@ -9,7 +9,7 @@ import dbConnect from '../../../../lib/dbConnect';
 import User from '../../../../models/User';
 
 import Dash from '../../../../layouts/dash';
-import Profile from '../../../../components/dash/shared/profile';
+import Profile from '../../../../components/dash/profile';
 
 const ProfilePage = ({ user }) => (
   <Dash user={user} userPage>

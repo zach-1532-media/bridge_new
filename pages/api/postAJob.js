@@ -2,7 +2,7 @@ import dbConnect from '../../lib/dbConnect';
 import Job from '../../models/Job';
 
 const PostAJob = async (req, res) => {
-  dbConnect();
+  await dbConnect();
 
   const { method } = req;
   const {

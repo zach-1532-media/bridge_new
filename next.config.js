@@ -12,10 +12,14 @@ const nextConfig = {
     DO_SPACES_SECRET: process.env.DO_SPACES_SECRET,
     DO_SPACES_URL: process.env.DO_SPACES_URL,
     DO_SPACES_BUCKET: process.env.DO_SPACES_BUCKET,
-    SENDGRID: process.env.SENDGRID,
+
     STRIPE_PUBLISHABLE: process.env.STRIPE_PUBLISHABLE,
     STRIPE_SECRET: process.env.STRIPE_SECRET,
     STRIPE_WEBHOOK_SIGNING_SECRET: process.env.STRIPE_WEBHOOK_SIGNING_SECRET,
+    CLOUDINARY_URL: process.env.CLOUDINARY_URL,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAMEl,
+    CLOUDINARY_KEY: process.env.CLOUDINARY_KEY,
+    CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
   },
   future: {
     webpack5: true,
@@ -39,7 +43,10 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['connectatthebridge.nyc3.cdn.digitaloceanspaces.com'],
+    domains: [
+      'connectatthebridge.nyc3.cdn.digitaloceanspaces.com',
+      'res.cloudinary.com',
+    ],
   },
 };
 

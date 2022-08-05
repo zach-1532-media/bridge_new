@@ -34,12 +34,12 @@ const userSchema = new mongoose.Schema({
   verifyEmail: String,
   emailVerified: Boolean,
   avatar: String,
+  cover: String,
   resume: String,
   dateCreated: Date,
-  profileImage: {
-    data: Buffer,
-    contentType: String,
-  },
+  twitter: String,
+  instagram: String,
+  linkedin: String,
 });
 
 module.exports = mongoose.models.User || mongoose.model('User', userSchema);

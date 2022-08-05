@@ -12,16 +12,12 @@ import Reviews from './components/Reviews';
 import Services from './components/Services';
 import Newsletter from './components/Newsletter';
 import BottomCOA from './components/BottomCOA';
-import {
-  SuccessSnack,
-  ExistingNewsletterSnack,
-  GeneralSnack,
-} from '../shared/snackbars';
+import { SuccessSnack, GeneralSnack } from '../shared/snackbars';
 
 const Home = () => {
   const theme = useTheme();
   const [openSuccess, setOpenSuccess] = useState(false);
-  const [existingNewsletterError, setExistingNewsletterError] = useState(false);
+  const [message, setMessage] = useState('');
   const [generalError, setGeneralError] = useState(false);
 
   return (
@@ -69,7 +65,7 @@ const Home = () => {
         <Container>
           <Newsletter
             setOpenSuccess={setOpenSuccess}
-            setExistingNewsletterError={setExistingNewsletterError}
+            setMessage={setMessage}
             setGeneralError={setGeneralError}
           />
         </Container>
@@ -115,16 +111,12 @@ const Home = () => {
       <SuccessSnack
         openSuccess={openSuccess}
         setOpenSuccess={setOpenSuccess}
-        // eslint-disable-next-line react/jsx-boolean-value
-        newsletter={true}
-      />
-      <ExistingNewsletterSnack
-        existingNewsletterError={existingNewsletterError}
-        setExistingNewsletterError={setExistingNewsletterError}
+        message={message}
       />
       <GeneralSnack
         generalError={generalError}
         setGeneralError={setGeneralError}
+        message={message}
       />
     </Main>
   );

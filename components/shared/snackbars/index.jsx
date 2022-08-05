@@ -19,17 +19,7 @@ export const SuccessSnack = ({ openSuccess, setOpenSuccess, message }) => {
       autoHideDuration={6000}
       onClose={handleSuccessClose}
     >
-      <Alert severity="success">
-        {message === 'user'
-          ? 'Your account has been created!'
-          : message === 'newsletter'
-          ? "You're all signed up!"
-          : message === 'edit'
-          ? 'Profile has been updated'
-          : message === 'jobPost'
-          ? 'Job has been posted!'
-          : null}
-      </Alert>
+      <Alert severity="success">{message || 'Success!'}</Alert>
     </Snackbar>
   );
 };
@@ -37,7 +27,7 @@ export const SuccessSnack = ({ openSuccess, setOpenSuccess, message }) => {
 SuccessSnack.propTypes = {
   openSuccess: PropTypes.bool.isRequired,
   setOpenSuccess: PropTypes.func.isRequired,
-  message: PropTypes.string,
+  message: PropTypes.string.isRequired,
 };
 
 export const ExistingUserSnack = ({
@@ -85,29 +75,6 @@ ExistingBusinessSnack.propTypes = {
   setexistingBusinessError: PropTypes.func.isRequired,
 };
 
-export const ExistingNewsletterSnack = ({
-  existingNewsletterError,
-  setExistingNewsletterError,
-}) => {
-  const handleExistingNewsletterErrorClose = () =>
-    setExistingNewsletterError(false);
-  return (
-    <Snackbar
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      open={existingNewsletterError}
-      autoHideDuration={6000}
-      onClose={handleExistingNewsletterErrorClose}
-    >
-      <Alert severity="error">Already signed up!</Alert>
-    </Snackbar>
-  );
-};
-
-ExistingNewsletterSnack.propTypes = {
-  existingNewsletterError: PropTypes.bool.isRequired,
-  setExistingNewsletterError: PropTypes.func.isRequired,
-};
-
 export const NoUserSnack = ({ openNoUser, setOpenNoUser }) => {
   const handleNoUserClose = () => setOpenNoUser(false);
 
@@ -128,7 +95,7 @@ NoUserSnack.propTypes = {
   setOpenNoUser: PropTypes.func.isRequired,
 };
 
-export const GeneralSnack = ({ generalError, setGeneralError }) => {
+export const GeneralSnack = ({ generalError, setGeneralError, message }) => {
   const handleGeneralErrorClose = () => setGeneralError(false);
 
   return (
@@ -139,7 +106,7 @@ export const GeneralSnack = ({ generalError, setGeneralError }) => {
       onClose={handleGeneralErrorClose}
     >
       <Alert severity="error">
-        There was an error connecting - please try again later.
+        {message || 'There was an error connecting - please try again later.'}
       </Alert>
     </Snackbar>
   );
@@ -148,4 +115,5 @@ export const GeneralSnack = ({ generalError, setGeneralError }) => {
 GeneralSnack.propTypes = {
   generalError: PropTypes.bool.isRequired,
   setGeneralError: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
 };

@@ -25,19 +25,26 @@ export default async (req, res) => {
     try {
       if (existingUser) {
         if (existingUser.newsletter) {
-          res.status(409).json({ status: 'User with newsletter' });
+          res.status(409).json({
+            case: 1,
+            message: "You're already signed up!",
+          });
         } else if (!existingUser.newsletter) {
-          res.status(200).json({ status: 'User without newsletter' });
+          res.status(200).json({ case: 2 });
         }
       }
       if (existingNewsletter && !existingUser) {
-        res.status(409).json({ status: 'existing newsletter' });
+        res.status(409).json({ case: 3, message: "You're already signedup!" });
       } else if (!existingNewsletter && !existingUser) {
         await Newsletter.create(newNewsletter);
-        res.status(200).json({ status: 'success' });
+        res
+          .status(200)
+          .json({ case: 4, message: "Success! You're all signed up!" });
       }
     } catch (err) {
-      res.status(400).json({ status: 'error' });
+      res.status(400).json({
+        case: 5,
+      });
     }
   }
 };

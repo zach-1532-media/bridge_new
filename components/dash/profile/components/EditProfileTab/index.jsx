@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 
 import Grid from '@mui/material/Grid';
 
-import { SuccessSnack, GeneralSnack } from '../../../../../shared/snackbars';
-import DetailsCard from '../../../../../shared/detailsCard';
-import EditDetailsCard from '../../../../../shared/editDetailsCard';
+import { SuccessSnack, GeneralSnack } from '../../../../shared/snackbars';
+import DetailsCard from '../../../../shared/detailsCard';
+import EditDetailsCard from '../../../../shared/editDetailsCard';
 
 const EditProfileTab = ({ data, userPage }) => {
   const [edit, setEdit] = useState(false);
