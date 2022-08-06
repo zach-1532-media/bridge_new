@@ -82,7 +82,7 @@ const CardCoverAction = styled(Box)(
 `,
 );
 
-const ProfileCover = ({ data, userPage }) => {
+const ProfileCover = ({ data }) => {
   const [avatarImg, setAvatarImg] = useState('');
   const [tempAvatarImg, setTempAvatarImg] = useState('');
   const [coverImg, setCoverImg] = useState('');
@@ -219,9 +219,7 @@ const ProfileCover = ({ data, userPage }) => {
           <Avatar
             variant="rounded"
             alt={
-              userPage
-                ? `${data.firstName} avatar`
-                : `${data.businessName} avatar`
+              user ? `${data.firstName} avatar` : `${data.businessName} avatar`
             }
             src={!avatarImg ? data.avatar : avatarImg}
           />
@@ -258,11 +256,9 @@ const ProfileCover = ({ data, userPage }) => {
       </form>
       <Box py={2} pl={2} mb={3}>
         <Typography gutterBottom variant="h4">
-          {!userPage ? data.businessName : null}
+          {!user ? data.businessName : null}
         </Typography>
-        <Typography variant="subtitle2">
-          {!userPage ? data.bio : null}
-        </Typography>
+        <Typography variant="subtitle2">{!user ? data.bio : null}</Typography>
         <Typography
           sx={{
             py: 2,
@@ -311,7 +307,7 @@ const ProfileCover = ({ data, userPage }) => {
         <GeneralSnack
           generalError={generalError}
           setGeneralError={setGeneralError}
-          message={''}
+          message=""
         />
       </Box>
     </>
@@ -320,7 +316,6 @@ const ProfileCover = ({ data, userPage }) => {
 
 ProfileCover.propTypes = {
   data: PropTypes.object.isRequired,
-  userPage: PropTypes.bool,
 };
 
 export default ProfileCover;

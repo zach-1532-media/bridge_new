@@ -94,7 +94,6 @@ function Profile({ business, user }) {
 Profile.propTypes = {
   business: PropTypes.object,
   user: PropTypes.object,
-  userPage: PropTypes.bool,
 };
 
 Profile.defaultProps = {

@@ -300,7 +300,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
         <GeneralSnack
           generalError={generalError}
           setGeneralError={setGeneralError}
-          message={''}
+          message=""
         />
       </Card>
       <Box
@@ -323,8 +323,8 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
         <MyModal
           open={open}
           handleClose={handleClose}
-          ariaDescription={'pop-up-to-view-resume'}
-          ariaLabel={'resume-modal'}
+          ariaDescription="pop-up-to-view-resume"
+          ariaLabel="resume-modal"
         >
           <Iframe url={resume} height="100%" width="100%" position="relative" />
         </MyModal>

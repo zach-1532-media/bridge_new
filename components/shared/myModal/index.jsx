@@ -35,7 +35,7 @@ const MyModal = ({
           boxShadow: 24,
           p: 4,
           borderRadius: 2,
-          overflow: overflow,
+          overflow,
         }}
       >
         <Box
