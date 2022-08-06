@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
@@ -178,7 +180,29 @@ const ViewApplicants = ({ business, job, applicants }) => {
           aria-labelledby="resume-modal"
           aria-describedby="pop-up-to-view-resume"
         >
-          <Box sx={{ ...modalStyle }}>
+          <Box
+            sx={{
+              ...modalStyle,
+              width: { xs: '99%', md: '75%' },
+              height: { xs: '99%', md: '75%' },
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'right',
+              }}
+            >
+              <IconButton
+                onClick={handleClose}
+                sx={{
+                  mt: '-1.5em',
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
             {resumeUrl ? (
               <Iframe
                 url={resumeUrl}
