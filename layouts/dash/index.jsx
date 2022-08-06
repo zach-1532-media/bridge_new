@@ -2,6 +2,8 @@
 /* eslint-disable react/forbid-prop-types */
 import React from 'react';
 
+import { useRouter } from 'next/router';
+
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -10,14 +12,17 @@ import { useTheme } from '@mui/material/styles';
 import Sidebar from './sidebar';
 import Header from './header';
 
-const Dash = ({ children, business, user, userPage }) => {
+const Dash = ({ children, business, user }) => {
   const theme = useTheme();
+  const router = useRouter();
+  const page = router.pathname;
+  const businessPage = page === '/dashboards/business/[id]/[jobId]';
 
-  const data = userPage ? user : business;
+  const data = businessPage ? business : user;
 
   return (
     <>
-      <Sidebar data={data} userPage={userPage} />
+      <Sidebar data={data} />
       <Box
         sx={{
           position: 'relative',
@@ -104,7 +109,7 @@ const Dash = ({ children, business, user, userPage }) => {
         >
           <Box flexGrow={1}>
             <Box>
-              <Header data={data} userPage={userPage} />
+              <Header data={data} />
               {children}
             </Box>
           </Box>
@@ -115,10 +120,9 @@ const Dash = ({ children, business, user, userPage }) => {
 };
 
 Dash.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
   business: PropTypes.object,
   user: PropTypes.object,
-  userPage: PropTypes.bool,
 };
 
 export default Dash;

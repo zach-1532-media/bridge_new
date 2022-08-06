@@ -40,10 +40,12 @@ const MenuWrapper = styled(Box)(
   `,
 );
 
-const SidebarMenu = ({ data, userPage }) => {
+const SidebarMenu = ({ data }) => {
   const theme = useTheme();
 
   const router = useRouter();
+  const page = router.pathname;
+  const businessPage = page === '/dashboards/business/[id]/[jobId]';
 
   const businessMenuItems = [
     {
@@ -81,7 +83,7 @@ const SidebarMenu = ({ data, userPage }) => {
     },
   ];
 
-  const menuItems = userPage === true ? userMenuItems : businessMenuItems;
+  const menuItems = businessPage === true ? businessMenuItems : userMenuItems;
 
   return (
     <>
@@ -123,7 +125,6 @@ const SidebarMenu = ({ data, userPage }) => {
 
 SidebarMenu.propTypes = {
   data: PropTypes.object.isRequired,
-  userPage: PropTypes.bool.isRequired,
 };
 
 export default SidebarMenu;

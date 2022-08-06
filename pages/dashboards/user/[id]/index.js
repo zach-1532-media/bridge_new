@@ -12,8 +12,8 @@ import Dash from '../../../../layouts/dash';
 import Profile from '../../../../components/dash/profile';
 
 const ProfilePage = ({ user }) => (
-  <Dash user={user} userPage>
-    <Profile user={user} userPage />
+  <Dash user={user}>
+    <Profile user={user} />
   </Dash>
 );
 

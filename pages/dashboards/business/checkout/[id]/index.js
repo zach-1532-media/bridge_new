@@ -43,7 +43,7 @@ const BusinessCheckout = ({ business }) => {
   });
 
   return (
-    <Dash business={business} userPage={false}>
+    <Dash business={business}>
       <Checkout form={form} />
     </Dash>
   );

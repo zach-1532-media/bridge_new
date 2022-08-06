@@ -109,7 +109,7 @@ const ViewApplicants = ({ business, job, applicants }) => {
   };
 
   return (
-    <Dash business={business} userPage={false}>
+    <Dash business={business}>
       <Container sx={{ mt: '-3em' }}>
         <Box
           sx={{

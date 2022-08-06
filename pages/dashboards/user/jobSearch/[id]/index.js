@@ -123,7 +123,7 @@ const DashJobSearch = ({ user, jobs }) => {
   }, [applyId, favoriteId, deleteFavoriteId]);
 
   return (
-    <Dash user={user} userPage>
+    <Dash user={user}>
       <Container>
         <JobHero
           search={search}

@@ -3,6 +3,8 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import { React, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -25,8 +27,12 @@ const TabsWrapper = styled(Tabs)(
 `,
 );
 
-function Profile({ business, user, userPage }) {
+function Profile({ business, user }) {
   const [currentTab, setCurrentTab] = useState('account');
+  const router = useRouter();
+  const page = router.pathname;
+  const userPage = page === '/dashboards/user/[id]';
+
   const data = userPage ? user : business;
 
   const tabs = [

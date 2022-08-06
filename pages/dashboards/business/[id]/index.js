@@ -11,7 +11,7 @@ import Dash from '../../../../layouts/dash';
 import Profile from '../../../../components/dash/profile';
 
 const ProfilePage = ({ business }) => (
-  <Dash business={business} userPage={false}>
+  <Dash business={business}>
     <Profile business={business} />
   </Dash>
 );

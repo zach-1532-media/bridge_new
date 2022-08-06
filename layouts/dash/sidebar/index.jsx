@@ -39,7 +39,7 @@ const TopSection = styled(Box)(
 `,
 );
 
-function Sidebar({ data, userPage }) {
+function Sidebar({ data }) {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const closeSidebar = () => toggleSidebar();
   const theme = useTheme();
@@ -61,7 +61,7 @@ function Sidebar({ data, userPage }) {
         >
           <Scrollbar>
             <Box pt={1}>
-              <SidebarMenu data={data} userPage={userPage} />
+              <SidebarMenu data={data} />
             </Box>
           </Scrollbar>
         </Box>
@@ -81,7 +81,7 @@ function Sidebar({ data, userPage }) {
             <TopSection>
               <Logo />
             </TopSection>
-            <SidebarMenu data={data} userPage={userPage} />
+            <SidebarMenu data={data} />
           </Scrollbar>
         </SidebarWrapper>
       </Drawer>
@@ -91,7 +91,6 @@ function Sidebar({ data, userPage }) {
 
 Sidebar.propTypes = {
   data: PropTypes.object.isRequired,
-  userPage: PropTypes.bool.isRequired,
 };
 
 export default Sidebar;

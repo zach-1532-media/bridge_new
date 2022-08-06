@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 
 import PropTypes from 'prop-types';
 
+import Iframe from 'react-iframe';
+
 import Box from '@mui/material/Box';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
@@ -23,12 +25,16 @@ import UploadIcon from '@mui/icons-material/Upload';
 import CircularProgress from '@mui/material/CircularProgress';
 import SaveIcon from '@mui/icons-material/Save';
 
+import MyModal from '../../../../../../shared/myModal';
 import { GeneralSnack } from '../../../../../../shared/snackbars';
 
 const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
   const [loading, setLoading] = useState(false);
   const [showLoadingButton, setShowLoadingButton] = useState(false);
   const [generalError, setGeneralError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [form, setForm] = useState({
     twitter,
     instagram,
@@ -133,11 +139,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
     {
       icon: <DescriptionIcon />,
       name: 'Resume',
-      field: resume ? (
-        <Button href={resume} target="_blank">
-          View
-        </Button>
-      ) : null,
+      field: resume ? <Button onClick={handleOpen}>View</Button> : null,
       button: (
         <form
           method="post"
@@ -298,6 +300,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
         <GeneralSnack
           generalError={generalError}
           setGeneralError={setGeneralError}
+          message={''}
         />
       </Card>
       <Box
@@ -317,6 +320,14 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
         >
           {!twitter && !instagram && !linkedin ? 'Save' : 'Update'}
         </LoadingButton>
+        <MyModal
+          open={open}
+          handleClose={handleClose}
+          ariaDescription={'pop-up-to-view-resume'}
+          ariaLabel={'resume-modal'}
+        >
+          <Iframe url={resume} height="100%" width="100%" position="relative" />
+        </MyModal>
       </Box>
     </>
   );

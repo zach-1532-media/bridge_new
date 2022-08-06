@@ -19,10 +19,10 @@ const HeaderWrapper = styled(Box)(
         position: relative;
         justify-content: space-between;
         width: 100%;
-`
+`,
 );
 
-function Header({ data, userPage }) {
+function Header({ data }) {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
 
   return (
@@ -38,7 +38,7 @@ function Header({ data, userPage }) {
         </Box>
       </Box>
       <Box display="flex" alignItems="center">
-        <HeaderUserbox data={data} userPage={userPage} />
+        <HeaderUserbox data={data} />
         <Box
           component="span"
           sx={{
@@ -58,7 +58,6 @@ function Header({ data, userPage }) {
 
 Header.propTypes = {
   data: PropTypes.object.isRequired,
-  userPage: PropTypes.bool.isRequired,
 };
 
 export default Header;

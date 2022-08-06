@@ -2,6 +2,8 @@
 /* eslint-disable react/forbid-prop-types */
 import { React, useRef, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import Link from 'next/link';
 
 import PropTypes from 'prop-types';
@@ -26,21 +28,21 @@ const UserBoxButton = styled(Button)(
   ({ theme }) => `
     padding: ${theme.spacing(0, 0.5)};
     height: ${theme.spacing(6)};
-`
+`,
 );
 
 const MenuUserBox = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.black[5]};
         padding: ${theme.spacing(2)};
-`
+`,
 );
 
 const UserBoxText = styled(Box)(
   ({ theme }) => `
         text-align: left;
         padding-left: ${theme.spacing(1)};
-`
+`,
 );
 
 const UserBoxLabel = styled(Typography)(
@@ -48,17 +50,20 @@ const UserBoxLabel = styled(Typography)(
         font-weight: ${theme.typography.fontWeightBold};
         color: ${theme.palette.secondary.main};
         display: block;
-`
+`,
 );
 
 const UserBoxDescription = styled(Typography)(
   ({ theme }) => `
         color: ${theme.palette.secondary.light}
-`
+`,
 );
 
-function HeaderUserbox({ data, userPage }) {
+function HeaderUserbox({ data }) {
   const name = `${data.firstName} ${data.lastName}`;
+  const router = useRouter();
+  const page = router.pathname;
+  const businessPage = page === '/dashboards/business/[id]/[jobId]';
 
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
@@ -107,7 +112,7 @@ function HeaderUserbox({ data, userPage }) {
     },
   ];
 
-  const links = userPage ? userLinks : businessLinks;
+  const links = businessPage ? businessLinks : userLinks;
 
   return (
     <>
@@ -203,7 +208,6 @@ function HeaderUserbox({ data, userPage }) {
 
 HeaderUserbox.propTypes = {
   data: PropTypes.object.isRequired,
-  userPage: PropTypes.bool.isRequired,
 };
 
 export default HeaderUserbox;

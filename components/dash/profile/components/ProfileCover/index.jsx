@@ -311,6 +311,7 @@ const ProfileCover = ({ data, userPage }) => {
         <GeneralSnack
           generalError={generalError}
           setGeneralError={setGeneralError}
+          message={''}
         />
       </Box>
     </>

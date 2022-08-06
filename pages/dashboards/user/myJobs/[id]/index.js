@@ -130,7 +130,7 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
   }, [applyId, favoriteId, deleteFavoriteId]);
 
   return (
-    <Dash user={user} userPage>
+    <Dash user={user}>
       <PostedJobs
         title="Your Jobs"
         subTitle="Toggle between your Current, Favorite, and Inactive Jobs"

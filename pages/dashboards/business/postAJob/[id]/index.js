@@ -12,7 +12,7 @@ import JobStepper from '../../../../../components/JobStepper';
 
 const PostAJob = ({ business }) => {
   return (
-    <Dash business={business} userPage={false}>
+    <Dash business={business}>
       <JobStepper id={business._id} bio={business.bio} />
     </Dash>
   );

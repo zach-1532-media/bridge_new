@@ -37,7 +37,7 @@ const BusinessDash = ({ activeJobs, inActiveJobs, business }) => {
   };
 
   return (
-    <Dash business={business} userPage={false}>
+    <Dash business={business}>
       <PostedJobs
         title="Your Posted Jobs"
         subTitle="Toggle between your Active and Inactive job posts."

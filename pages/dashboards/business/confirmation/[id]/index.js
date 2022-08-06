@@ -33,7 +33,7 @@ const JobConfirmation = ({ business, job }) => {
   });
 
   return (
-    <Dash business={business} userPage={false}>
+    <Dash business={business}>
       <h1>{id}</h1>
     </Dash>
   );
