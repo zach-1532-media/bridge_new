@@ -15,10 +15,10 @@ import Header from './header';
 const Dash = ({ children, business, user }) => {
   const theme = useTheme();
   const router = useRouter();
-  const page = router.pathname;
-  const businessPage = page === '/dashboards/business/[id]/[jobId]';
+  const pathName = router.pathname;
+  const page = pathName.indexOf('business');
 
-  const data = businessPage ? business : user;
+  const data = page === -1 ? user : business;
 
   return (
     <>

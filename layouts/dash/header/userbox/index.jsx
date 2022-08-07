@@ -62,8 +62,8 @@ const UserBoxDescription = styled(Typography)(
 function HeaderUserbox({ data }) {
   const name = `${data.firstName} ${data.lastName}`;
   const router = useRouter();
-  const page = router.pathname;
-  const businessPage = page === '/dashboards/business/[id]/[jobId]';
+  const pathName = router.pathname;
+  const page = pathName.indexOf('business');
 
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
@@ -112,7 +112,7 @@ function HeaderUserbox({ data }) {
     },
   ];
 
-  const links = businessPage ? businessLinks : userLinks;
+  const links = pathName === -1 ? userLinks : businessLinks;
 
   return (
     <>

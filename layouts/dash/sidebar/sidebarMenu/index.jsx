@@ -44,8 +44,8 @@ const SidebarMenu = ({ data }) => {
   const theme = useTheme();
 
   const router = useRouter();
-  const page = router.pathname;
-  const businessPage = page === '/dashboards/business/[id]/[jobId]';
+  const pathName = router.pathname;
+  const page = pathName.indexOf('business');
 
   const businessMenuItems = [
     {
@@ -83,7 +83,7 @@ const SidebarMenu = ({ data }) => {
     },
   ];
 
-  const menuItems = businessPage === true ? businessMenuItems : userMenuItems;
+  const menuItems = page === -1 ? userMenuItems : businessMenuItems;
 
   return (
     <>
