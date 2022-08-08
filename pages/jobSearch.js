@@ -6,7 +6,7 @@ import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import dbConnect from '../lib/dbConnect';
-import Job from '../models/Job';
+import Jobs from '../models/Jobs';
 
 import Main from '../layouts/main/index';
 import Container from '../components/front_components/container';
@@ -39,7 +39,7 @@ export async function getServerSideProps({ query: { search } }) {
   require('../models/Business');
 
   const jobs = !search
-    ? await Job.aggregate()
+    ? await Jobs.aggregate()
         .lookup({
           from: 'businesses',
           localField: 'businessID',
@@ -50,7 +50,7 @@ export async function getServerSideProps({ query: { search } }) {
         .project(
           'jobTitle business.bio job workType city state responsibilities qualifications',
         )
-    : await Job.aggregate()
+    : await Jobs.aggregate()
         .search({
           index: 'Job Search',
           text: {

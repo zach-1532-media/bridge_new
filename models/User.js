@@ -40,6 +40,7 @@ const userSchema = new mongoose.Schema({
   twitter: String,
   instagram: String,
   linkedin: String,
+  sessionName: String,
 });
 
 module.exports = mongoose.models.User || mongoose.model('User', userSchema);

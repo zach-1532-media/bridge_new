@@ -1,5 +1,5 @@
 import dbConnect from '../../../../lib/dbConnect';
-import Job from '../../../../models/Job';
+import Jobs from '../../../../models/Jobs';
 import User from '../../../../models/User';
 
 const sgMail = require('@sendgrid/mail');
@@ -8,7 +8,7 @@ sgMail.setApiKey(process.env.SENDGRID);
 
 const mongoose = require('mongoose');
 
-const JobUpdateHandler = async (req, res) => {
+const JobHandler = async (req, res) => {
   await dbConnect();
   const {
     query: { id },
@@ -22,7 +22,7 @@ const JobUpdateHandler = async (req, res) => {
       case 'Delete Applicants':
         try {
           const objectIdArray = data.map((s) => mongoose.Types.ObjectId(s));
-          await Job.findByIdAndUpdate(id, {
+          await Jobs.findByIdAndUpdate(id, {
             $pull: { applicants: { $in: objectIdArray } },
             new: true,
             runValidators: true,
@@ -71,7 +71,18 @@ const JobUpdateHandler = async (req, res) => {
         res.status(400).json({ status: 400, success: false });
         break;
     }
+  } else if (method === 'POST') {
+    try {
+      await Jobs.create({
+        businessID: id,
+        dateCreated: new Date(),
+        ...req.body,
+      });
+      res.status(200).json({ code: 1, success: true, message: 'Job Posted!' });
+    } catch (err) {
+      res.status(400).json({ code: 2, success: false });
+    }
   }
 };
 
-export default JobUpdateHandler;
+export default JobHandler;

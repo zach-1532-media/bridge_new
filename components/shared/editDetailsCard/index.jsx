@@ -33,6 +33,7 @@ const EditDetailsCard = ({
   setEdit,
   setOpenSuccess,
   setGeneralError,
+  setMessage,
 }) => {
   const [businessForm, setBusinessForm] = useState({
     businessName: data.businessName,
@@ -100,23 +101,25 @@ const EditDetailsCard = ({
       };
       const response = await fetch(`/api/users/${data.email}`, updateInfo);
       const editData = await response.json();
-      if (editData.status === 200) {
+      if (editData.code === 2) {
         setIsUserSubmitting(false);
         setOpenBackdrop(false);
         setOpenSuccess(true);
         router.replace(router.asPath);
+        setMessage(editData.message);
         setEdit(false);
-      } else if (editData.status === 400) {
+      } else if (editData.code === 3) {
         setIsUserSubmitting(false);
         setOpenBackdrop(false);
         setGeneralError(true);
         router.replace(router.asPath);
         setEdit(false);
-      } else if (editData.status === 409) {
+      } else if (editData.code === 1) {
         setIsUserSubmitting(false);
         setOpenBackdrop(false);
         setGeneralError(true);
         router.replace(router.asPath);
+        setMessage(editData.message);
         setEdit(false);
       }
     } catch (err) {

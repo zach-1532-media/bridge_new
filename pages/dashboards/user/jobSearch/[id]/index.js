@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-shadow */
 import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
@@ -7,8 +8,10 @@ import PropTypes from 'prop-types';
 
 import dbConnect from '../../../../../lib/dbConnect';
 import User from '../../../../../models/User';
-import Job from '../../../../../models/Job';
+import Jobs from '../../../../../models/Jobs';
 
+import MenuItems from '../../../../../components/shared/layoutLinks/items';
+import UserBoxLinks from '../../../../../components/shared/layoutLinks/links';
 import PagiAndPerPage from '../../../../../components/shared/pagiAndPerPage';
 import usePagination from '../../../../../lib/Pagination';
 import {
@@ -25,7 +28,7 @@ import LQV from '../../../../../components/shared/listingQuickView';
 import FavoriteButton from '../../../../../components/shared/buttons/favoriteButton';
 import ApplyButton from '../../../../../components/shared/buttons/applyButton';
 
-const DashJobSearch = ({ user, jobs }) => {
+const DashJobSearch = ({ data, jobs }) => {
   const [search, setSearch] = useState(' ');
   const [applyId, setApplyId] = useState('');
   const [favoriteId, setFavoriteId] = useState('');
@@ -34,6 +37,7 @@ const DashJobSearch = ({ user, jobs }) => {
   const [cardsPerPage, setCardsPerPage] = useState(9);
 
   const router = useRouter();
+  const { id } = router.query;
 
   const _DATA = usePagination(jobs, cardsPerPage);
 
@@ -49,7 +53,7 @@ const DashJobSearch = ({ user, jobs }) => {
           jobId: deleteFavoriteId,
         }),
       };
-      const response = await fetch(`/api/favorite/${user._id}`, deleteInfo);
+      const response = await fetch(`/api/favorite/${id}`, deleteInfo);
       const data = await response.json();
       if (data.status === 200) {
         router.replace(router.asPath);
@@ -74,7 +78,7 @@ const DashJobSearch = ({ user, jobs }) => {
           jobId: favoriteId,
         }),
       };
-      const response = await fetch(`/api/favorite/${user._id}`, favoriteInfo);
+      const response = await fetch(`/api/favorite/${id}`, favoriteInfo);
       const data = await response.json();
       if (data.status === 200) {
         router.replace(router.asPath);
@@ -99,7 +103,7 @@ const DashJobSearch = ({ user, jobs }) => {
           jobId: applyId,
         }),
       };
-      const response = await fetch(`/api/apply/${user._id}`, applyInfo);
+      const response = await fetch(`/api/apply/${id}`, applyInfo);
       const data = await response.json();
       if (data.status === 200) {
         router.replace(router.asPath);
@@ -123,7 +127,18 @@ const DashJobSearch = ({ user, jobs }) => {
   }, [applyId, favoriteId, deleteFavoriteId]);
 
   return (
-    <Dash user={user}>
+    <Dash
+      data={data}
+      items={<MenuItems id={id} type="user" path={router.asPath} />}
+      links={
+        <UserBoxLinks
+          id={id}
+          avatar={data.avatar}
+          sessionName={data.sessionName}
+          type="user"
+        />
+      }
+    >
       <Container>
         <JobHero
           search={search}
@@ -146,13 +161,13 @@ const DashJobSearch = ({ user, jobs }) => {
                 >
                   <LQV job={job} key={`LQV: ${job._id}`}>
                     <FavoriteButton
-                      favoriteJobs={user.favoriteJobs}
+                      favoriteJobs={data.favoriteJobs}
                       setFavoriteId={setFavoriteId}
                       setDeleteFavoriteId={setDeleteFavoriteId}
                       id={job._id}
                     />
                     <ApplyButton
-                      appliedJobs={user.appliedJobs}
+                      appliedJobs={data.appliedJobs}
                       id={job._id}
                       setApplyId={setApplyId}
                     />
@@ -187,7 +202,7 @@ export async function getServerSideProps({ query: { id, search } }) {
   const user = await User.findById(id);
 
   const jobs = !search
-    ? await Job.aggregate()
+    ? await Jobs.aggregate()
         .lookup({
           from: 'businesses',
           localField: 'businessID',
@@ -198,7 +213,7 @@ export async function getServerSideProps({ query: { id, search } }) {
         .project(
           'jobTitle business.bio job workType city state responsibilities qualifications',
         )
-    : await Job.aggregate()
+    : await Jobs.aggregate()
         .search({
           index: 'Job Search',
           text: {
@@ -222,7 +237,7 @@ export async function getServerSideProps({ query: { id, search } }) {
 
   return {
     props: {
-      user: JSON.parse(JSON.stringify(user)),
+      data: JSON.parse(JSON.stringify(user)),
       jobs: JSON.parse(JSON.stringify(jobsReverse)),
     },
   };
@@ -230,7 +245,7 @@ export async function getServerSideProps({ query: { id, search } }) {
 
 DashJobSearch.propTypes = {
   /* eslint-disable react/forbid-prop-types */
-  user: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
   jobs: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string,

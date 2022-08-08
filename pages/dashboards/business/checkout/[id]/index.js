@@ -1,4 +1,6 @@
-import { React, useContext, useEffect } from 'react';
+import { React, useContext } from 'react';
+
+import { useRouter } from 'next/router';
 
 import PropTypes from 'prop-types';
 
@@ -8,43 +10,31 @@ import dbConnect from '../../../../../lib/dbConnect';
 import Business from '../../../../../models/Business';
 
 import Checkout from '../../../../../components/checkout';
+import MenuItems from '../../../../../components/shared/layoutLinks/items';
+import UserBoxLinks from '../../../../../components/shared/layoutLinks/links';
+
 import Dash from '../../../../../layouts/dash';
 
-const BusinessCheckout = ({ business }) => {
+const BusinessCheckout = ({ data }) => {
   const form = useContext(PostAJobContext);
-
-  useEffect(() => {
-    const postAJob = () => {
-      const jobData = {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          businessID: business._id,
-          job: form.postAJobform.job,
-          city: form.postAJobform.city,
-          state: form.postAJobform.state,
-          salary: form.postAJobform.salary,
-          benefits: form.postAJobform.benefits,
-          workType: form.postAJobform.workType,
-          description: form.postAJobform.description,
-          jobTitle: form.postAJobform.jobTitle,
-          hourlyRate: form.postAJobform.hourlyRate,
-          travel: form.postAJobform.travel,
-          responsibilities: form.postAJobform.responsibilities,
-          qualifications: form.postAJobform.qualifications,
-        }),
-      };
-      fetch('/api/postAJob', jobData);
-    };
-    postAJob();
-  });
+  const router = useRouter();
+  const { id } = router.query;
 
   return (
-    <Dash business={business}>
-      <Checkout form={form} />
+    <Dash
+      data={data}
+      items={<MenuItems id={id} type="business" path={router.asPath} />}
+      links={
+        <UserBoxLinks
+          id={id}
+          avatar={data.avatar}
+          sessionName={data.sessionName}
+          businessName={data.businessName}
+          type="business"
+        />
+      }
+    >
+      <Checkout form={form.postAJobform} />
     </Dash>
   );
 };
@@ -56,14 +46,14 @@ export async function getServerSideProps({ query: { id } }) {
 
   return {
     props: {
-      business: JSON.parse(JSON.stringify(business)),
+      data: JSON.parse(JSON.stringify(business)),
     },
   };
 }
 
 BusinessCheckout.propTypes = {
   /* eslint-disable react/forbid-prop-types */
-  business: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 export default BusinessCheckout;

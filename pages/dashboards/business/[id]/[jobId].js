@@ -21,10 +21,12 @@ import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import Dash from '../../../../layouts/dash';
 import dbConnect from '../../../../lib/dbConnect';
 import Business from '../../../../models/Business';
-import Job from '../../../../models/Job';
+import Jobs from '../../../../models/Jobs';
 import User from '../../../../models/User';
 import { modalStyle } from '../../../../components/shared/data';
 
+import MenuItems from '../../../../components/shared/layoutLinks/items';
+import UserBoxLinks from '../../../../components/shared/layoutLinks/links';
 import ApplicantGrid from '../../../../components/applicantGrid';
 import {
   SuccessSnack,
@@ -32,7 +34,7 @@ import {
 } from '../../../../components/shared/snackbars';
 import Container from '../../../../components/front_components/container';
 
-const ViewApplicants = ({ business, job, applicants }) => {
+const ViewApplicants = ({ sessionData, job, applicants }) => {
   const [open, setOpen] = useState(false);
   const [resumeUrl, setResumeUrl] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
@@ -42,6 +44,7 @@ const ViewApplicants = ({ business, job, applicants }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const router = useRouter();
+  const { id } = router.query;
 
   const updateApplicants = async (data, operation) => {
     const res = await fetch(`/api/jobs/${job._id}`, {
@@ -109,7 +112,19 @@ const ViewApplicants = ({ business, job, applicants }) => {
   };
 
   return (
-    <Dash business={business}>
+    <Dash
+      data={sessionData}
+      items={<MenuItems id={id} type="business" path={router.asPath} />}
+      links={
+        <UserBoxLinks
+          id={id}
+          avatar={sessionData.avatar}
+          sessionName={sessionData.sessionName}
+          type="business"
+          businessName={sessionData.businessName}
+        />
+      }
+    >
       <Container sx={{ mt: '-3em' }}>
         <Box
           sx={{
@@ -234,8 +249,8 @@ export async function getServerSideProps({ query: { id, jobId } }) {
   await dbConnect();
 
   const businesses = await Business.findById(id);
-  const job = await Job.findById(jobId).select('jobTitle');
-  const applicantField = await Job.findById(jobId).select('applicants');
+  const job = await Jobs.findById(jobId).select('jobTitle');
+  const applicantField = await Jobs.findById(jobId).select('applicants');
   const applicantArray = applicantField.applicants;
 
   const applicants = await User.aggregate()
@@ -248,7 +263,7 @@ export async function getServerSideProps({ query: { id, jobId } }) {
 
   return {
     props: {
-      business: JSON.parse(JSON.stringify(businesses)),
+      sessionData: JSON.parse(JSON.stringify(businesses)),
       job: JSON.parse(JSON.stringify(job)),
       applicants: JSON.parse(JSON.stringify(applicants)),
     },
@@ -257,7 +272,7 @@ export async function getServerSideProps({ query: { id, jobId } }) {
 
 ViewApplicants.propTypes = {
   /* eslint-disable react/forbid-prop-types */
-  business: PropTypes.object.isRequired,
+  sessionData: PropTypes.object.isRequired,
   job: PropTypes.shape({
     _id: PropTypes.string,
     jobTitle: PropTypes.string,

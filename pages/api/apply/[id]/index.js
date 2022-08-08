@@ -2,7 +2,7 @@
 /* eslint-disable object-shorthand */
 import dbConnect from '../../../../lib/dbConnect';
 import User from '../../../../models/User';
-import Job from '../../../../models/Job';
+import Jobs from '../../../../models/Jobs';
 
 const mongoose = require('mongoose');
 
@@ -22,7 +22,7 @@ export default async (req, res) => {
 
   if (method === 'PUT') {
     const user = await User.findById(id);
-    const job = await Job.findById(jobId);
+    const job = await Jobs.findById(jobId);
 
     if (!user.appliedJobs) {
       try {
@@ -57,7 +57,7 @@ export default async (req, res) => {
 
     if (!job.applicants) {
       try {
-        await Job.findOneAndUpdate(
+        await Jobs.findOneAndUpdate(
           jobId,
           { applicants: userArray },
           { new: true, runValidators: true },
@@ -69,7 +69,7 @@ export default async (req, res) => {
       }
     } else {
       try {
-        await Job.updateOne(
+        await Jobs.updateOne(
           { _id: jobId },
           { $addToSet: { applicants: userObjectId } },
         );

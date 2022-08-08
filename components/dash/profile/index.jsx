@@ -14,7 +14,6 @@ import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 
 import ProfileCover from './components/ProfileCover';
-import PaymentsTab from './components/PaymentsTab';
 import EditProfileTab from './components/EditProfileTab';
 import NotificationsTab from './components/NotificationsTab';
 import SecurityTab from './components/SecurityTab';
@@ -38,7 +37,6 @@ function Profile({ business, user }) {
   const tabs = [
     { value: 'account', label: 'Account' },
     { value: 'edit_profile', label: 'Edit Profile' },
-    { value: 'payments', label: 'Payments' },
     { value: 'notifications', label: 'Notifications' },
     { value: 'security', label: 'Passwords/Security' },
   ];
@@ -83,7 +81,6 @@ function Profile({ business, user }) {
               <NotificationsTab userPage={userPage} />
             )}
             {currentTab === 'security' && <SecurityTab userPage={userPage} />}
-            {currentTab === 'payments' && <PaymentsTab userPage={userPage} />}
           </Grid>
         </Grid>
       </Box>

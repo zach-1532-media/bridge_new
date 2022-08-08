@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import dbConnect from '../lib/dbConnect';
-import Job from '../models/Job';
+import Jobs from '../models/Jobs';
 
 import Main from '../layouts/main/index';
 import Container from '../components/front_components/container';
@@ -34,7 +34,7 @@ export async function getServerSideProps() {
   // eslint-disable-next-line global-require
   require('../models/Business');
 
-  const jobs = await Job.aggregate()
+  const jobs = await Jobs.aggregate()
     .lookup({
       from: 'businesses',
       localField: 'businessID',

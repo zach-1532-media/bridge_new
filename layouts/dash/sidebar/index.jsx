@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import { React, useContext } from 'react';
 
 import PropTypes from 'prop-types';
@@ -8,7 +7,6 @@ import Card from '@mui/material/Card';
 import Drawer from '@mui/material/Drawer';
 import { styled, useTheme } from '@mui/material/styles';
 
-import SidebarMenu from './sidebarMenu';
 import Scrollbar from '../../../components/shared/scrollbar';
 import { SidebarContext } from '../../../components/contexts/sidebar';
 import Logo from '../../../components/shared/logo';
@@ -39,7 +37,7 @@ const TopSection = styled(Box)(
 `,
 );
 
-function Sidebar({ data }) {
+function Sidebar({ items }) {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const closeSidebar = () => toggleSidebar();
   const theme = useTheme();
@@ -60,9 +58,7 @@ function Sidebar({ data }) {
           }}
         >
           <Scrollbar>
-            <Box pt={1}>
-              <SidebarMenu data={data} />
-            </Box>
+            <Box pt={1}>{items}</Box>
           </Scrollbar>
         </Box>
       </SidebarWrapper>
@@ -81,7 +77,7 @@ function Sidebar({ data }) {
             <TopSection>
               <Logo />
             </TopSection>
-            <SidebarMenu data={data} />
+            {items}
           </Scrollbar>
         </SidebarWrapper>
       </Drawer>
@@ -90,7 +86,7 @@ function Sidebar({ data }) {
 }
 
 Sidebar.propTypes = {
-  data: PropTypes.object.isRequired,
+  items: PropTypes.node.isRequired,
 };
 
 export default Sidebar;

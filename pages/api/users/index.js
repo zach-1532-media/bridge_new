@@ -22,6 +22,7 @@ export default async (req, res) => {
     const newUser = {
       firstName: firstName,
       lastName: lastName,
+      sessionName: `${firstName} ${lastName}`,
       email: newEmail,
       password: hashedPassword,
       verifyEmail: JSON.stringify(randomNumber),

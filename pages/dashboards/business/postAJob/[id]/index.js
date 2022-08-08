@@ -2,18 +2,37 @@
 /* eslint-disable react/forbid-prop-types */
 import React from 'react';
 
+import { useRouter } from 'next/router';
+
 import PropTypes from 'prop-types';
 
 import dbConnect from '../../../../../lib/dbConnect';
 import Business from '../../../../../models/Business';
 
+import UserBoxLinks from '../../../../../components/shared/layoutLinks/links';
+import MenuItems from '../../../../../components/shared/layoutLinks/items';
 import Dash from '../../../../../layouts/dash';
 import JobStepper from '../../../../../components/JobStepper';
 
-const PostAJob = ({ business }) => {
+const PostAJob = ({ data }) => {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
-    <Dash business={business}>
-      <JobStepper id={business._id} bio={business.bio} />
+    <Dash
+      data={data}
+      items={<MenuItems id={id} type="business" path={router.asPath} />}
+      links={
+        <UserBoxLinks
+          id={id}
+          avatar={data.avatar}
+          sessionName={data.sessionName}
+          businessName={data.businessName}
+          type="business"
+        />
+      }
+    >
+      <JobStepper bio={data.bio} />
     </Dash>
   );
 };
@@ -25,13 +44,13 @@ export async function getServerSideProps({ query: { id } }) {
 
   return {
     props: {
-      business: JSON.parse(JSON.stringify(businesses)),
+      data: JSON.parse(JSON.stringify(businesses)),
     },
   };
 }
 
 PostAJob.propTypes = {
-  business: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 export default PostAJob;

@@ -17,7 +17,7 @@ const getSignature = async (req, res) => {
       {
         timestamp,
         public_id: `${id}`,
-        upload_preset: 'covers',
+        upload_preset: 'cover',
       },
       apiSecret,
     );

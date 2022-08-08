@@ -1,8 +1,4 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/forbid-prop-types */
 import React from 'react';
-
-import { useRouter } from 'next/router';
 
 import PropTypes from 'prop-types';
 
@@ -12,17 +8,12 @@ import { useTheme } from '@mui/material/styles';
 import Sidebar from './sidebar';
 import Header from './header';
 
-const Dash = ({ children, business, user }) => {
+const Dash = ({ children, items, links }) => {
   const theme = useTheme();
-  const router = useRouter();
-  const pathName = router.pathname;
-  const page = pathName.indexOf('business');
-
-  const data = page === -1 ? user : business;
 
   return (
     <>
-      <Sidebar data={data} />
+      <Sidebar items={items} />
       <Box
         sx={{
           position: 'relative',
@@ -109,7 +100,7 @@ const Dash = ({ children, business, user }) => {
         >
           <Box flexGrow={1}>
             <Box>
-              <Header data={data} />
+              <Header links={links} />
               {children}
             </Box>
           </Box>
@@ -121,8 +112,8 @@ const Dash = ({ children, business, user }) => {
 
 Dash.propTypes = {
   children: PropTypes.node.isRequired,
-  business: PropTypes.object,
-  user: PropTypes.object,
+  items: PropTypes.node.isRequired,
+  links: PropTypes.node.isRequired,
 };
 
 export default Dash;

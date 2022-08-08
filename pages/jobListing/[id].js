@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import dbConnect from '../../lib/dbConnect';
-import Job from '../../models/Job';
+import Jobs from '../../models/Jobs';
 import Business from '../../models/Business';
 
 import JobListing from '../../components/jobListing';
@@ -17,7 +17,7 @@ const JobListingPage = ({ business, job }) => (
 export async function getServerSideProps({ query: { id } }) {
   await dbConnect();
 
-  const job = await Job.findById(id);
+  const job = await Jobs.findById(id);
   const business = await Business.findById(job.businessID);
 
   return {

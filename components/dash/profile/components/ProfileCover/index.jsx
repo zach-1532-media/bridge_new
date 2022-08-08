@@ -168,10 +168,12 @@ const ProfileCover = ({ data }) => {
       if (mongoData.status === 200) {
         setTempCoverImg('');
         setTempAvatarImg('');
+        router.replace(router.asPath);
         setLoading(false);
       } else if (mongoData.status === 400) {
         setCoverImg('');
         setAvatarImg('');
+        router.replace(router.asPath);
         setLoading(false);
         setGeneralError(true);
       }

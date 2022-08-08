@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { React, useState } from 'react';
 
 import { useRouter } from 'next/router';
@@ -24,6 +25,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import UploadIcon from '@mui/icons-material/Upload';
 import CircularProgress from '@mui/material/CircularProgress';
 import SaveIcon from '@mui/icons-material/Save';
+import Stack from '@mui/material/Stack';
 
 import MyModal from '../../../../../../shared/myModal';
 import { GeneralSnack } from '../../../../../../shared/snackbars';
@@ -104,7 +106,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
     formData.append('timestamp', signData.timestamp);
     formData.append('signature', signData.signature);
     formData.append('public_id', `${id}`);
-    formData.append('upload_preset', 'resumes');
+    formData.append('upload_preset', `${inputName}`);
 
     const res = await fetch(url, {
       method: 'POST',
@@ -126,9 +128,11 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
       const mongoData = await mongoRes.json();
       if (mongoData.status === 200) {
         setLoading(false);
+        router.replace(router.asPath);
         setShowLoadingButton(false);
       } else if (mongoData.status === 400) {
         setLoading(false);
+        router.replace(router.asPath);
         setShowLoadingButton(false);
         setGeneralError(true);
       }
@@ -176,58 +180,18 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
     },
     {
       icon: <TwitterIcon sx={{ color: '#1DA1F2' }} />,
-      name: 'Twitter',
-      id: 'twitter-item',
-      field: twitter ? (
-        <Button href={twitter} target="_blank">
-          View
-        </Button>
-      ) : (
-        <TextField
-          fullWidth
-          variant="standard"
-          placeholder="url..."
-          name="twitter"
-          value={form.twitter ?? ''}
-          onChange={handleChange}
-        />
-      ),
+      name: 'twitter',
+      prop: twitter,
     },
     {
       icon: <InstagramIcon sx={{ color: '#fb3958' }} />,
-      name: 'Instagram',
-      field: instagram ? (
-        <Button href={form.instagram} target="_blank">
-          View
-        </Button>
-      ) : (
-        <TextField
-          fullWidth
-          variant="standard"
-          placeholder="url..."
-          name="instagram"
-          value={form.instagram ?? ''}
-          onChange={handleChange}
-        />
-      ),
+      name: 'instagram',
+      prop: instagram,
     },
     {
       icon: <LinkedInIcon sx={{ color: '#0072b1 ' }} />,
-      name: 'LinkedIn',
-      field: linkedin ? (
-        <Button href={form.linkedin} target="_blank">
-          View
-        </Button>
-      ) : (
-        <TextField
-          fullWidth
-          variant="standard"
-          placeholder="url..."
-          name="linkedin"
-          value={form.linkedin ?? ''}
-          onChange={handleChange}
-        />
-      ),
+      name: 'linkedIn',
+      prop: linkedin,
     },
   ];
 
@@ -266,12 +230,10 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
                   disableTypography
                   primary={
                     <Typography color="text.primary" variant="h5">
-                      {item.name}
+                      {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
                     </Typography>
                   }
-                >
-                  {item.name}
-                </ListItemText>
+                />
                 <Box
                   sx={{
                     pl: 0.5,
@@ -289,7 +251,25 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
                       pr: 3,
                     }}
                   >
-                    {item.field}
+                    {item.name === 'Resume' ? (
+                      item.field
+                    ) : item.prop ? (
+                      <Stack direction="row" spacing={6}>
+                        <Button href={`form.${item.prop}`} target="_blank">
+                          View
+                        </Button>
+                        <Button>Edit</Button>
+                      </Stack>
+                    ) : (
+                      <TextField
+                        fullWidth
+                        variant="standard"
+                        placeholder="url..."
+                        name={item.name}
+                        value={`form.${item.prop}` ?? ''}
+                        onChange={handleChange}
+                      />
+                    )}
                   </Box>
                   {item.button}
                 </Box>

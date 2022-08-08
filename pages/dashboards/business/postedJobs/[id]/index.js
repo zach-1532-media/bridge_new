@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import { React, useState } from 'react';
 
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import PropTypes from 'prop-types';
@@ -8,8 +9,10 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import dbConnect from '../../../../../lib/dbConnect';
 import Business from '../../../../../models/Business';
-import Job from '../../../../../models/Job';
+import Jobs from '../../../../../models/Jobs';
 
+import MenuItems from '../../../../../components/shared/layoutLinks/items';
+import UserBoxLinks from '../../../../../components/shared/layoutLinks/links';
 import usePagination from '../../../../../lib/Pagination';
 import PagiAndPerPage from '../../../../../components/shared/pagiAndPerPage';
 import Dash from '../../../../../layouts/dash';
@@ -23,10 +26,12 @@ import {
 import JobCard from '../../../../../components/shared/jobCard';
 import LQV from '../../../../../components/shared/listingQuickView';
 
-const BusinessDash = ({ activeJobs, inActiveJobs, business }) => {
+const BusinessDash = ({ activeJobs, inActiveJobs, sessionData }) => {
   const jobs = [activeJobs, inActiveJobs];
   const [value, setValue] = useState(0);
   const [cardsPerPage, setCardsPerPage] = useState(9);
+  const router = useRouter();
+  const { id } = router.query;
 
   const currentData = jobs[value];
 
@@ -37,7 +42,19 @@ const BusinessDash = ({ activeJobs, inActiveJobs, business }) => {
   };
 
   return (
-    <Dash business={business}>
+    <Dash
+      data={sessionData}
+      items={<MenuItems id={id} type="business" path={router.asPath} />}
+      links={
+        <UserBoxLinks
+          id={id}
+          avatar={sessionData.avatar}
+          sessionName={sessionData.sessionName}
+          businessName={sessionData.businessName}
+          type="business"
+        />
+      }
+    >
       <PostedJobs
         title="Your Posted Jobs"
         subTitle="Toggle between your Active and Inactive job posts."
@@ -60,7 +77,7 @@ const BusinessDash = ({ activeJobs, inActiveJobs, business }) => {
                       >
                         <LQV job={data} key={`LQV: ${data._id}`}>
                           <Link
-                            href={`/dashboards/business/${business._id}/${data._id}`}
+                            href={`/dashboards/business/${id}/${data._id}`}
                             passHref
                           >
                             <Button variant="contained">View Applicants</Button>
@@ -93,9 +110,9 @@ export async function getServerSideProps({ query: { id } }) {
   require('../../../../../models/Business');
 
   const businesses = await Business.findById(id);
-  const jobId = await Job.find({ businessID: id }).select('_id');
+  const jobId = await Jobs.find({ businessID: id }).select('_id');
   const jobIdArray = jobId.map((job) => job._id);
-  const jobs = await Job.aggregate()
+  const jobs = await Jobs.aggregate()
     .match({ _id: { $in: jobIdArray } })
     .lookup({
       from: 'businesses',
@@ -111,7 +128,7 @@ export async function getServerSideProps({ query: { id } }) {
 
   return {
     props: {
-      business: JSON.parse(JSON.stringify(businesses)),
+      sessionData: JSON.parse(JSON.stringify(businesses)),
       activeJobs: JSON.parse(JSON.stringify(jobsReverse)),
       inActiveJobs: JSON.parse(JSON.stringify(jobsReverse)),
     },
@@ -170,7 +187,7 @@ BusinessDash.propTypes = {
     }),
   ).isRequired,
   /* eslint-disable react/forbid-prop-types */
-  business: PropTypes.object.isRequired,
+  sessionData: PropTypes.object.isRequired,
 };
 
 export default BusinessDash;

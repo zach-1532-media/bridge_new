@@ -3,19 +3,39 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 
+import { useRouter } from 'next/router';
+
 import PropTypes from 'prop-types';
 
 import dbConnect from '../../../../lib/dbConnect';
 import User from '../../../../models/User';
 
+import UserBoxLinks from '../../../../components/shared/layoutLinks/links';
+import MenuItems from '../../../../components/shared/layoutLinks/items';
 import Dash from '../../../../layouts/dash';
 import Profile from '../../../../components/dash/profile';
 
-const ProfilePage = ({ user }) => (
-  <Dash user={user}>
-    <Profile user={user} />
-  </Dash>
-);
+const ProfilePage = ({ data }) => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  return (
+    <Dash
+      data={data}
+      items={<MenuItems id={id} type="user" path={router.asPath} />}
+      links={
+        <UserBoxLinks
+          id={id}
+          avatar={data.avatar}
+          sessionName={data.sessionName}
+          type="user"
+        />
+      }
+    >
+      <Profile user={data} />
+    </Dash>
+  );
+};
 
 export async function getServerSideProps({ query: { id } }) {
   await dbConnect();
@@ -24,13 +44,13 @@ export async function getServerSideProps({ query: { id } }) {
 
   return {
     props: {
-      user: JSON.parse(JSON.stringify(user)),
+      data: JSON.parse(JSON.stringify(user)),
     },
   };
 }
 
 ProfilePage.propTypes = {
-  user: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 export default ProfilePage;

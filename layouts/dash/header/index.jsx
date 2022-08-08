@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import { React, useContext } from 'react';
 
 import PropTypes from 'prop-types';
@@ -8,7 +7,6 @@ import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 
 import { SidebarContext } from '../../../components/contexts/sidebar';
-import HeaderUserbox from './userbox';
 import Logo from '../../../components/shared/logo';
 
 const HeaderWrapper = styled(Box)(
@@ -22,7 +20,7 @@ const HeaderWrapper = styled(Box)(
 `,
 );
 
-function Header({ data }) {
+function Header({ links }) {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
 
   return (
@@ -38,7 +36,7 @@ function Header({ data }) {
         </Box>
       </Box>
       <Box display="flex" alignItems="center">
-        <HeaderUserbox data={data} />
+        {links}
         <Box
           component="span"
           sx={{
@@ -57,7 +55,7 @@ function Header({ data }) {
 }
 
 Header.propTypes = {
-  data: PropTypes.object.isRequired,
+  links: PropTypes.node.isRequired,
 };
 
 export default Header;

@@ -7,8 +7,10 @@ import PropTypes from 'prop-types';
 
 import dbConnect from '../../../../../lib/dbConnect';
 import User from '../../../../../models/User';
-import Job from '../../../../../models/Job';
+import Jobs from '../../../../../models/Jobs';
 
+import MenuItems from '../../../../../components/shared/layoutLinks/items';
+import UserBoxLinks from '../../../../../components/shared/layoutLinks/links';
 import PagiAndPerPage from '../../../../../components/shared/pagiAndPerPage';
 import usePagination from '../../../../../lib/Pagination';
 import {
@@ -25,7 +27,7 @@ import PostedJobs from '../../../../../components/shared/PostedJobs';
 import TabPanel from '../../../../../components/shared/PostedJobs/components/tabPanel';
 import Container from '../../../../../components/front_components/container';
 
-const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
+const MyJobs = ({ sessionData, currentJobs, favoriteJobs, inactiveJobs }) => {
   const jobs = [currentJobs, favoriteJobs, inactiveJobs];
   const [value, setValue] = useState(0);
   const [applyId, setApplyId] = useState('');
@@ -43,6 +45,7 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
   };
 
   const router = useRouter();
+  const { id } = router.query;
 
   const deleteFavorite = async () => {
     try {
@@ -56,7 +59,7 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
           jobId: deleteFavoriteId,
         }),
       };
-      const response = await fetch(`/api/favorite/${user._id}`, deleteInfo);
+      const response = await fetch(`/api/favorite/${id}`, deleteInfo);
       const data = await response.json();
       if (data.status === 200) {
         router.replace(router.asPath);
@@ -81,7 +84,7 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
           jobId: favoriteId,
         }),
       };
-      const response = await fetch(`/api/favorite/${user._id}`, favoriteInfo);
+      const response = await fetch(`/api/favorite/${id}`, favoriteInfo);
       const data = await response.json();
       if (data.status === 200) {
         router.replace(router.asPath);
@@ -106,7 +109,7 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
           jobId: applyId,
         }),
       };
-      const response = await fetch(`/api/apply/${user._id}`, applyInfo);
+      const response = await fetch(`/api/apply/${id}`, applyInfo);
       const data = await response.json();
       if (data.status === 200) {
         router.replace(router.asPath);
@@ -130,7 +133,18 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
   }, [applyId, favoriteId, deleteFavoriteId]);
 
   return (
-    <Dash user={user}>
+    <Dash
+      data={sessionData}
+      items={<MenuItems id={id} type="user" path={router.asPath} />}
+      links={
+        <UserBoxLinks
+          id={id}
+          avatar={sessionData.avatar}
+          sessionName={sessionData.sessionName}
+          type="user"
+        />
+      }
+    >
       <PostedJobs
         title="Your Jobs"
         subTitle="Toggle between your Current, Favorite, and Inactive Jobs"
@@ -153,13 +167,13 @@ const MyJobs = ({ user, currentJobs, favoriteJobs, inactiveJobs }) => {
                       >
                         <LQV job={data} key={`LQV: ${data._id}`}>
                           <FavoriteButton
-                            favoriteJobs={user.favoriteJobs}
+                            favoriteJobs={sessionData.favoriteJobs}
                             setFavoriteId={setFavoriteId}
                             setDeleteFavoriteId={setDeleteFavoriteId}
                             id={data._id}
                           />
                           <ApplyButton
-                            appliedJobs={user.appliedJobs}
+                            appliedJobs={sessionData.appliedJobs}
                             id={data._id}
                             setApplyId={setApplyId}
                           />
@@ -199,7 +213,7 @@ export async function getServerSideProps({ query: { id } }) {
   const appliedJobs = await User.findById(id).select('appliedJobs');
   const appliedJobsArray = appliedJobs.appliedJobs;
 
-  const currentJobs = await Job.aggregate()
+  const currentJobs = await Jobs.aggregate()
     .match({ _id: { $in: appliedJobsArray } })
     .lookup({
       from: 'businesses',
@@ -215,7 +229,7 @@ export async function getServerSideProps({ query: { id } }) {
   const jobsFavorited = await User.findById(id).select('favoriteJobs');
   const favoriteJobsArray = jobsFavorited.favoriteJobs;
 
-  const favoriteJobs = await Job.aggregate()
+  const favoriteJobs = await Jobs.aggregate()
     .match({ _id: { $in: favoriteJobsArray } })
     .lookup({
       from: 'businesses',
@@ -233,7 +247,7 @@ export async function getServerSideProps({ query: { id } }) {
 
   return {
     props: {
-      user: JSON.parse(JSON.stringify(user)),
+      sessionData: JSON.parse(JSON.stringify(user)),
       currentJobs: JSON.parse(JSON.stringify(currentJobsReverse)),
       favoriteJobs: JSON.parse(JSON.stringify(favoriteJobsReverse)),
       inactiveJobs: JSON.parse(JSON.stringify(currentJobsReverse)),
@@ -244,7 +258,7 @@ export async function getServerSideProps({ query: { id } }) {
 
 MyJobs.propTypes = {
   /* eslint-disable react/forbid-prop-types */
-  user: PropTypes.object.isRequired,
+  sessionData: PropTypes.object.isRequired,
   currentJobs: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string,

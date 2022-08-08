@@ -45,7 +45,7 @@ const Checkout = ({ form }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        jobType: `${form.postAJobform.job}`,
+        jobType: `${form.job}`,
         id,
       }),
     })
@@ -94,6 +94,7 @@ const Checkout = ({ form }) => {
                     <CheckoutForm
                       isSubmitting={isSubmitting}
                       setIsLoading={setIsLoading}
+                      form={form}
                     />
                   </Elements>
                 )}
@@ -113,7 +114,7 @@ const Checkout = ({ form }) => {
               <Orders
                 setIsSubmitting={setIsSubmitting}
                 isLoading={isLoading}
-                job={form.postAJobform.job}
+                job={form.job}
               />
               <Box
                 sx={{

@@ -14,6 +14,7 @@ const EditProfileTab = ({ data, userPage }) => {
   const [edit, setEdit] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [generalError, setGeneralError] = useState(false);
+  const [message, setMessage] = useState('');
 
   return (
     <Grid container spacing={3}>
@@ -43,6 +44,7 @@ const EditProfileTab = ({ data, userPage }) => {
             setEdit={setEdit}
             setGeneralError={setGeneralError}
             setOpenSuccess={setOpenSuccess}
+            setMessage={setMessage}
             business
           />
         ) : (
@@ -53,17 +55,19 @@ const EditProfileTab = ({ data, userPage }) => {
             setEdit={setEdit}
             setGeneralError={setGeneralError}
             setOpenSuccess={setOpenSuccess}
+            setMessage={setMessage}
           />
         )}
       </Grid>
       <SuccessSnack
-        message="edit"
+        message={message}
         openSuccess={openSuccess}
         setOpenSuccess={setOpenSuccess}
       />
       <GeneralSnack
         generalError={generalError}
         setGeneralError={setGeneralError}
+        message={message}
       />
     </Grid>
   );

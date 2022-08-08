@@ -11,7 +11,7 @@ sgMail.setApiKey(process.env.SENDGRID);
 export default async (req, res) => {
   await dbConnect();
   const { method } = req;
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, businessName } = req.body;
 
   const newEmail = email.toLowerCase();
 
@@ -22,6 +22,8 @@ export default async (req, res) => {
     const newBusiness = {
       firstName: firstName,
       lastName: lastName,
+      businessName: businessName,
+      sessionName: businessName,
       email: newEmail,
       password: hashedPassword,
       verifyEmail: JSON.stringify(randomNumber),

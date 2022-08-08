@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { React, useEffect, useState, useContext } from 'react';
 
 import PropTypes from 'prop-types';
@@ -17,7 +18,6 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 
 import PostAJobContext from '../contexts/postAJob';
-import { SuccessSnack, GeneralSnack } from '../shared/snackbars';
 import JobCard from '../shared/jobCard';
 import JobWorkType from './components/jobWorkType';
 import JobInformation from './components/listing';
@@ -25,8 +25,14 @@ import { steps } from '../shared/data';
 import LQV from '../shared/listingQuickView';
 import ProfileCard from '../shared/profileCard';
 
-const JobStepper = ({ id, bio }) => {
+const JobStepper = ({ bio }) => {
   const router = useRouter();
+  const { id } = router.query;
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
+  const formCtx = useContext(PostAJobContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [errors, setErrors] = useState({});
@@ -44,19 +50,12 @@ const JobStepper = ({ id, bio }) => {
     travel: '',
     jobTitle: '',
   });
-  const [openSuccess, setOpenSuccess] = useState(false);
-  const [generalError, setGeneralError] = useState(false);
 
   const jobs = {
     ...form,
     responsibilities,
     qualifications,
   };
-
-  const theme = useTheme();
-  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
-    defaultMatches: true,
-  });
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -91,14 +90,16 @@ const JobStepper = ({ id, bio }) => {
       err.jobTitle = 'Please enter a job title';
     }
 
-    if (!form.salary) {
-      err.salary =
-        form.job === 'Full-Time' ? 'Please select a salary range' : null;
+    if (form.job === 'Full-Time') {
+      if (!form.salary) {
+        err.salary = 'Please select a salary range';
+      }
     }
 
-    if (!form.hourlyRate) {
-      err.hourlyRate =
-        form.job === 'Part-Time' ? 'Please select an hourly rate range' : null;
+    if (form.job === 'Part-Time') {
+      if (!form.hourlyRate) {
+        form.hourlyRate = 'Please select an hourly rate range';
+      }
     }
 
     if (!form.city) {
@@ -110,13 +111,13 @@ const JobStepper = ({ id, bio }) => {
     }
 
     if (form.travel === false) {
-      err.travel = '';
+      // do nothing
     } else if (!form.travel) {
       err.travel = 'Please select yes or no';
     }
 
     if (form.benefits === false) {
-      err.travel = '';
+      // do nothing
     } else if (!form.benefits) {
       err.benefits = 'Please select yes or no';
     }
@@ -128,13 +129,10 @@ const JobStepper = ({ id, bio }) => {
     return err;
   };
 
-  const formCtx = useContext(PostAJobContext);
-
   const checkout = () => {
+    localStorage.setItem('form', JSON.stringify(form));
     router.replace(`/dashboards/business/checkout/${id}`);
-    formCtx.newForm({
-      ...jobs,
-    });
+    formCtx.newForm({ ...jobs });
   };
 
   useEffect(() => {
@@ -143,17 +141,25 @@ const JobStepper = ({ id, bio }) => {
         if (Object.keys(errors).length === 0) {
           handleNext();
           setIsSubmitting(false);
-        }
-      } else if (activeStep === 1) {
-        if (Object.keys(errors).length === 1) {
-          handleNext();
+        } else {
           setIsSubmitting(false);
         }
+      } else if (activeStep === 1) {
+        if (Object.keys(errors).length === 0) {
+          handleNext();
+          setIsSubmitting(false);
+        } else {
+          setIsSubmitting(false);
+        }
+      } else if (activeStep === 2) {
+        setIsSubmitting(false);
+        formCtx.newForm({ ...jobs });
+        router.replace(`/dashboards/business/checkout/${id}`);
       }
     } else {
       setIsSubmitting(false);
     }
-  }, [errors, activeStep, isSubmitting]);
+  }, [errors]);
 
   const handleErrors = (e) => {
     e.preventDefault();
@@ -289,57 +295,45 @@ const JobStepper = ({ id, bio }) => {
             </Step>
           ))}
         </Stepper>
-        <>
-          <Box
-            sx={{
-              mt: 2,
-              mb: 1,
-              p: 2,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'cetner',
-            }}
+        <Box
+          sx={{
+            mt: 2,
+            mb: 1,
+            p: 2,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'cetner',
+          }}
+        >
+          {getStepContent(activeStep)}
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+          <Button
+            color="inherit"
+            variant="outlined"
+            disableRipple
+            disabled={activeStep === 0}
+            onClick={handleBack}
+            sx={{ mr: 1 }}
           >
-            {getStepContent(activeStep)}
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Button
-              color="inherit"
-              variant="outlined"
-              disableRipple
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button
-              disableRipple
-              variant="contained"
-              onClick={activeStep === 2 ? checkout : handleErrors}
-            >
-              {activeStep === 2 ? 'Checkout' : 'Next'}
-            </Button>
-          </Box>
-        </>
+            Back
+          </Button>
+          <Box sx={{ flex: '1 1 auto' }} />
+          <Button
+            disableRipple
+            variant="contained"
+            onClick={activeStep === 2 ? checkout : handleErrors}
+          >
+            {activeStep === 2 ? 'Checkout' : 'Next'}
+          </Button>
+        </Box>
       </Box>
-      <GeneralSnack
-        generalError={generalError}
-        setGeneralError={setGeneralError}
-      />
-      <SuccessSnack
-        openSuccess={openSuccess}
-        setOpenSuccess={setOpenSuccess}
-        message="jobPost"
-      />
     </Container>
   );
 };
 
 JobStepper.propTypes = {
   bio: PropTypes.string,
-  id: PropTypes.string.isRequired,
 };
 
 JobStepper.defaultProps = {

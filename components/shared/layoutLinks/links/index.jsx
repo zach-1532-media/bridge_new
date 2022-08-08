@@ -1,24 +1,21 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/forbid-prop-types */
-import { React, useRef, useState } from 'react';
-
-import { useRouter } from 'next/router';
+import { React, useState, useRef } from 'react';
 
 import Link from 'next/link';
 
 import PropTypes from 'prop-types';
 
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+
 import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
 import PostAddTwoToneIcon from '@mui/icons-material/PostAddTwoTone';
 import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
@@ -59,12 +56,7 @@ const UserBoxDescription = styled(Typography)(
 `,
 );
 
-function HeaderUserbox({ data }) {
-  const name = `${data.firstName} ${data.lastName}`;
-  const router = useRouter();
-  const pathName = router.pathname;
-  const page = pathName.indexOf('business');
-
+const UserBoxLinks = ({ id, type, avatar, sessionName, businessName }) => {
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
 
@@ -79,17 +71,17 @@ function HeaderUserbox({ data }) {
   const businessLinks = [
     {
       name: 'Profile',
-      link: `/dashboards/business/${data._id}`,
+      link: `/dashboards/business/${id}`,
       icon: <ManageAccountsTwoToneIcon fontSize="small" />,
     },
     {
       name: 'Posted Jobs',
-      link: `/dashboards/business/postedJobs/${data._id}`,
+      link: `/dashboards/business/postedJobs/${id}`,
       icon: <WorkTwoToneIcon fontSize="small" />,
     },
     {
       name: 'Post A Job',
-      link: `/dashboards/business/postAJob/${data._id}`,
+      link: `/dashboards/business/postAJob/${id}`,
       icon: <PostAddTwoToneIcon fontSize="small" />,
     },
   ];
@@ -97,30 +89,30 @@ function HeaderUserbox({ data }) {
   const userLinks = [
     {
       name: 'Profile',
-      link: `/dashboards/user/${data._id}`,
+      link: `/dashboards/user/${id}`,
       icon: <ManageAccountsTwoToneIcon fontSize="small" />,
     },
     {
       name: 'My Jobs',
-      link: `/dashboards/user/myJobs/${data._id}`,
+      link: `/dashboards/user/myJobs/${id}`,
       icon: <WorkTwoToneIcon fontSize="small" />,
     },
     {
       name: 'Job Search',
-      link: `/dashboards/user/jobSearch/${data._id}`,
+      link: `/dashboards/user/jobSearch/${id}`,
       icon: <SearchTwoToneIcon fontSize="small" />,
     },
   ];
 
-  const links = pathName === -1 ? userLinks : businessLinks;
+  const links = type === 'user' ? userLinks : businessLinks;
 
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
         <Avatar
           variant="rounded"
-          alt={name}
-          src={data.avatar === undefined ? data.firstName[0] : data.avatar}
+          alt={sessionName}
+          src={avatar === undefined ? sessionName[0] : avatar}
         />
         <Box
           component="span"
@@ -129,9 +121,9 @@ function HeaderUserbox({ data }) {
           }}
         >
           <UserBoxText>
-            <UserBoxLabel variant="body1">{name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{sessionName}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {data.businessName === undefined ? null : data.businessName}
+              {businessName ?? ''}
             </UserBoxDescription>
           </UserBoxText>
         </Box>
@@ -170,13 +162,13 @@ function HeaderUserbox({ data }) {
         >
           <Avatar
             variant="rounded"
-            alt={name}
-            src={data.avatar === undefined ? data.firstName[0] : data.avatar}
+            alt={sessionName}
+            src={avatar === undefined ? sessionName[0] : avatar}
           />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{sessionName}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {data.businessName === undefined ? null : data.businessName}
+              {businessName ?? ''}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
@@ -204,10 +196,11 @@ function HeaderUserbox({ data }) {
       </Popover>
     </>
   );
-}
-
-HeaderUserbox.propTypes = {
-  data: PropTypes.object.isRequired,
 };
 
-export default HeaderUserbox;
+UserBoxLinks.propTypes = {
+  type: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+};
+
+export default UserBoxLinks;
