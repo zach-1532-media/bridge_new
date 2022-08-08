@@ -28,7 +28,7 @@ const handlePhone = () => {
   window.open('tel:6149378563');
 };
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE);
+const stripePromise = loadStripe(`${process.env.STRIPE_PUBLISHABLE}`);
 
 const Checkout = ({ form }) => {
   const [clientSecret, setClientSecret] = useState('');
