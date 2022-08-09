@@ -1,4 +1,4 @@
-/* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-vars */
 import { React, useState } from 'react';
 
 import { useRouter } from 'next/router';
@@ -25,7 +25,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import UploadIcon from '@mui/icons-material/Upload';
 import CircularProgress from '@mui/material/CircularProgress';
 import SaveIcon from '@mui/icons-material/Save';
-import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
 
 import MyModal from '../../../../../../shared/myModal';
 import { GeneralSnack } from '../../../../../../shared/snackbars';
@@ -143,6 +143,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
     {
       icon: <DescriptionIcon />,
       name: 'Resume',
+      prop: resume,
       field: resume ? <Button onClick={handleOpen}>View</Button> : null,
       button: (
         <form
@@ -182,16 +183,19 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
       icon: <TwitterIcon sx={{ color: '#1DA1F2' }} />,
       name: 'twitter',
       prop: twitter,
+      value: form.twitter,
     },
     {
       icon: <InstagramIcon sx={{ color: '#fb3958' }} />,
-      name: 'instagram',
       prop: instagram,
+      name: 'instagram',
+      value: form.instagram,
     },
     {
       icon: <LinkedInIcon sx={{ color: '#0072b1 ' }} />,
       name: 'linkedIn',
       prop: linkedin,
+      value: form.linkedin,
     },
   ];
 
@@ -224,7 +228,15 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
                   px: 2.5,
                 }}
               >
-                <Box sx={{ mr: '4em' }}>{item.icon}</Box>
+                <Box sx={{ mr: '4em' }}>
+                  <IconButton
+                    href={item.prop !== resume ? item.prop : null}
+                    onClick={item.prop === resume ? handleOpen : null}
+                    target="_blank"
+                  >
+                    {item.icon}
+                  </IconButton>
+                </Box>
                 <ListItemText
                   sx={{ flexGrow: 0, maxWidth: '50%', flexBasis: '50%' }}
                   disableTypography
@@ -253,20 +265,13 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
                   >
                     {item.name === 'Resume' ? (
                       item.field
-                    ) : item.prop ? (
-                      <Stack direction="row" spacing={6}>
-                        <Button href={`form.${item.prop}`} target="_blank">
-                          View
-                        </Button>
-                        <Button>Edit</Button>
-                      </Stack>
                     ) : (
                       <TextField
                         fullWidth
                         variant="standard"
                         placeholder="url..."
                         name={item.name}
-                        value={`form.${item.prop}` ?? ''}
+                        value={item.value ?? ''}
                         onChange={handleChange}
                       />
                     )}
@@ -298,7 +303,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
           loadingIndicator={indicator}
           onClick={handleClick}
         >
-          {!twitter && !instagram && !linkedin ? 'Save' : 'Update'}
+          Update
         </LoadingButton>
         <MyModal
           open={open}

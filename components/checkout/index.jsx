@@ -34,6 +34,7 @@ const Checkout = ({ form }) => {
   const [clientSecret, setClientSecret] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const { id } = router.query;
 

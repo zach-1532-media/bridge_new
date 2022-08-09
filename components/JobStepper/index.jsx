@@ -51,6 +51,10 @@ const JobStepper = ({ bio }) => {
     jobTitle: '',
   });
 
+  useEffect(() => {
+    window.localStorage.setItem('jobForm', JSON.stringify(form));
+  }, [form]);
+
   const jobs = {
     ...form,
     responsibilities,
@@ -130,7 +134,6 @@ const JobStepper = ({ bio }) => {
   };
 
   const checkout = () => {
-    localStorage.setItem('form', JSON.stringify(form));
     router.replace(`/dashboards/business/checkout/${id}`);
     formCtx.newForm({ ...jobs });
   };
