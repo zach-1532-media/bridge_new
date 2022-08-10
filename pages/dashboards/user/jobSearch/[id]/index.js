@@ -158,8 +158,14 @@ const DashJobSearch = ({ data, jobs }) => {
                   height={1}
                   width={1}
                   key={`JobCard: ${job._id}`}
+                  avatar={job.business.avatar}
                 >
-                  <LQV job={job} key={`LQV: ${job._id}`}>
+                  <LQV
+                    job={job}
+                    key={`LQV: ${job._id}`}
+                    avatar={job.business.avatar}
+                    businessName={job.business.businessName}
+                  >
                     <FavoriteButton
                       favoriteJobs={data.favoriteJobs}
                       setFavoriteId={setFavoriteId}
@@ -211,7 +217,7 @@ export async function getServerSideProps({ query: { id, search } }) {
         })
         .unwind('business')
         .project(
-          'jobTitle business.bio job workType city state responsibilities qualifications',
+          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
         )
     : await Jobs.aggregate()
         .search({
@@ -230,7 +236,7 @@ export async function getServerSideProps({ query: { id, search } }) {
         })
         .unwind('business')
         .project(
-          'jobTitle business.bio job workType city state responsibilities qualifications',
+          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
         );
 
   const jobsReverse = jobs.reverse();
@@ -252,6 +258,8 @@ DashJobSearch.propTypes = {
       jobTitle: PropTypes.string,
       business: PropTypes.shape({
         bio: PropTypes.string,
+        avatar: PropTypes.string,
+        businessName: PropTypes.string,
       }),
       job: PropTypes.string,
       workType: PropTypes.string,

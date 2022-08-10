@@ -25,7 +25,7 @@ import { steps } from '../shared/data';
 import LQV from '../shared/listingQuickView';
 import ProfileCard from '../shared/profileCard';
 
-const JobStepper = ({ bio }) => {
+const JobStepper = ({ bio, avatar, businessName }) => {
   const router = useRouter();
   const { id } = router.query;
   const theme = useTheme();
@@ -228,8 +228,13 @@ const JobStepper = ({ bio }) => {
                     },
                   }}
                 >
-                  <JobCard job={jobs} height={1} width={1}>
-                    <LQV job={jobs} bio={bio} />
+                  <JobCard job={jobs} height={1} width={1} avatar={avatar}>
+                    <LQV
+                      job={jobs}
+                      bio={bio}
+                      avatar={avatar}
+                      businessName={businessName}
+                    />
                   </JobCard>
                 </Box>
               </Grid>
@@ -337,10 +342,14 @@ const JobStepper = ({ bio }) => {
 
 JobStepper.propTypes = {
   bio: PropTypes.string,
+  avatar: PropTypes.string,
+  businessName: PropTypes.string,
 };
 
 JobStepper.defaultProps = {
   bio: '',
+  avatar: '',
+  businessName: '',
 };
 
 export default JobStepper;

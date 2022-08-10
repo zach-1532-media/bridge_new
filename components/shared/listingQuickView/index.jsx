@@ -7,10 +7,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
 
 import Checkbox from '../myCheckBox';
 
-const LQV = ({ job, children, bio }) => {
+const LQV = ({ job, children, bio, avatar, businessName }) => {
   const listItems = [
     {
       text: 'Who we are:',
@@ -86,6 +88,25 @@ const LQV = ({ job, children, bio }) => {
         </Box>
       </Box>
       <Divider sx={{ marginY: 4 }} />
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mb: '3em', mt: '-1.5em', width: '100%' }}
+      >
+        <Typography variant="h2">Job Details: </Typography>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+        >
+          {avatar ? (
+            <Avatar variant="rounded" alt="business logo" src={avatar} />
+          ) : null}
+          <Typography variant="body1">{businessName}</Typography>
+        </Stack>
+      </Stack>
       {listItems.map((item) => (
         <Box sx={{ mb: 3 }} key={item.text}>
           <Typography variant="h5" fontWeight={700} sx={{ mb: 1.5 }}>
@@ -108,6 +129,8 @@ LQV.propTypes = {
     state: PropTypes.string,
     workType: PropTypes.string,
     description: PropTypes.string,
+    avatar: PropTypes.string,
+    businessName: PropTypes.string,
     responsibilities: PropTypes.arrayOf(
       PropTypes.objectOf(
         PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

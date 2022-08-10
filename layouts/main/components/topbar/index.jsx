@@ -7,10 +7,10 @@ import { useSession } from 'next-auth/client';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
+import Stack from '@mui/material/Stack';
 
 import NavItem from './navItem';
 import Logo from '../../../../components/shared/logo';
@@ -18,7 +18,30 @@ import Logo from '../../../../components/shared/logo';
 const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
   const [session] = useSession();
 
-  const initial = !session ? null : session.user.email.slice(0, 1);
+  const navItems = [
+    {
+      title: 'Jobs',
+      id: 'job-page',
+      href: '/jobs',
+    },
+    {
+      title: 'Resources',
+      id: 'resources-page',
+      href: '/resources',
+    },
+    {
+      title: 'About',
+      id: 'about-page',
+      href: '/about',
+    },
+    {
+      title: session ? null : 'Looking to hire?',
+      id: session ? null : 'business-signup',
+      href: session ? '/#' : '/businesses',
+    },
+  ];
+
+  // const initial = !session ? null : session.user.email.slice(0, 1);
 
   return (
     <Box
@@ -31,54 +54,16 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
     >
       <Logo />
       <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
-        <Box>
-          <NavItem
-            title="Jobs"
-            id="job-page"
-            colorInvert={colorInvert}
-            href="/jobs"
-          />
-        </Box>
-        <Box marginLeft={4}>
-          <NavItem
-            title="Blog"
-            id="blog"
-            href="/blog"
-            colorInvert={colorInvert}
-          />
-        </Box>
-        {session ? (
-          <></>
-        ) : (
-          <Box marginLeft={4}>
-            <NavItem
-              title="Looking to hire?"
-              href="/businesses"
-              id="business-signup"
-              colorInvert={colorInvert}
-            />
-          </Box>
-        )}
-        <Box marginLeft={4}>
-          {!session ? (
-            <Link href="/users" passHref>
-              <Button variant="contained" color="primary" size="large">
-                Sign In
-              </Button>
-            </Link>
-          ) : (
-            <Link href={`/${session.user.email}`} passHref>
-              <Avatar
-                sx={{
-                  bgcolor: 'secondary.main',
-                  '&:hover': { cursor: 'pointer' },
-                }}
-              >
-                {initial}
-              </Avatar>
-            </Link>
-          )}
-        </Box>
+        <Stack direction="row" spacing={4}>
+          {navItems.map((item) => (
+            <NavItem key={item.id} title={item.title} href={item.href} />
+          ))}
+        </Stack>
+        <Link href="/dashboards/user/62bdc1724e66a090b6a1e791" passHref>
+          <Button variant="contained" sx={{ ml: '4em' }}>
+            Sign In
+          </Button>
+        </Link>
       </Box>
       <Box sx={{ display: { xs: 'block', md: 'none' }, alignItems: 'center' }}>
         <IconButton

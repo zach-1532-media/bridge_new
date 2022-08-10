@@ -4,8 +4,6 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { signOut } from 'next-auth/client';
-
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
@@ -15,20 +13,8 @@ import Grid from '@mui/material/Grid';
 
 const links = [
   {
-    title: 'User Signup',
+    title: 'Candidate Signup',
     link: '/userSignUp',
-  },
-  {
-    title: 'Business Signup',
-    link: '/businessSignUp',
-  },
-  {
-    title: 'User Profile',
-    link: '/dashboards/user/62bdc1724e66a090b6a1e791',
-  },
-  {
-    title: 'Business Login',
-    link: '/businesses',
   },
 ];
 
@@ -38,19 +24,15 @@ const Hero = () => {
     defaultMatches: true,
   });
 
-  const handleLogout = () => {
-    signOut();
-  };
-
   return (
     <Grid container spacing={4}>
       <Grid item alignItems="center" xs={12} md={6}>
         <Box data-aos={isMd ? 'fade-right' : 'fade-up'}>
-          <Box marginBottom={2}>
+          <Box>
             <Typography
               variant="h1"
               color="text.primary"
-              sx={{ fontWeight: 700, mb: '1.5em' }}
+              sx={{ fontWeight: 700, mb: '1em' }}
             >
               Finding work made simple
             </Typography>
@@ -61,8 +43,8 @@ const Hero = () => {
               component="p"
               sx={{ color: 'text.secondary', fontWeight: 700 }}
             >
-              Get matched with you next full-time, part-time, or freelance job
-              that meet your requirements
+              Get matched with you next full-time or part-time job that meet
+              your requirements
             </Typography>
           </Box>
           <Box
@@ -87,7 +69,6 @@ const Hero = () => {
                 </Button>
               </Link>
             ))}
-            <Button onClick={handleLogout}>Logout</Button>
           </Box>
         </Box>
       </Grid>

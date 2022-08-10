@@ -9,10 +9,13 @@ import CardContent from '@mui/material/CardContent';
 import CardActionArea from '@mui/material/CardActionArea';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Chip from '@mui/material/Chip';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
 
 import { JobCardSVG1, JobCardSVG2, modalStyle } from '../data';
 
-const JobCard = ({ job, height, width, children }) => {
+const JobCard = ({ job, height, width, children, avatar }) => {
   const theme = useTheme();
 
   const [open, setOpen] = useState(false);
@@ -51,25 +54,22 @@ const JobCard = ({ job, height, width, children }) => {
             alignItems: 'flex-start',
           }}
         >
-          <Box
-            sx={{
-              pt: 1 / 2,
-              pb: 1 / 2,
-              pl: 1,
-              pr: 1,
-              mb: 2,
-              bgcolor: `${color}`,
-              borderRadius: 2,
-            }}
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            sx={{ mb: '1em', width: '100%' }}
           >
-            <Typography
-              variant="body2"
-              align="center"
-              sx={{ color: theme.palette.common.white }}
-            >
-              {job.job}
-            </Typography>
-          </Box>
+            <Chip
+              label={job.job}
+              sx={{
+                background: color,
+                color: 'white',
+              }}
+            />
+            {avatar ? (
+              <Avatar variant="rounded" alt="business logo" src={avatar} />
+            ) : null}
+          </Stack>
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 500 }}>
             {job.jobTitle}
           </Typography>
@@ -108,6 +108,7 @@ JobCard.propTypes = {
     workType: PropTypes.string,
     city: PropTypes.string,
     state: PropTypes.string,
+    avatar: PropTypes.string,
   }).isRequired,
   height: PropTypes.number,
   width: PropTypes.number,

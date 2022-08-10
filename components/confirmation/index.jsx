@@ -52,6 +52,7 @@ const Confirmation = () => {
       >
         <CheckIcon sx={{ fontSize: '5em', color: '#00FF00', mb: '.5em' }} />
         <Typography
+          align="center"
           sx={{
             fontSize: '6.5em',
             fontWeight: '600',
@@ -82,9 +83,9 @@ const Confirmation = () => {
           <Button
             size="large"
             variant="contained"
-            sx={{ width: '40%', mb: '4em' }}
+            sx={{ width: { xs: '80%', md: '40%' }, mb: '4em' }}
           >
-            Check out your posted jobs
+            Go to your posted jobs
           </Button>
         </Link>
         <Box

@@ -32,7 +32,11 @@ const PostAJob = ({ data }) => {
         />
       }
     >
-      <JobStepper bio={data.bio} />
+      <JobStepper
+        bio={data.bio}
+        avatar={data.avatar}
+        businessName={data.businessName}
+      />
     </Dash>
   );
 };

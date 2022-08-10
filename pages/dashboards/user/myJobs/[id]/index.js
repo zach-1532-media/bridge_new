@@ -147,8 +147,8 @@ const MyJobs = ({ sessionData, currentJobs, favoriteJobs, inactiveJobs }) => {
     >
       <PostedJobs
         title="Your Jobs"
-        subTitle="Toggle between your Current, Favorite, and Inactive Jobs"
-        tabLabels={['Current', 'Favorites', 'Inactive']}
+        subTitle="Toggle between your Active, Favorite, and Inactive Jobs"
+        tabLabels={['Active', 'Favorites', 'Inactive']}
         value={value}
         handleChange={handleChange}
       >
@@ -164,8 +164,14 @@ const MyJobs = ({ sessionData, currentJobs, favoriteJobs, inactiveJobs }) => {
                         height={1}
                         width={1}
                         key={`JobCard: ${data._id}`}
+                        avatar={data.business.avatar}
                       >
-                        <LQV job={data} key={`LQV: ${data._id}`}>
+                        <LQV
+                          job={data}
+                          key={`LQV: ${data._id}`}
+                          avatar={data.business.avatar}
+                          businessName={data.business.businessName}
+                        >
                           <FavoriteButton
                             favoriteJobs={sessionData.favoriteJobs}
                             setFavoriteId={setFavoriteId}
@@ -223,7 +229,7 @@ export async function getServerSideProps({ query: { id } }) {
     })
     .unwind('business')
     .project(
-      'jobTitle business.bio job workType city state responsibilities qualifications',
+      'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
     );
 
   const jobsFavorited = await User.findById(id).select('favoriteJobs');
@@ -239,7 +245,7 @@ export async function getServerSideProps({ query: { id } }) {
     })
     .unwind('business')
     .project(
-      'jobTitle business.bio job workType city state responsibilities qualifications',
+      'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
     );
 
   const currentJobsReverse = currentJobs.reverse();
@@ -265,6 +271,8 @@ MyJobs.propTypes = {
       jobTitle: PropTypes.string,
       business: PropTypes.shape({
         bio: PropTypes.string,
+        avatar: PropTypes.string,
+        businessName: PropTypes.string,
       }),
       job: PropTypes.string,
       workType: PropTypes.string,
@@ -290,6 +298,8 @@ MyJobs.propTypes = {
       jobTitle: PropTypes.string,
       business: PropTypes.shape({
         bio: PropTypes.string,
+        avatar: PropTypes.string,
+        businessName: PropTypes.string,
       }),
       job: PropTypes.string,
       workType: PropTypes.string,
@@ -315,6 +325,8 @@ MyJobs.propTypes = {
       jobTitle: PropTypes.string,
       business: PropTypes.shape({
         bio: PropTypes.string,
+        avatar: PropTypes.string,
+        businessName: PropTypes.string,
       }),
       job: PropTypes.string,
       workType: PropTypes.string,

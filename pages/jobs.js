@@ -43,7 +43,7 @@ export async function getServerSideProps() {
     })
     .unwind('business')
     .project(
-      'jobTitle business.bio job workType city state responsibilities qualifications',
+      'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
     )
     .limit(9);
   const jobsReverse = jobs.reverse();
@@ -62,6 +62,8 @@ JobPage.propTypes = {
       jobTitle: PropTypes.string,
       business: PropTypes.shape({
         bio: PropTypes.string,
+        avatar: PropTypes.string,
+        businessName: PropTypes.string,
       }),
       job: PropTypes.string,
       workType: PropTypes.string,

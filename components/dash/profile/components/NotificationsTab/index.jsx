@@ -67,9 +67,9 @@ const NotificationsTab = ({ newsletter }) => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Box pb={2}>
-            <Typography variant="h3">Newsletter</Typography>
+            <Typography variant="h3">Notifications</Typography>
             <Typography variant="subtitle2">
-              Choose whether you want to recieve the newsletter
+              Toggle your notification preferences
             </Typography>
           </Box>
           <Card>
@@ -85,8 +85,8 @@ const NotificationsTab = ({ newsletter }) => {
                     variant: 'subtitle2',
                     lineHeight: 1,
                   }}
-                  primary="Widthdraw Activity"
-                  secondary="Receive an email when a widthdrawal is made"
+                  primary="Newsletter"
+                  secondary="Receive our newsletter"
                 />
                 <Switch
                   checked={isNewsletter}

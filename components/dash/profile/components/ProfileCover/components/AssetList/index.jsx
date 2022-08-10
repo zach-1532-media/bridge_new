@@ -26,11 +26,12 @@ import UploadIcon from '@mui/icons-material/Upload';
 import CircularProgress from '@mui/material/CircularProgress';
 import SaveIcon from '@mui/icons-material/Save';
 import IconButton from '@mui/material/IconButton';
+import LanguageIcon from '@mui/icons-material/Language';
 
 import MyModal from '../../../../../../shared/myModal';
 import { GeneralSnack } from '../../../../../../shared/snackbars';
 
-const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
+const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
   const [loading, setLoading] = useState(false);
   const [showLoadingButton, setShowLoadingButton] = useState(false);
   const [generalError, setGeneralError] = useState(false);
@@ -41,6 +42,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
     twitter,
     instagram,
     linkedin,
+    webSite,
   });
   const [mongoLoad, setMongoLoad] = useState(false);
   const theme = useTheme();
@@ -197,6 +199,12 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
       prop: linkedin,
       value: form.linkedin,
     },
+    {
+      icon: <LanguageIcon sx={{ color: theme.palette.primary.main }} />,
+      name: 'web',
+      prop: webSite,
+      value: form.webSite,
+    },
   ];
 
   return (
@@ -213,7 +221,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, id }) => {
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'gray' }}>
-            My Shite
+            My Stuff
           </Typography>
         </Box>
         <List disablePadding>

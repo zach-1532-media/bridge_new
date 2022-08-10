@@ -274,24 +274,19 @@ const ProfileCover = ({ data }) => {
           <Box
             display={{ xs: 'block', md: 'flex' }}
             alignItems="center"
-            justifyContent="space-between"
+            justifyContent="left"
           >
-            <Box>
-              <Button size="small" variant="contained">
-                Follow
-              </Button>
-              <Button
-                href={`https://${data.site}`}
-                target="_blank"
-                size="small"
-                sx={{
-                  mx: 1,
-                }}
-                variant="outlined"
-              >
-                View website
-              </Button>
-            </Box>
+            <Button
+              href={`https://${data.site}`}
+              target="_blank"
+              size="small"
+              sx={{
+                mx: 1,
+              }}
+              variant="outlined"
+            >
+              View website
+            </Button>
           </Box>
         ) : (
           <Box sx={{ mt: '3em' }}>

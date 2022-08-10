@@ -74,8 +74,14 @@ const BusinessDash = ({ activeJobs, inActiveJobs, sessionData }) => {
                         height={1}
                         width={1}
                         key={`JobCard: ${data._id}`}
+                        avatar={sessionData.avatar}
                       >
-                        <LQV job={data} key={`LQV: ${data._id}`}>
+                        <LQV
+                          job={data}
+                          key={`LQV: ${data._id}`}
+                          businessName={sessionData.businessName}
+                          avatar={sessionData.avatar}
+                        >
                           <Link
                             href={`/dashboards/business/${id}/${data._id}`}
                             passHref
@@ -142,6 +148,8 @@ BusinessDash.propTypes = {
       jobTitle: PropTypes.string,
       business: PropTypes.shape({
         bio: PropTypes.string,
+        avatar: PropTypes.string,
+        businessName: PropTypes.string,
       }),
       job: PropTypes.string,
       workType: PropTypes.string,

@@ -48,7 +48,7 @@ export async function getServerSideProps({ query: { search } }) {
         })
         .unwind('business')
         .project(
-          'jobTitle business.bio job workType city state responsibilities qualifications',
+          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
         )
     : await Jobs.aggregate()
         .search({
@@ -67,7 +67,7 @@ export async function getServerSideProps({ query: { search } }) {
         })
         .unwind('business')
         .project(
-          'jobTitle business.bio job workType city state responsibilities qualifications',
+          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
         );
 
   const jobsReverse = jobs.reverse();
@@ -86,6 +86,8 @@ JobSearchPage.propTypes = {
       jobTitle: PropTypes.string,
       business: PropTypes.shape({
         bio: PropTypes.string,
+        avatar: PropTypes.string,
+        businessName: PropTypes.string,
       }),
       job: PropTypes.string,
       workType: PropTypes.string,

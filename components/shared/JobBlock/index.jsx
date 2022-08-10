@@ -48,8 +48,19 @@ const JobBlock = ({ jobs, setApplyId }) => {
                   },
                 }}
               >
-                <JobCard job={job} height={1} width={1} key={job._id}>
-                  <LQV job={job} setApplyId={setApplyId}>
+                <JobCard
+                  job={job}
+                  height={1}
+                  width={1}
+                  key={job._id}
+                  avatar={job.business.avatar}
+                >
+                  <LQV
+                    job={job}
+                    avatar={job.business.avatar}
+                    businessName={job.business.businessName}
+                    setApplyId={setApplyId}
+                  >
                     <Button
                       variant="contained"
                       onClick={() => setApplyId(job._id)}
@@ -81,7 +92,33 @@ const JobBlock = ({ jobs, setApplyId }) => {
 };
 
 JobBlock.propTypes = {
-  jobs: PropTypes.array,
+  jobs: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      jobTitle: PropTypes.string,
+      business: PropTypes.shape({
+        bio: PropTypes.string,
+        avatar: PropTypes.string,
+        businessName: PropTypes.string,
+      }),
+      job: PropTypes.string,
+      workType: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      responsibilities: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          responsibility: PropTypes.string,
+        }),
+      ),
+      qualifications: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          qualification: PropTypes.string,
+        }),
+      ),
+    }),
+  ).isRequired,
   setApplyId: PropTypes.func,
 };
 

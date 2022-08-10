@@ -33,7 +33,7 @@ const TopSection = styled(Box)(
         height: 80px;
         align-items: center;
         margin: 0 ${theme.spacing(2)};
-        border-bottom: ${theme.sidebar.dividerBg} solid 1px;
+        border-bottom: ${theme.palette.tertiary.light} solid 1px;
 `,
 );
 
