@@ -83,7 +83,7 @@ const UserEmailHandler = async (req, res) => {
           await User.findOneAndUpdate({ email }, { newsletter: true });
           res
             .status(200)
-            .json({ case: 1, success: true, message: 'existingUser' });
+            .json({ case: 1, success: true, message: "You're signed up!" });
         } catch (err) {
           res.status(400).json({ case: 2, success: false });
         }

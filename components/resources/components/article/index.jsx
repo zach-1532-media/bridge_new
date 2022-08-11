@@ -5,6 +5,7 @@ import Hero from './components/hero';
 import Main from '../../../../layouts/main';
 import Container from '../../../front_components/container';
 import Content from './components/content';
+import Newsletter from '../newsletter';
 
 const BlogArticle = () => {
   return (
@@ -15,6 +16,9 @@ const BlogArticle = () => {
           <Content />
         </Container>
       </Box>
+      <Container>
+        <Newsletter />
+      </Container>
     </Main>
   );
 };

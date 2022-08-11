@@ -56,7 +56,7 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
         },
         body: JSON.stringify({ operation: 'mongo', email: form.email }),
       };
-      const mongoRes = await fetch('api/emails/users', newsletterMongo);
+      const mongoRes = await fetch('/api/emails/users', newsletterMongo);
       const mongoData = await mongoRes.json();
       if (mongoData.case === 1) {
         setIsSubmitting(false);
@@ -80,7 +80,9 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
       if (Object.keys(errors).length === 0) {
         setIsLoading(true);
         addToNewsletterContact();
-      } else setIsSubmitting(false);
+      } else {
+        setIsSubmitting(false);
+      }
     }
   }, [errors]);
 

@@ -60,6 +60,7 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
               key={item.id}
               title={item.title}
               href={item.href}
+              id={item.id}
               colorInvert={colorInvert}
             />
           ))}

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Image from 'next/image';
-
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -10,6 +8,8 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+
+import Logo from '../../../../components/shared/logo';
 
 const Footer = () => (
   <Grid container spacing={2}>
@@ -23,25 +23,14 @@ const Footer = () => (
           flexDirection: { xs: 'column', sm: 'row' },
         }}
       >
-        <Box
-          display="flex"
-          component="a"
-          href="/"
-          title="The Bridge"
-          width={80}
-        >
+        <Box display="flex" href="/" title="The Bridge" width={80}>
           <Box
             sx={{
               height: 1,
               width: 1,
             }}
           >
-            <Image
-              alt="company logo"
-              src="https://connectatthebridge.nyc3.cdn.digitaloceanspaces.com/site-assets/Bridge.svg"
-              height={200}
-              width={300}
-            />
+            <Logo />
           </Box>
         </Box>
         <Stack direction="row" spacing={2}>
@@ -91,7 +80,7 @@ const Footer = () => (
         color="text.secondary"
         gutterBottom
       >
-        &copy; The Bridge. 2022, ConnectAtTheBridge Corp. All rights reserved
+        &copy; The Bridge. 2022, Meet At The Bridge Corp. All rights reserved
       </Typography>
     </Grid>
   </Grid>

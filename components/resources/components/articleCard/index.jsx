@@ -30,7 +30,6 @@ const ArticleCard = ({ data }) => {
       }}
     >
       <Card
-        boxShadow={4}
         sx={{
           width: 1,
           height: 1,

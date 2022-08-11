@@ -1,14 +1,98 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prefer-regex-literals */
+/* eslint-disable no-nested-ternary */
+import { React, useState, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 
+import { SuccessSnack, GeneralSnack } from '../../../shared/snackbars';
+
 const Newsletter = () => {
   const theme = useTheme();
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [generalError, setGeneralError] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const addToNewsletterContact = async () => {
+    const newsletter = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ operation: 'add contact', email }),
+    };
+    const res = await fetch('/api/emails/users', newsletter);
+    const response = await res.json();
+    if (response.case === 1) {
+      const newsletterMongo = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ operation: 'mongo', email }),
+      };
+      const mongoRes = await fetch('/api/emails/users', newsletterMongo);
+      const mongoResponse = await mongoRes.json();
+      if (mongoResponse.case === 1) {
+        setIsSubmitting(false);
+        setIsLoading(false);
+        setMessage(mongoResponse.message);
+        setOpenSuccess(true);
+      } else {
+        setIsSubmitting(false);
+        setIsLoading(false);
+        setGeneralError(false);
+      }
+    } else if (response.case === 2) {
+      setIsSubmitting(false);
+      setIsLoading(false);
+      setGeneralError(true);
+    }
+  };
+
+  useEffect(() => {
+    if (isSubmitting) {
+      if (Object.keys(errors).length === 0) {
+        setIsLoading(true);
+        addToNewsletterContact();
+      } else {
+        setIsSubmitting(false);
+      }
+    }
+  }, [errors]);
+
+  const validate = () => {
+    const err = {};
+    const regEmail = new RegExp(
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+    ).test(email);
+
+    if (!email) {
+      err.email = 'Please enter your email';
+    }
+
+    if (!regEmail) {
+      err.regEmail = 'Please enter a valid email address';
+    }
+    return err;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrors(validate());
+    setIsSubmitting(true);
+  };
 
   return (
     <Box>
@@ -69,13 +153,38 @@ const Newsletter = () => {
               fullWidth
               label="Enter your email"
               sx={{ maxWidth: 422, height: 54 }}
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              error={errors.email ? true : errors.regEmail ? true : null}
+              helperText={
+                errors.email
+                  ? errors.email
+                  : errors.regEmail
+                  ? errors.regEmail
+                  : null
+              }
             />
-            <Button variant="contained" sx={{ height: 54 }}>
+            <LoadingButton
+              onClick={handleSubmit}
+              loading={isLoading}
+              variant="contained"
+              sx={{ height: 54 }}
+            >
               Subscribe
-            </Button>
+            </LoadingButton>
           </Stack>
         </Box>
       </Box>
+      <SuccessSnack
+        setOpenSuccess={setOpenSuccess}
+        openSuccess={openSuccess}
+        message={message}
+      />
+      <GeneralSnack
+        setGeneralError={setGeneralError}
+        generalError={generalError}
+        message={message}
+      />
     </Box>
   );
 };
