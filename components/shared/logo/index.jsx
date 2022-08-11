@@ -1,12 +1,14 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import Link from 'next/link';
 import Image from 'next/image';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-function Logo() {
+function Logo({ colorInvert }) {
   return (
     <Box
       sx={{
@@ -28,7 +30,11 @@ function Logo() {
         >
           <Image
             alt="company logo"
-            src="https://connectatthebridge.nyc3.cdn.digitaloceanspaces.com/site-assets/Bridge.svg"
+            src={
+              colorInvert
+                ? 'https://res.cloudinary.com/dci8xvvvp/image/upload/v1660223377/assets/TheBridge_logo_white_hghesl.svg'
+                : 'https://res.cloudinary.com/dci8xvvvp/image/upload/v1660223434/assets/TheBridge_logo_knlog6.svg'
+            }
             height={2000}
             width={3000}
           />
@@ -37,5 +43,13 @@ function Logo() {
     </Box>
   );
 }
+
+Logo.propTypes = {
+  colorInvert: PropTypes.bool,
+};
+
+Logo.defaultProps = {
+  colorInvert: false,
+};
 
 export default Logo;

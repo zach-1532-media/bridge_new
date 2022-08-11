@@ -31,7 +31,6 @@ const FeaturedArticle = () => {
       <Box
         component="a"
         href="/blogArticle"
-        target="_blank"
         display="block"
         sx={{
           width: 1,

@@ -52,15 +52,20 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
         width: 1,
       }}
     >
-      <Logo />
+      <Logo colorInvert={colorInvert} />
       <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
         <Stack direction="row" spacing={4}>
           {navItems.map((item) => (
-            <NavItem key={item.id} title={item.title} href={item.href} />
+            <NavItem
+              key={item.id}
+              title={item.title}
+              href={item.href}
+              colorInvert={colorInvert}
+            />
           ))}
         </Stack>
         <Link href="/dashboards/user/62bdc1724e66a090b6a1e791" passHref>
-          <Button variant="contained" sx={{ ml: '4em' }}>
+          <Button variant="contained" size="large" sx={{ ml: '4em' }}>
             Sign In
           </Button>
         </Link>

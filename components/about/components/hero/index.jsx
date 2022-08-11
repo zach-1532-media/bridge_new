@@ -23,17 +23,17 @@ const Hero = () => {
 
   return (
     <Box
-      classsName="jarallax"
+      className="jarallax"
       data-jarallax
-      data-speed=".02"
-      id="agency__portfolio-item--js-scroll"
+      data-speed="0.2"
+      id="columbus-scroll"
       sx={{
         position: 'relative',
         minHeight: { xs: 400, sm: 500, md: 600 },
         display: 'flex',
         alignItems: 'center',
-        mt: '-13',
-        pt: '-13',
+        mt: -13,
+        pt: 13,
       }}
     >
       <Box
@@ -72,6 +72,9 @@ const Hero = () => {
           variant="h1"
           sx={{
             fontWeight: 900,
+            fontSize: '3.75rem',
+            lineHeight: 1.2,
+            letterSpacing: '-0.00833em',
             color: 'white',
             textTransform: 'uppercase',
             mb: '1em',
@@ -82,7 +85,13 @@ const Hero = () => {
         <Typography
           variant="h4"
           color="text.primary"
-          sx={{ fontWeight: 700, color: 'white' }}
+          sx={{
+            fontWeight: 700,
+            color: 'white',
+            fontSize: '1.5rem',
+            lineHeight: 1.334,
+            letterSpacing: '0em',
+          }}
         >
           Founded by a couple cool dudes who love FlavorTown and the Buckeyes.
         </Typography>

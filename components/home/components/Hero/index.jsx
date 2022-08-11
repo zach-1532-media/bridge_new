@@ -30,9 +30,14 @@ const Hero = () => {
         <Box data-aos={isMd ? 'fade-right' : 'fade-up'}>
           <Box>
             <Typography
-              variant="h1"
               color="text.primary"
-              sx={{ fontWeight: 700, mb: '1em' }}
+              gutterBottom
+              sx={{
+                fontWeight: 700,
+                fontSize: '3.75rem',
+                lineHeight: 1.2,
+                letterSpacing: '-0.00833em',
+              }}
             >
               Finding work made simple
             </Typography>
@@ -41,7 +46,13 @@ const Hero = () => {
             <Typography
               variant="h6"
               component="p"
-              sx={{ color: 'text.secondary', fontWeight: 700 }}
+              sx={{
+                color: 'text.secondary',
+                fontWeight: 700,
+                fontSize: '1rem',
+                lineHeight: 1.75,
+                letterSpacing: '0.00938em',
+              }}
             >
               Get matched with you next full-time or part-time job that meet
               your requirements

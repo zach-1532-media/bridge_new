@@ -8,7 +8,7 @@ import Content from './components/content';
 
 const BlogArticle = () => {
   return (
-    <Main>
+    <Main colorInvert>
       <Box>
         <Hero />
         <Container>

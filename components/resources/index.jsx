@@ -11,7 +11,7 @@ import Newsletter from './components/newsletter';
 
 const Resources = () => {
   return (
-    <Main>
+    <Main colorInvert>
       <Hero />
       <Container>
         <FeaturedArticle />

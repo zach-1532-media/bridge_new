@@ -20,7 +20,14 @@ const NavItem = ({ href, title, id, colorInvert }) => {
         }}
       >
         <Link href={href} passHref>
-          <Typography component="span" fontWeight={400} color={linkColor}>
+          <Typography
+            sx={{
+              fontWeight: 400,
+              fontSize: '1.25em',
+            }}
+            fontWeight={400}
+            color={linkColor}
+          >
             {title}
           </Typography>
         </Link>

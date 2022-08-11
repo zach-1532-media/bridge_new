@@ -13,7 +13,7 @@ import Contact from './components/contact';
 
 const About = () => {
   return (
-    <Main>
+    <Main colorInvert>
       <Hero />
       <Container>
         <Story />
