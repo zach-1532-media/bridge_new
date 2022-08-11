@@ -27,7 +27,7 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
     {
       title: 'Resources',
       id: 'resources-page',
-      href: '/resources',
+      href: '/resources/candidates',
     },
     {
       title: 'About',

@@ -79,7 +79,7 @@
     "react-dom": "18.0.0",
     "react-iframe": "^1.8.0",
     "react-image-lightbox": "^5.1.4",
-    "react-lazy-load-image-component": "^1.5.4",
+    "react-lazy-load-image-component": "^1.5.5",
     "react-pdf": "^5.7.2",
     "react-slick": "^0.28.1",
     "react-syntax-highlighter": "^15.5.0",
