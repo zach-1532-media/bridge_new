@@ -37,12 +37,10 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
     },
     {
       title: session ? null : 'Looking to hire?',
-      id: session ? null : 'business-signup',
-      href: session ? '/#' : '/signUp/business',
+      id: session ? null : 'business-landing',
+      href: session ? '/#' : '/business',
     },
   ];
-
-  // const initial = !session ? null : session.user.email.slice(0, 1);
 
   return (
     <Box
