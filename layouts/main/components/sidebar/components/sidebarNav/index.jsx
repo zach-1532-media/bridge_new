@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/client';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 import NavItem from '../navItem';
 import Logo from '../../../../../../components/shared/logo';
@@ -23,7 +24,10 @@ const SidebarNav = () => {
           <NavItem title="Jobs" href="/jobs" />
         </Box>
         <Box>
-          <NavItem title="Blog" href="/blog" />
+          <NavItem title="Resources" href="/resources/candidates" />
+        </Box>
+        <Box>
+          <NavItem title="About" href="/about" />
         </Box>
         {session ? (
           <></>
@@ -35,7 +39,13 @@ const SidebarNav = () => {
         {session ? (
           <></>
         ) : (
-          <Box marginTop={2}>
+          <Stack
+            direction="column"
+            spacing={2}
+            sx={{
+              mt: 2,
+            }}
+          >
             <Link href="/userSignUp" passHref>
               <Button
                 size="large"
@@ -43,10 +53,20 @@ const SidebarNav = () => {
                 color="primary"
                 fullWidth
               >
-                Sign Up
+                Signup
               </Button>
             </Link>
-          </Box>
+            <Link href="/login" passHref>
+              <Button
+                size="large"
+                variant="outlined"
+                color="tertiary"
+                fullWidth
+              >
+                Login
+              </Button>
+            </Link>
+          </Stack>
         )}
       </Box>
     </Box>
