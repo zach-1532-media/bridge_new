@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { signOut } from 'next-auth/client';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -9,7 +11,6 @@ import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import Switch from '@mui/material/Switch';
 
 function SecurityTab() {
   return (
@@ -53,10 +54,14 @@ function SecurityTab() {
                   variant: 'subtitle2',
                   lineHeight: 1,
                 }}
-                primary="Two-Factor Authentication"
-                secondary="Enable PIN verification for all sign in attempts"
               />
-              <Switch color="primary" />
+              <Button
+                onClick={() => signOut({ callbackUrl: '/' })}
+                color="error"
+                variant="outlined"
+              >
+                Logout
+              </Button>
             </ListItem>
           </List>
         </Card>

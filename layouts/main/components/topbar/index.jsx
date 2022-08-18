@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Link from 'next/link';
 
@@ -12,6 +12,7 @@ import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import Stack from '@mui/material/Stack';
 
+import UserBoxLinks from '../../../../components/shared/layoutLinks/links';
 import NavItem from './navItem';
 import Logo from '../../../../components/shared/logo';
 
@@ -37,7 +38,7 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
     {
       title: session ? null : 'Looking to hire?',
       id: session ? null : 'business-signup',
-      href: session ? '/#' : '/businesses',
+      href: session ? '/#' : '/signUp/business',
     },
   ];
 
@@ -65,10 +66,20 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
             />
           ))}
         </Stack>
-        <Link href="/dashboards/user/62bdc1724e66a090b6a1e791" passHref>
-          <Button variant="contained" size="large" sx={{ ml: '4em' }}>
-            Sign In
-          </Button>
+        <Link href="/login" passHref>
+          {session ? (
+            <UserBoxLinks
+              id={session.id}
+              type={session.type}
+              businessName={session.businessName ?? ''}
+              avatar={session.avatar}
+              sessionName={session.sessionName}
+            />
+          ) : (
+            <Button variant="contained" size="large" sx={{ ml: '4em' }}>
+              Sign In
+            </Button>
+          )}
         </Link>
       </Box>
       <Box sx={{ display: { xs: 'block', md: 'none' }, alignItems: 'center' }}>

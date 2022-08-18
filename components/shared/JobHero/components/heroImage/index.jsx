@@ -25,7 +25,7 @@ const HeroImage = () => {
           >
             <Image
               alt="applicant looking at themselves in the mirror"
-              src="https://connectatthebridge.nyc3.cdn.digitaloceanspaces.com/site-assets/career.svg"
+              src="https://res.cloudinary.com/dci8xvvvp/image/upload/v1660228204/assets/career_cnbcey.svg"
               height={600}
               width={700}
             />

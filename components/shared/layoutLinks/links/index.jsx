@@ -201,6 +201,14 @@ const UserBoxLinks = ({ id, type, avatar, sessionName, businessName }) => {
 UserBoxLinks.propTypes = {
   type: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  businessName: PropTypes.string,
+  sessionName: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
+};
+
+UserBoxLinks.defaultProps = {
+  businessName: '',
+  avatar: '',
 };
 
 export default UserBoxLinks;

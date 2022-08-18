@@ -42,17 +42,25 @@ export default async (req, res) => {
             Link to verify email</a>`,
         };
 
-        await User.create(newUser);
+        const user = await User.create(newUser);
+        const id = user._id.toString();
+        const data = {
+          id,
+          verifyEmail: user.verifyEmail,
+        };
         await sgMail.send(verify);
 
-        res.status(200).json({ status: 200, success: true });
+        res.status(200).json({ case: 1, success: true, data });
       } catch (err) {
-        res.status(400).json({ status: 400, success: false });
+        res.status(400).json({
+          case: 2,
+          success: false,
+        });
       }
     } else if (existingUser) {
       res
         .status(409)
-        .json({ status: 409, success: false, message: 'User Already Exists' });
+        .json({ case: 3, success: false, message: 'User Already Exists' });
     }
   }
 };

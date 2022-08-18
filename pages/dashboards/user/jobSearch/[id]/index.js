@@ -4,6 +4,8 @@ import { React, useState, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
 
+import { getSession } from 'next-auth/client';
+
 import PropTypes from 'prop-types';
 
 import dbConnect from '../../../../../lib/dbConnect';
@@ -200,7 +202,20 @@ const DashJobSearch = ({ data, jobs }) => {
   );
 };
 
-export async function getServerSideProps({ query: { id, search } }) {
+export async function getServerSideProps(ctx) {
+  const session = await getSession({ req: ctx.req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const { id, search } = ctx.query;
+
   await dbConnect();
   // eslint-disable-next-line global-require
   require('../../../../../models/Business');

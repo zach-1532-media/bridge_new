@@ -50,14 +50,13 @@ const Hero = () => {
               align="center"
               sx={{
                 fontWeight: 400,
-                fontSize: '3.17rem',
                 color: theme.palette.common.white,
-
+                fontSize: '3.75rem',
                 lineHeight: 1.2,
                 letterSpacing: '-0.00833em',
               }}
             >
-              Newsroom
+              Resources
             </Typography>
           </Box>
           <Box>

@@ -2,21 +2,12 @@
 import React from 'react';
 
 import Image from 'next/image';
-import Link from 'next/link';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-
-const links = [
-  {
-    title: 'Candidate Signup',
-    link: '/userSignUp',
-  },
-];
 
 const Hero = () => {
   const theme = useTheme();
@@ -52,34 +43,12 @@ const Hero = () => {
                 fontSize: '1rem',
                 lineHeight: 1.75,
                 letterSpacing: '0.00938em',
+                mt: '3em',
               }}
             >
               Get matched with you next full-time or part-time job that meet
               your requirements
             </Typography>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection={{ xs: 'row', sm: 'row' }}
-            alignItems={{ xs: 'stretched', sm: 'flex-start' }}
-          >
-            {links.map((link) => (
-              <Link href={link.link} passHref key={link.title}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  key={link.title}
-                  sx={{
-                    mb: '2em',
-                    mr: '1em',
-                  }}
-                  fullWidth={!isMd}
-                >
-                  {link.title}
-                </Button>
-              </Link>
-            ))}
           </Box>
         </Box>
       </Grid>
@@ -104,7 +73,7 @@ const Hero = () => {
             >
               <Image
                 alt="content creator"
-                src="https://connectatthebridge.nyc3.cdn.digitaloceanspaces.com/site-assets/team.svg"
+                src="https://res.cloudinary.com/dci8xvvvp/image/upload/v1660227923/assets/team_pedegf.svg"
                 height={400}
                 width={600}
               />

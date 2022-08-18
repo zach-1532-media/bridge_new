@@ -152,7 +152,7 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
                 >
                   <Image
                     alt="illustration of woman holding an envelope"
-                    src="https://connectatthebridge.nyc3.cdn.digitaloceanspaces.com/site-assets/newsletter.svg"
+                    src="https://res.cloudinary.com/dci8xvvvp/image/upload/v1660228008/assets/newsletter_yxabta.svg"
                     height={300}
                     width={300}
                   />

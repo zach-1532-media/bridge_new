@@ -1,76 +1,31 @@
 import React from 'react';
+
+import Link from 'next/link';
+
 import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
+import TuneIcon from '@mui/icons-material/Tune';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ConnectWithoutContactOutlinedIcon from '@mui/icons-material/ConnectWithoutContactOutlined';
+import Stack from '@mui/material/Stack';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 const mock = [
   {
-    title: 'Built for developers',
-    subtitle:
-      'theFront is built to make your life easier. Variables, build tooling, documentation, and reusable components.',
-    icon: (
-      <svg
-        height={24}
-        width={24}
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-        />
-      </svg>
-    ),
+    title: 'Register for an account and set up your profile',
+    icon: <PersonAddIcon />,
   },
   {
-    title: 'Designed to be modern',
-    subtitle:
-      'Designed with the latest design trends in mind. theFront feels modern, minimal, and beautiful.',
-    icon: (
-      <svg
-        height={24}
-        width={24}
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-        />
-      </svg>
-    ),
+    title: 'Tell us what your requirements are (Salary, Benefits, and WFH)',
+    icon: <TuneIcon />,
   },
   {
-    title: 'Documentation for everything',
-    subtitle:
-      "We've written extensive documentation for components and tools, so you never have to reverse engineer anything.",
-    icon: (
-      <svg
-        height={24}
-        width={24}
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-        />
-      </svg>
-    ),
+    title: 'Get matched with jobs that meet your criteria  ',
+    icon: <ConnectWithoutContactOutlinedIcon />,
   },
 ];
 
@@ -101,21 +56,58 @@ const Services = () => {
                   {item.icon}
                 </Box>
                 <Typography
-                  variant="h6"
-                  gutterBottom
-                  sx={{ fontWeight: 500 }}
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: '1rem',
+                    lineHeight: 1.75,
+                    letterSpacing: '0.00938em',
+                  }}
                   align="center"
                 >
                   {item.title}
-                </Typography>
-                <Typography align="center" color="text.secondary">
-                  {item.subtitle}
                 </Typography>
               </Box>
             </Box>
           </Grid>
         ))}
       </Grid>
+
+      <Stack
+        sx={{ mt: '4em' }}
+        spacing={4}
+        direction={{ xs: 'column', md: 'row' }}
+        justifyContent="space-around"
+        alignItems="center"
+      >
+        <Box
+          sx={{
+            maxWidth: '50%',
+          }}
+        >
+          <Typography
+            align="center"
+            sx={{
+              color: theme.palette.text.secondary,
+              fontWeight: 400,
+              fontSize: '1rem',
+              lineHeight: 1.5,
+              letterSpacing: '0.00938em',
+            }}
+          >
+            The Bridge also allows you to include things like your Instagram and
+            website when applying for jobs to help you showcase your work.{' '}
+          </Typography>
+        </Box>
+        <Link href="/signUp/user" passHref>
+          <Button
+            endIcon={<ArrowRightAltIcon />}
+            variant="contained"
+            size="large"
+          >
+            Start Now
+          </Button>
+        </Link>
+      </Stack>
     </Box>
   );
 };

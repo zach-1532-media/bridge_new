@@ -37,14 +37,17 @@ const NavItem = ({ href, title, id, colorInvert }) => {
 };
 
 NavItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  id: PropTypes.string,
   colorInvert: PropTypes.bool,
-  href: PropTypes.string.isRequired,
+  href: PropTypes.string,
 };
 
 NavItem.defaultProps = {
   colorInvert: false,
+  title: '',
+  id: '',
+  href: '#',
 };
 
 export default NavItem;

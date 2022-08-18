@@ -1,15 +1,14 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
+
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import Container from '../../front_components/container';
-import ContactCard from './components/ContactCard';
-import Content from './components/Content';
+import Content from './components/content';
 
-const CompanyTerms = () => {
+const TermsAndConditions = () => {
   const theme = useTheme();
 
   return (
@@ -22,10 +21,13 @@ const CompanyTerms = () => {
               gutterBottom
               sx={{
                 fontWeight: 700,
+                fontSize: '2.125rem',
+                lineHeight: 1.235,
+                letterSpacing: '0.00735em',
                 color: theme.palette.common.white,
               }}
             >
-              The Bridge terms & conditions
+              The Bridge Terms and Conditions
             </Typography>
             <Typography
               gutterBottom
@@ -43,11 +45,13 @@ const CompanyTerms = () => {
             x="0px"
             y="0px"
             viewBox="0 0 1920 100.1"
-            width={1}
-            marginBottom={-1}
+            sx={{
+              width: 1,
+              mb: -1,
+            }}
           >
             <path
-              fill={theme.palette.background.paper}
+              fill={theme.palette.background.default}
               d="M0,0c0,0,934.4,93.4,1920,0v100.1H0L0,0z"
             />
           </Box>
@@ -59,19 +63,13 @@ const CompanyTerms = () => {
           top={0}
         >
           <Box
-            component={Grid}
-            container
-            spacing={4}
-            flexDirection={{ xs: 'column-reverse', md: 'row' }}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column-reverse', md: 'row' },
+              mt: '2em',
+            }}
           >
-            <Grid item xs={12} md={9}>
-              <Content />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <Box position="sticky" top={theme.spacing(10)} className="sticky">
-                <ContactCard />
-              </Box>
-            </Grid>
+            <Content />
           </Box>
         </Container>
       </Box>
@@ -79,4 +77,4 @@ const CompanyTerms = () => {
   );
 };
 
-export default CompanyTerms;
+export default TermsAndConditions;
