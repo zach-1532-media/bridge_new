@@ -33,7 +33,7 @@ const SidebarNav = () => {
           <></>
         ) : (
           <Box>
-            <NavItem title="Looking to hire?" href="/businesses" />
+            <NavItem title="Looking to hire?" href="/business" />
           </Box>
         )}
         {session ? (
