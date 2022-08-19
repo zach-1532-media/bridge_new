@@ -46,7 +46,7 @@ const Hero = () => {
                 mt: '3em',
               }}
             >
-              Get matched with you next full-time or part-time job that meet
+              Get matched with your next full-time or part-time job that meets
               your requirements
             </Typography>
           </Box>
