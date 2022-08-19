@@ -19,8 +19,12 @@ export default NextAuth({
       async authorize(credentials) {
         await dbConnect();
 
-        const user = await User.findOne({ email: credentials.email });
-        const business = await Business.findOne({ email: credentials.email });
+        const credentialsEmailLowerCase = credentials.email.toLowerCase();
+
+        const user = await User.findOne({ email: credentialsEmailLowerCase });
+        const business = await Business.findOne({
+          email: credentialsEmailLowerCase,
+        });
 
         const data = user ? user : business;
 
