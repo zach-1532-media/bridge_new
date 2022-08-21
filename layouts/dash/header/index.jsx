@@ -1,12 +1,8 @@
-import { React, useContext } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { Box, IconButton, Tooltip, styled } from '@mui/material';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-
-import { SidebarContext } from '../../../components/contexts/sidebar';
+import { Box, styled } from '@mui/material';
 import Logo from '../../../components/shared/logo';
 
 const HeaderWrapper = styled(Box)(
@@ -21,8 +17,6 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header({ links }) {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-
   return (
     <HeaderWrapper display="flex" alignItems="center">
       <Box display="flex" alignItems="center">
@@ -35,26 +29,13 @@ function Header({ links }) {
           <Logo />
         </Box>
       </Box>
-      <Box display="flex" alignItems="center">
-        <Box
-          sx={{
-            display: { lg: 'inline-block', xs: 'none' },
-          }}
-        >
-          {links}
-        </Box>
-        <Box
-          component="span"
-          sx={{
-            display: { lg: 'none', xs: 'inline-block' },
-          }}
-        >
-          <Tooltip arrow title="Toggle Menu">
-            <IconButton color="primary" onClick={toggleSidebar}>
-              {!sidebarToggle ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
-            </IconButton>
-          </Tooltip>
-        </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        {links}
       </Box>
     </HeaderWrapper>
   );
