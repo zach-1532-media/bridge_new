@@ -18,6 +18,7 @@ import Logo from '../../../../components/shared/logo';
 
 const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
   const [session] = useSession();
+  console.log(session);
 
   const navItems = [
     {

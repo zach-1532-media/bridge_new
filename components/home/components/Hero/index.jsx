@@ -3,13 +3,11 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import { signOut } from 'next-auth/client';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 
 const Hero = () => {
   const theme = useTheme();
@@ -51,7 +49,6 @@ const Hero = () => {
               Get matched with your next full-time or part-time job that meets
               your requirements
             </Typography>
-            <Button onClick={() => signOut()}>Logout</Button>
           </Box>
         </Box>
       </Grid>
