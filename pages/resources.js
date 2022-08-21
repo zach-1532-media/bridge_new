@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Resources from '../../../components/resources';
+import Resources from '../components/resources';
 
 const CandidateResourcesPage = () => {
   return <Resources />;

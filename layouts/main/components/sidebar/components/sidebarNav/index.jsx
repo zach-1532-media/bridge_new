@@ -24,7 +24,7 @@ const SidebarNav = () => {
           <NavItem title="Jobs" href="/jobs" />
         </Box>
         <Box>
-          <NavItem title="Resources" href="/resources/candidates" />
+          <NavItem title="Resources" href="/resources" />
         </Box>
         <Box>
           <NavItem title="About" href="/about" />

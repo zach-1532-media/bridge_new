@@ -20,6 +20,7 @@ import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
 import PostAddTwoToneIcon from '@mui/icons-material/PostAddTwoTone';
 import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+import AutoStoriesTwoToneIcon from '@mui/icons-material/AutoStoriesTwoTone';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -84,6 +85,11 @@ const UserBoxLinks = ({ id, type, avatar, sessionName, businessName }) => {
       link: `/dashboards/business/postAJob/${id}`,
       icon: <PostAddTwoToneIcon fontSize="small" />,
     },
+    {
+      name: 'Resources',
+      link: '/resources',
+      icon: <AutoStoriesTwoToneIcon fontSize="small" />,
+    },
   ];
 
   const userLinks = [
@@ -101,6 +107,11 @@ const UserBoxLinks = ({ id, type, avatar, sessionName, businessName }) => {
       name: 'Job Search',
       link: `/dashboards/user/jobSearch/${id}`,
       icon: <SearchTwoToneIcon fontSize="small" />,
+    },
+    {
+      name: 'Resources',
+      link: '/resources',
+      icon: <AutoStoriesTwoToneIcon fontSize="small" />,
     },
   ];
 

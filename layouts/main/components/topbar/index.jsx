@@ -28,7 +28,7 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
     {
       title: 'Resources',
       id: 'resources-page',
-      href: '/resources/candidates',
+      href: '/resources',
     },
     {
       title: 'About',
@@ -80,15 +80,26 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
           )}
         </Link>
       </Box>
+
       <Box sx={{ display: { xs: 'block', md: 'none' }, alignItems: 'center' }}>
-        <IconButton
-          disableRipple
-          color="primary"
-          onClick={() => onSidebarOpen(true)}
-          aria-label="Menu"
-        >
-          {!openSidebar ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
-        </IconButton>
+        {session ? (
+          <UserBoxLinks
+            id={session.id}
+            type={session.type}
+            businessName={session.businessName ?? ''}
+            avatar={session.avatar}
+            sessionName={session.sessionName}
+          />
+        ) : (
+          <IconButton
+            disableRipple
+            color="primary"
+            onClick={() => onSidebarOpen(true)}
+            aria-label="Menu"
+          >
+            {!openSidebar ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
+          </IconButton>
+        )}
       </Box>
     </Box>
   );

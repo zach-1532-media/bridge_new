@@ -36,7 +36,13 @@ function Header({ links }) {
         </Box>
       </Box>
       <Box display="flex" alignItems="center">
-        {links}
+        <Box
+          sx={{
+            display: { lg: 'inline-block', xs: 'none' },
+          }}
+        >
+          {links}
+        </Box>
         <Box
           component="span"
           sx={{
