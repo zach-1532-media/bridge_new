@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { React, useEffect, useState, useContext } from 'react';
+import { React, useEffect, useState /* useContext */ } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -12,18 +12,25 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-import PostAJobContext from '../contexts/postAJob';
+// import PostAJobContext from '../contexts/postAJob';
+import { indicator, steps } from '../shared/data';
 import JobCard from '../shared/jobCard';
 import JobWorkType from './components/jobWorkType';
 import JobInformation from './components/listing';
-import { steps } from '../shared/data';
 import LQV from '../shared/listingQuickView';
 import ProfileCard from '../shared/profileCard';
+import { GeneralSnack } from '../shared/snackbars';
 
 const JobStepper = ({ bio, avatar, businessName }) => {
   const router = useRouter();
@@ -32,12 +39,17 @@ const JobStepper = ({ bio, avatar, businessName }) => {
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
-  const formCtx = useContext(PostAJobContext);
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  // const formCtx = useContext(PostAJobContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [errors, setErrors] = useState({});
   const [responsibilities, setResponsibilities] = useState([]);
   const [qualifications, setQualifications] = useState([]);
+  const [message, setMessage] = useState('');
+  const [generalError, setGeneralError] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     job: '',
     city: '',
@@ -51,9 +63,9 @@ const JobStepper = ({ bio, avatar, businessName }) => {
     jobTitle: '',
   });
 
-  useEffect(() => {
-    window.localStorage.setItem('jobForm', JSON.stringify(form));
-  }, [form]);
+  // useEffect(() => {
+  //  window.localStorage.setItem('jobForm', JSON.stringify(form));
+  // }, [form]);
 
   const jobs = {
     ...form,
@@ -71,6 +83,10 @@ const JobStepper = ({ bio, avatar, businessName }) => {
 
   const handleStep = (step) => () => {
     setActiveStep(step);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
   };
 
   const validate1 = () => {
@@ -133,9 +149,26 @@ const JobStepper = ({ bio, avatar, businessName }) => {
     return err;
   };
 
-  const checkout = () => {
-    router.replace(`/dashboards/business/checkout/${id}`);
-    formCtx.newForm({ ...jobs });
+  const checkout = async () => {
+    const jobData = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(jobs),
+    };
+    const res = await fetch(`/api/jobs/${id}`, jobData);
+    const data = await res.json();
+    if (data.case === 1) {
+      router.replace(`/dashboards/business/postedJobs/${id}`);
+    } else if (data.case === 2) {
+      setIsLoading(false);
+      setOpenDialog(false);
+      setIsSubmitting(false);
+      setMessage(data.message);
+      setGeneralError(true);
+    }
   };
 
   useEffect(() => {
@@ -154,17 +187,13 @@ const JobStepper = ({ bio, avatar, businessName }) => {
         } else {
           setIsSubmitting(false);
         }
-      } else if (activeStep === 2) {
-        setIsSubmitting(false);
-        formCtx.newForm({ ...jobs });
-        router.replace(`/dashboards/business/checkout/${id}`);
       }
     } else {
       setIsSubmitting(false);
     }
   }, [errors]);
 
-  const handleErrors = (e) => {
+  const jobSubmit = (e) => {
     e.preventDefault();
     if (activeStep === 0) {
       setErrors(validate1);
@@ -173,6 +202,9 @@ const JobStepper = ({ bio, avatar, businessName }) => {
     if (activeStep === 1) {
       setErrors(validate2);
       setIsSubmitting(true);
+    }
+    if (activeStep === 2) {
+      setOpenDialog(true);
     }
   };
 
@@ -327,15 +359,43 @@ const JobStepper = ({ bio, avatar, businessName }) => {
             Back
           </Button>
           <Box sx={{ flex: '1 1 auto' }} />
-          <Button
-            disableRipple
-            variant="contained"
-            onClick={activeStep === 2 ? checkout : handleErrors}
-          >
+          <Button disableRipple variant="contained" onClick={jobSubmit}>
             {activeStep === 2 ? 'Checkout' : 'Next'}
           </Button>
         </Box>
       </Box>
+      <Dialog
+        fullScreen={fullScreen}
+        open={openDialog}
+        onClose={handleClose}
+        aria-labelledby="confirm-checkout"
+      >
+        <DialogTitle id="conirm-checkout">Ready to Post?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            During beta there is no checkout, so by pressing 'Post Job' below
+            your job will be immediatly posted and availble to view.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button color="error" onClick={handleClose}>
+            Cancel
+          </Button>
+          <LoadingButton
+            loadingIndicator={indicator}
+            loading={isLoading}
+            onClick={checkout}
+            autoFocus
+          >
+            Post Job
+          </LoadingButton>
+        </DialogActions>
+      </Dialog>
+      <GeneralSnack
+        generalError={generalError}
+        setGeneralError={setGeneralError}
+        message={message}
+      />
     </Container>
   );
 };

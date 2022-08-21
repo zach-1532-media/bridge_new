@@ -16,7 +16,13 @@ const LQV = ({ job, children, bio, avatar, businessName }) => {
   const listItems = [
     {
       text: 'Who we are:',
-      value: !bio ? job.business.bio : bio,
+      value: !bio ? (
+        <Typography color="error">
+          Please enter your business bio in your profile!
+        </Typography>
+      ) : (
+        bio
+      ),
     },
     {
       text: "What we're looking for: ",

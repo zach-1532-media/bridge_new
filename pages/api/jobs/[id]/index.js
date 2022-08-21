@@ -78,9 +78,14 @@ const JobHandler = async (req, res) => {
         dateCreated: new Date(),
         ...req.body,
       });
-      res.status(200).json({ code: 1, success: true, message: 'Job Posted!' });
+      res.status(200).json({ case: 1, success: true, message: 'Job Posted!' });
     } catch (err) {
-      res.status(400).json({ code: 2, success: false });
+      res.status(400).json({
+        case: 2,
+        success: false,
+        message:
+          'Something went wrong posting this job. Please try again later',
+      });
     }
   }
 };

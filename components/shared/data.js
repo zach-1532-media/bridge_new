@@ -1,8 +1,11 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/function-component-definition */
+/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
 
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useTheme } from '@mui/material/styles';
 
 export const modalStyle = {
   position: 'absolute',
@@ -16,6 +19,13 @@ export const modalStyle = {
   p: 4,
   borderRadius: 2,
   overflow: 'scroll',
+};
+
+export const indicator = () => {
+  const theme = useTheme();
+  return (
+    <CircularProgress size={16} sx={{ color: theme.palette.tertiary.main }} />
+  );
 };
 
 export const yearsInBusiness = [
