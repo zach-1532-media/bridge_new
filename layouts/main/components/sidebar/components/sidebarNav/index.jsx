@@ -46,7 +46,7 @@ const SidebarNav = () => {
               mt: 2,
             }}
           >
-            <Link href="/userSignUp" passHref>
+            <Link href="/signUp/user" passHref>
               <Button
                 size="large"
                 variant="contained"
