@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
@@ -14,7 +15,8 @@ const teamMembers = [
   {
     name: 'Nolan Vannucci',
     title: 'CEO',
-    avatar: 'https://assets.maccarianagency.com/avatars/img4.jpg',
+    avatar:
+      'https://res.cloudinary.com/dci8xvvvp/image/upload/v1661125971/assets/nolan_gf0ss6.jpg',
   },
   {
     name: 'Zach Livingston',

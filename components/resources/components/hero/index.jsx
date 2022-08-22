@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 import React from 'react';
 
 import Box from '@mui/material/Box';
@@ -14,7 +15,7 @@ const Hero = () => {
       position="relative"
       sx={{
         backgroundImage:
-          'url("https://assets.maccarianagency.com/backgrounds/img52.jpg")',
+          'url("https://res.cloudinary.com/dci8xvvvp/image/upload/v1661126402/assets/resources_dixdoq.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         mt: -13,
@@ -59,7 +60,7 @@ const Hero = () => {
               Resources
             </Typography>
           </Box>
-          <Box>
+          {/*<Box>
             <Typography
               variant="h6"
               align="center"
@@ -73,7 +74,7 @@ const Hero = () => {
             >
               Latest updates and Hand-picked resources.
             </Typography>
-          </Box>
+          </Box>*/}
         </Box>
       </Container>
       <Box
