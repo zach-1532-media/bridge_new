@@ -69,9 +69,13 @@ const BusinessFields = ({ data }) => {
             </Box>
           </Grid>
           <Typography variant="subtitle2">
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-              {field.text}
-            </Stack>
+            {isXs ? (
+              <Stack direction="column" spacing={1}>
+                {field.text}
+              </Stack>
+            ) : (
+              <Box sx={{ pt: 1.5 }}>{field.text}</Box>
+            )}
           </Typography>
         </Grid>
       ))}
