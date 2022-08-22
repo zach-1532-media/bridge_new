@@ -69,6 +69,7 @@
     "next-auth": "3.29.0",
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.8.4",
+    "nextjs-google-analytics": "^2.1.0",
     "object-fit-images": "^3.2.4",
     "primeicons": "^5.0.0",
     "primereact": "^8.1.1",

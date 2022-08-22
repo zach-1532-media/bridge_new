@@ -39,7 +39,7 @@ const Main = ({ children, colorInvert, bgcolor }) => {
   });
 
   return (
-    <Box>
+    <Box sx={{ background: theme.palette.background.paper }}>
       <AppBar
         position="sticky"
         sx={{
@@ -57,10 +57,10 @@ const Main = ({ children, colorInvert, bgcolor }) => {
         </Container>
       </AppBar>
       <Sidebar onClose={handleSidebarClose} open={open} variant="temporary" />
-      <main>
+      <Box sx={{ background: theme.palette.background.paper }}>
         {children}
         <Divider />
-      </main>
+      </Box>
       <Box sx={{ background: theme.palette.background.paper }}>
         <Container paddingY={4}>
           <Footer />

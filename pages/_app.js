@@ -5,11 +5,11 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
+import { GoogleAnalytics } from 'nextjs-google-analytics';
+
 import Head from 'next/head';
 
 import { Provider } from 'next-auth/client';
-
-import { PostAJobContextProvider } from '../components/contexts/postAJob';
 
 import Page from '../components/front_components/page';
 
@@ -31,9 +31,9 @@ const MyApp = ({ Component, pageProps }) => (
 
     <Provider session={pageProps.session}>
       <Page>
-        <PostAJobContextProvider>
+        <GoogleAnalytics trackPageViews>
           <Component {...pageProps} />
-        </PostAJobContextProvider>
+        </GoogleAnalytics>
       </Page>
     </Provider>
   </>
