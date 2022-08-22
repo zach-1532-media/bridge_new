@@ -5,8 +5,6 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { GoogleAnalytics } from 'nextjs-google-analytics';
-
 import Head from 'next/head';
 
 import { Provider } from 'next-auth/client';
@@ -31,9 +29,7 @@ const MyApp = ({ Component, pageProps }) => (
 
     <Provider session={pageProps.session}>
       <Page>
-        <GoogleAnalytics trackPageViews>
-          <Component {...pageProps} />
-        </GoogleAnalytics>
+        <Component {...pageProps} />
       </Page>
     </Provider>
   </>
