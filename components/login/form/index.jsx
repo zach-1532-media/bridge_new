@@ -24,6 +24,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { GeneralSnack } from '../../shared/snackbars';
 
@@ -41,7 +42,7 @@ const Form = () => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -112,7 +113,7 @@ const Form = () => {
       const mySession = await getSession();
       router.push(`/dashboards/${mySession.type}/${mySession.id}`);
     } else if (res.error) {
-      setLoading(false);
+      setIsLoading(false);
       if (res.error === 'Password!') {
         setMessage('Incorrect password please try again');
       } else if (res.error === 'Username!') {
@@ -125,6 +126,7 @@ const Form = () => {
   useEffect(() => {
     if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
+        setIsLoading(true);
         signInUser();
       }
     } else {
@@ -300,10 +302,16 @@ const Form = () => {
                 </Typography>
               </Box>
               <LoadingButton
-                loading={loading}
+                loading={isLoading}
                 size="large"
                 variant="contained"
                 type="submit"
+                loadingIndicator={
+                  <CircularProgress
+                    size={16}
+                    sx={{ color: theme.palette.tertiary.main }}
+                  />
+                }
               >
                 Login
               </LoadingButton>

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -12,27 +11,23 @@ import Stack from '@mui/material/Stack';
 import Logo from '../../../../components/shared/logo';
 
 const Footer = () => (
-  <Grid container spacing={2}>
-    <Grid item xs={12}>
-      <Box
+  <>
+    <Box
+      sx={{
+        display: 'flex',
+        width: 1,
+      }}
+    >
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        alignItems="center"
+        justifyContent="space-between"
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: 1,
-          flexDirection: { xs: 'column', sm: 'row' },
+          width: '100%',
+          mb: '2em',
         }}
       >
-        <Box display="flex" href="/" title="The Bridge" width={80}>
-          <Box
-            sx={{
-              height: 1,
-              width: 1,
-            }}
-          >
-            <Logo />
-          </Box>
-        </Box>
+        <Logo />
         <Stack direction="row" spacing={2}>
           <IconButton
             href="https://www.facebook.com/ConnectAtTheBridge"
@@ -70,20 +65,18 @@ const Footer = () => (
             <InstagramIcon />
           </IconButton>
         </Stack>
-      </Box>
-    </Grid>
-    <Grid item xs={12}>
-      <Typography
-        align="center"
-        variant="subtitle2"
-        component="span"
-        color="text.secondary"
-        gutterBottom
-      >
+      </Stack>
+    </Box>
+    <Box
+      sx={{
+        width: { xs: '100%', md: '38%' },
+      }}
+    >
+      <Typography align="center" color="text.secondary">
         &copy; The Bridge. 2022, Meet At The Bridge Corp. All rights reserved
       </Typography>
-    </Grid>
-  </Grid>
+    </Box>
+  </>
 );
 
 export default Footer;

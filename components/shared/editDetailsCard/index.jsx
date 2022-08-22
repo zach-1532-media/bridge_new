@@ -16,12 +16,13 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import CardContent from '@mui/material/CardContent';
 import SaveIcon from '@mui/icons-material/Save';
 import { useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
-import Backdrop from '../backdrop';
 import EditBusinessFields from './components/editBusinessFields';
 import EditUserFields from './components/editUserFields';
 
@@ -29,7 +30,6 @@ const EditDetailsCard = ({
   title,
   subtitle,
   data,
-  business,
   setEdit,
   setOpenSuccess,
   setGeneralError,
@@ -69,6 +69,7 @@ const EditDetailsCard = ({
   const salary = data.salary ? data.salary : [];
   const hourlyRate = data.hourlyRate ? data.hourlyRate : [];
   const workType = data.workType ? data.workType : [];
+  const [isLoading, setIsLoading] = useState(false);
   const [userJob, setUserJob] = useState(job);
   const [userSalary, setUserSalary] = useState(salary);
   const [userHourlyRate, setUserHourlyRate] = useState(hourlyRate);
@@ -77,9 +78,10 @@ const EditDetailsCard = ({
   const [isUserSubmitting, setIsUserSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [userErrors, setUserErrors] = useState({});
-  const [openBackdrop, setOpenBackdrop] = useState(false);
 
   const router = useRouter();
+
+  const business = router.pathname === '/dashboards/business/[id]';
 
   const theme = useTheme();
 
@@ -99,32 +101,32 @@ const EditDetailsCard = ({
           workType: userWorkType,
         }),
       };
-      const response = await fetch(`/api/users/${data.email}`, updateInfo);
+      const response = await fetch(`/api/users/${data._id}`, updateInfo);
       const editData = await response.json();
       if (editData.code === 2) {
+        setIsLoading(false);
         setIsUserSubmitting(false);
-        setOpenBackdrop(false);
         setOpenSuccess(true);
         router.replace(router.asPath);
         setMessage(editData.message);
         setEdit(false);
       } else if (editData.code === 3) {
+        setIsLoading(false);
         setIsUserSubmitting(false);
-        setOpenBackdrop(false);
         setGeneralError(true);
         router.replace(router.asPath);
         setEdit(false);
       } else if (editData.code === 1) {
+        setIsLoading(false);
         setIsUserSubmitting(false);
-        setOpenBackdrop(false);
         setGeneralError(true);
         router.replace(router.asPath);
         setMessage(editData.message);
         setEdit(false);
       }
     } catch (err) {
+      setIsLoading(false);
       setIsUserSubmitting(false);
-      setOpenBackdrop(false);
       setGeneralError(true);
       router.replace(router.asPath);
       setEdit(false);
@@ -144,21 +146,21 @@ const EditDetailsCard = ({
       const response = await fetch(`/api/business/${data._id}`, updateInfo);
       const editData = await response.json();
       if (editData.status === 200) {
+        setIsLoading(false);
         setIsBusinessSubmitting(false);
-        setOpenBackdrop(false);
         setOpenSuccess(true);
         router.replace(router.asPath);
         setEdit(false);
       } else if (editData.status === 400) {
+        setIsLoading(false);
         setIsBusinessSubmitting(false);
-        setOpenBackdrop(false);
         setGeneralError(true);
         router.replace(router.asPath);
         setEdit(false);
       }
     } catch (err) {
+      setIsLoading(false);
       setIsBusinessSubmitting(false);
-      setOpenBackdrop(false);
       setGeneralError(true);
       router.replace(router.asPath);
       setEdit(false);
@@ -170,6 +172,7 @@ const EditDetailsCard = ({
   useEffect(() => {
     if (isBusinessSubmitting) {
       if (Object.keys(errors).length === 0) {
+        setIsLoading(true);
         updateBusinessInfo();
       } else {
         setIsBusinessSubmitting(false);
@@ -177,6 +180,7 @@ const EditDetailsCard = ({
     } else if (isUserSubmitting) {
       if (isUserSubmitting) {
         if (Object.keys(userErrors).length === 0) {
+          setIsLoading(true);
           updateUserInfo();
         } else {
           setIsUserSubmitting(false);
@@ -222,7 +226,6 @@ const EditDetailsCard = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOpenBackdrop(true);
     if (business) {
       setIsBusinessSubmitting(true);
       setErrors(businessValidate());
@@ -258,13 +261,20 @@ const EditDetailsCard = ({
           >
             Cancel
           </Button>
-          <Button
+          <LoadingButton
             variant="contained"
             onClick={handleSubmit}
             startIcon={<SaveIcon />}
+            loading={isLoading}
+            loadingIndicator={
+              <CircularProgress
+                size={16}
+                sx={{ color: theme.palette.tertiary.main }}
+              />
+            }
           >
             Save
-          </Button>
+          </LoadingButton>
         </Stack>
       </Box>
       <Divider />
@@ -276,8 +286,8 @@ const EditDetailsCard = ({
       >
         {business ? (
           <EditBusinessFields
-            form={businessForm}
-            setForm={setBusinessForm}
+            businessForm={businessForm}
+            setBusinessForm={setBusinessForm}
             errors={errors}
           />
         ) : (
@@ -296,7 +306,6 @@ const EditDetailsCard = ({
           />
         )}
       </CardContent>
-      <Backdrop open={openBackdrop} />
     </Card>
   );
 };
@@ -305,14 +314,9 @@ EditDetailsCard.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
-  business: PropTypes.bool,
   setEdit: PropTypes.func.isRequired,
   setOpenSuccess: PropTypes.func.isRequired,
   setGeneralError: PropTypes.func.isRequired,
-};
-
-EditDetailsCard.defaultProps = {
-  business: false,
 };
 
 export default EditDetailsCard;

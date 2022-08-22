@@ -389,16 +389,19 @@ const EditUserFields = ({
   return (
     <>
       {fields.map((field) => (
-        <Typography variant="subtitle2">
-          <Grid container spacing={0}>
-            <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
-              <Box sx={{ pr: 3, pb: 2 }}>{field.fieldName}</Box>
-            </Grid>
-            <Grid item xs={12} sm={8} md={9}>
-              {field.field}
-            </Grid>
+        <Grid container spacing={0}>
+          <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+            <Box sx={{ pr: 3, pb: 2 }}>
+              {' '}
+              <Typography variant="h6" sx={{ fontWeight: 600, mt: '1em' }}>
+                {field.fieldName}{' '}
+              </Typography>
+            </Box>
           </Grid>
-        </Typography>
+          <Grid item xs={12} sm={8} md={9}>
+            {field.field}
+          </Grid>
+        </Grid>
       ))}
     </>
   );

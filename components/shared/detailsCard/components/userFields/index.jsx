@@ -11,8 +11,10 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
-
-import Text from '../../../text';
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 const UserFields = ({ data }) => {
   const fields = [
@@ -125,21 +127,27 @@ const UserFields = ({ data }) => {
     //},
   ];
 
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <>
       {fields.map((field) => (
-        <Typography variant="subtitle2">
-          <Grid container spacing={0}>
-            <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
-              <Box sx={{ pr: 3, pb: 2 }}>{field.field}</Box>
-            </Grid>
-            <Grid item xs={12} sm={8} md={9}>
-              <Text color="black">
-                <b>{field.text}</b>
-              </Text>
-            </Grid>
+        <Grid container spacing={0}>
+          <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+            <Box sx={{ pr: 3, pb: 2 }}>
+              {' '}
+              <Typography variant="h6" sx={{ fontWeight: 600, mt: '1em' }}>
+                {field.field} {isXs ? <Divider /> : null}
+              </Typography>
+            </Box>
           </Grid>
-        </Typography>
+          <Typography variant="subtitle2">
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+              {field.text}
+            </Stack>
+          </Typography>
+        </Grid>
       ))}
     </>
   );
