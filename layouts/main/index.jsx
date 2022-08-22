@@ -61,9 +61,11 @@ const Main = ({ children, colorInvert, bgcolor }) => {
         {children}
         <Divider />
       </main>
-      <Container paddingY={4}>
-        <Footer />
-      </Container>
+      <Box sx={{ background: theme.palette.background.paper }}>
+        <Container paddingY={4}>
+          <Footer />
+        </Container>
+      </Box>
     </Box>
   );
 };
