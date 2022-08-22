@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 import { React, useEffect } from 'react';
 
 import { alpha } from '@mui/material/styles';
@@ -82,7 +83,7 @@ const Hero = () => {
         >
           About Us
         </Typography>
-        <Typography
+        {/*<Typography
           variant="h4"
           color="text.primary"
           sx={{
@@ -94,7 +95,7 @@ const Hero = () => {
           }}
         >
           Founded by a couple cool dudes who love FlavorTown and the Buckeyes.
-        </Typography>
+        </Typography> */}
       </Container>
     </Box>
   );
