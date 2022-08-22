@@ -113,7 +113,7 @@ const Partners = () => {
       </Box>
       <Stack
         direction={{ xs: 'column', md: 'row' }}
-        justifyContent="space-evenly"
+        justifyContent="space-around"
         alignContent="center"
         spacing={6}
       >

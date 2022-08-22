@@ -66,12 +66,12 @@ const Contact = () => {
                       >
                         Contact Us
                       </Typography>
-                      <Typography sx={{ color: theme.palette.text.secondary }}>
+                      {/* <Typography sx={{ color: theme.palette.text.secondary }}>
                         Rather than worrying about switching offices every
                         couple years, you can instead stay in the same location
                         and grow-up from your shared coworking space to an
                         office that takes up an entire floor.
-                      </Typography>
+                      </Typography> */}
                     </Box>
                     <Stack
                       direction="column"
