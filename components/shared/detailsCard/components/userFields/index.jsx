@@ -2,6 +2,7 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/jsx-key */
+/* eslint-disable spaced-comment */
 import React from 'react';
 
 import PropTypes from 'prop-types';
@@ -71,8 +72,8 @@ const UserFields = ({ data }) => {
         : null,
     },
     {
-      field: data.job.includes('Full-Time') ? 'Salary Preferences' : null,
-      text: data.job.includes('Full-Time')
+      field: 'Salary Preferences',
+      text: data.salary
         ? data.salary.map((item) => (
             <Chip
               color="primary"
@@ -84,8 +85,8 @@ const UserFields = ({ data }) => {
         : null,
     },
     {
-      field: data.job.includes('Part-Time') ? 'Wage Preferences' : null,
-      text: data.job.includes('Part-Time')
+      field: 'Wage Preferences',
+      text: data.hourlyRate
         ? data.hourlyRate.map((item) => (
             <Chip
               color="primary"
@@ -96,6 +97,32 @@ const UserFields = ({ data }) => {
           ))
         : null,
     },
+    //{
+    //  field: data.job.includes('Full-Time') ? 'Salary Preferences' : null,
+    //  text: data.job.includes('Full-Time')
+    //    ? data.salary.map((item) => (
+    //        <Chip
+    //          color="primary"
+    //          sx={{ color: 'white', mr: '.5em' }}
+    //          key={item}
+    //          label={item}
+    //        />
+    //      ))
+    //    : null,
+    //},
+    //{
+    //  field: data.job.includes('Part-Time') ? 'Wage Preferences' : null,
+    //  text: data.job.includes('Part-Time')
+    //    ? data.hourlyRate.map((item) => (
+    //        <Chip
+    //          color="primary"
+    //          sx={{ color: 'white', mr: '.5em' }}
+    //          key={item}
+    //          label={item}
+    //        />
+    //      ))
+    //    : null,
+    //},
   ];
 
   return (
