@@ -28,7 +28,7 @@ const BottomCOA = () => (
       >
         <Box>
           <Box marginBottom={2}>
-            <Link href="/userSignUp" passHref>
+            <Link href="/signUp/user" passHref>
               <Button variant="contained" size="large">
                 Join Now
               </Button>
