@@ -8,7 +8,7 @@ import Main from '../../layouts/main';
 import Container from '../front_components/container';
 
 import Hero from './components/Hero';
-import Reviews from './components/Reviews';
+// import Reviews from './components/Reviews';
 import Services from './components/Services';
 import Newsletter from './components/Newsletter';
 import BottomCOA from './components/BottomCOA';
@@ -89,7 +89,7 @@ const Home = () => {
       </Box>
 
       {/* Reviews Block */}
-      <Box position="relative">
+      {/* <Box position="relative">
         <Box
           sx={{
             backgroundColor: theme.colors.alpha.white[100],
@@ -100,10 +100,15 @@ const Home = () => {
             <Reviews />
           </Container>
         </Box>
-      </Box>
+      </Box> */}
 
       {/* Bottom Call To Action */}
-      <Box bgcolor="alternate.main">
+      <Box
+        sx={{
+          background: theme.palette.background.paper,
+          mt: '-1em',
+        }}
+      >
         <Container>
           <BottomCOA />
         </Container>
