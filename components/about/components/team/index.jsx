@@ -31,8 +31,8 @@ const teamMembers = [
         graduating from the University of Mount Union in 2007.
         <br />
         <br />
-        He's spent the last 15 fifteen years serving the 614 community in a
-        variety of ways—both literally and figuratively. He was a bartender and
+        He's spent the last fifteen years serving the 614 community in a variety
+        of ways—both literally and figuratively. He was a bartender and
         restaurant operator at some of Columbus' most popular dining
         destinations for nearly a decade. He also helped found and operated a
         Medical Marijuanna consultancy that currently operates four clinics
@@ -70,8 +70,8 @@ const teamMembers = [
         Columbus and New York City.
         <br />
         <br />
-        His areas of expertise include, application development, holistic
-        systems design, and user experiance.
+        His areas of expertise include application development, holistic systems
+        design, and user experiance.
         <br />
         <br />
         Zach is originally from New Jersey and currently lives in Raleigh, NC

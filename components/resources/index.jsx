@@ -82,7 +82,7 @@ const Resources = () => {
           Welcome to the resources page of The Bridge. Coming soon, we will
           begin to fill this page up with resources that will help with your
           career, no matter what stage you are in. Additionally, we will also be
-          using this section to help people with their businesses as well. From
+          using this section to help people with their business as well. From
           how to start a business and raise funding to how to become a better
           marketer and increase sales.
           <br />
@@ -93,7 +93,7 @@ const Resources = () => {
           <br />
           <br />
           If you would like to help collaborate and be a part of this, please
-          email us and let us know how you can help
+          email us and let us know how you can help.
         </Typography>
       </Box>
       {/*<Container>

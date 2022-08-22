@@ -32,7 +32,11 @@ const mock = [
 const Services = () => {
   const theme = useTheme();
   return (
-    <Box>
+    <Box
+      sx={{
+        mt: '2em',
+      }}
+    >
       <Grid container spacing={2}>
         {mock.map((item, i) => (
           <Grid item xs={12} md={4} key={item.title}>
@@ -81,7 +85,7 @@ const Services = () => {
       >
         <Box
           sx={{
-            maxWidth: '50%',
+            maxWidth: { xs: '100%', md: '50%' },
           }}
         >
           <Typography

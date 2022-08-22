@@ -22,6 +22,7 @@ import CardContent from '@mui/material/CardContent';
 import SaveIcon from '@mui/icons-material/Save';
 import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import EditBusinessFields from './components/editBusinessFields';
 import EditUserFields from './components/editUserFields';
@@ -78,12 +79,12 @@ const EditDetailsCard = ({
   const [isUserSubmitting, setIsUserSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [userErrors, setUserErrors] = useState({});
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
 
   const router = useRouter();
 
   const business = router.pathname === '/dashboards/business/[id]';
-
-  const theme = useTheme();
 
   const updateUserInfo = async () => {
     try {
@@ -249,18 +250,11 @@ const EditDetailsCard = ({
           </Typography>
           <Typography variant="subtitle2">{subtitle}</Typography>
         </Box>
-        <Stack direction="row" spacing={2}>
-          <Button
-            sx={{
-              color: theme.colors.error.main,
-              '&:hover': {
-                background: theme.colors.error.lighter,
-              },
-            }}
-            onClick={() => setEdit(false)}
-          >
-            Cancel
-          </Button>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          sx={{ ml: { xs: '1em' } }}
+          spacing={2}
+        >
           <LoadingButton
             variant="contained"
             onClick={handleSubmit}
@@ -275,6 +269,17 @@ const EditDetailsCard = ({
           >
             Save
           </LoadingButton>
+          <Button
+            sx={{
+              color: theme.colors.error.main,
+              '&:hover': {
+                background: theme.colors.error.lighter,
+              },
+            }}
+            onClick={() => setEdit(false)}
+          >
+            Cancel
+          </Button>
         </Stack>
       </Box>
       <Divider />
@@ -306,6 +311,35 @@ const EditDetailsCard = ({
           />
         )}
       </CardContent>
+      {isXs ? (
+        <Box
+          sx={{
+            display: 'flex',
+            width: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <LoadingButton
+            variant="contained"
+            onClick={handleSubmit}
+            startIcon={<SaveIcon />}
+            loading={isLoading}
+            sx={{
+              width: '75%',
+              mb: '1em',
+            }}
+            loadingIndicator={
+              <CircularProgress
+                size={16}
+                sx={{ color: theme.palette.tertiary.main }}
+              />
+            }
+          >
+            Save
+          </LoadingButton>
+        </Box>
+      ) : null}
     </Card>
   );
 };

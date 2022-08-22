@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/function-component-definition */
@@ -389,7 +390,7 @@ const EditUserFields = ({
   return (
     <>
       {fields.map((field) => (
-        <Grid container spacing={0}>
+        <Grid container spacing={0} key={field.fieldName}>
           <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
             <Box sx={{ pr: 3, pb: 2 }}>
               {' '}

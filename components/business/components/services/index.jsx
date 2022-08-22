@@ -93,8 +93,8 @@ const Services = () => {
               letterSpacing: '0.00938em',
             }}
           >
-            The Bridge was createdto save you time in the hiring process so you
-            can spend more time interviewing your next hire.{' '}
+            The Bridge was created to save you time in the hiring process, so
+            you can spend more time interviewing your next hire.{' '}
           </Typography>
         </Box>
         <Link href="/signUp/business" passHref>

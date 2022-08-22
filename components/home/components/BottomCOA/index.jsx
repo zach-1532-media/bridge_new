@@ -12,7 +12,7 @@ const BottomCOA = () => (
     <Grid container spacing={6} justifyContent="space-evenly">
       <Grid item xs={12} md={6} data-aos="fade-up">
         <Box maxWidth={500} margin="0 auto">
-          <Typography variant="h3" sx={{ fontWeight: 700 }}>
+          <Typography align="center" variant="h3" sx={{ fontWeight: 700 }}>
             Find your next job faster than it takes to make a cup of coffee
           </Typography>
         </Box>
