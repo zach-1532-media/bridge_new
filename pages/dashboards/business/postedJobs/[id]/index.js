@@ -4,6 +4,8 @@ import { React, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
+import { getSession } from 'next-auth/client';
+
 import PropTypes from 'prop-types';
 
 import Button from '@mui/material/Button';
@@ -110,7 +112,29 @@ const BusinessDash = ({ activeJobs, inActiveJobs, sessionData }) => {
   );
 };
 
-export async function getServerSideProps({ query: { id } }) {
+export async function getServerSideProps(ctx) {
+  const session = await getSession({ req: ctx.req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  if (session.type === 'user') {
+    return {
+      redirect: {
+        destination: `/dashboards/user/${session.id}`,
+        permanent: false,
+      },
+    };
+  }
+
+  const { id } = ctx.query;
+
   await dbConnect();
   // eslint-disable-next-line global-require
   require('../../../../../models/Business');

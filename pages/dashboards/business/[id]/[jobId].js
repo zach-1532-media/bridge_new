@@ -2,6 +2,8 @@ import { React, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
+import { getSession } from 'next-auth/client';
+
 import Iframe from 'react-iframe';
 
 import PropTypes from 'prop-types';
@@ -245,7 +247,29 @@ const ViewApplicants = ({ sessionData, job, applicants }) => {
   );
 };
 
-export async function getServerSideProps({ query: { id, jobId } }) {
+export async function getServerSideProps(ctx) {
+  const session = await getSession({ req: ctx.req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  if (session.type === 'user') {
+    return {
+      redirect: {
+        destination: `/dashboards/user/${session.id}`,
+        permanent: false,
+      },
+    };
+  }
+
+  const { id, jobId } = ctx.query;
+
   await dbConnect();
 
   const businesses = await Business.findById(id);

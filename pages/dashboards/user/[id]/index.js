@@ -5,7 +5,7 @@ import React from 'react';
 
 import { useRouter } from 'next/router';
 
-import { getSession } from 'next-auth/client';
+import { useSession, getSession } from 'next-auth/client';
 
 import PropTypes from 'prop-types';
 
@@ -20,6 +20,8 @@ import Profile from '../../../../components/dash/profile';
 const ProfilePage = ({ data }) => {
   const router = useRouter();
   const { id } = router.query;
+  const [session] = useSession();
+  console.log(session);
 
   return (
     <Dash
@@ -46,6 +48,15 @@ export async function getServerSideProps(ctx) {
     return {
       redirect: {
         destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  if (session.type === 'business') {
+    return {
+      redirect: {
+        destination: `/dashboards/business/${session.id}`,
         permanent: false,
       },
     };

@@ -27,6 +27,7 @@ export default async (req, res) => {
       email: newEmail,
       password: hashedPassword,
       verifyEmail: JSON.stringify(randomNumber),
+      type: 'business',
     };
 
     const existingBusiness = await Business.findOne({

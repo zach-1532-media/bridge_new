@@ -35,6 +35,7 @@ const BusinessSchema = new mongoose.Schema({
   jobs: Array,
   dateCreated: Date,
   sessionName: String,
+  type: String,
 });
 
 module.exports =

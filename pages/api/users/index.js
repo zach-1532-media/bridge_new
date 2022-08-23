@@ -26,6 +26,7 @@ export default async (req, res) => {
       email: newEmail,
       password: hashedPassword,
       verifyEmail: JSON.stringify(randomNumber),
+      type: 'user',
     };
 
     const existingUser = await User.findOne({ email: newEmail });

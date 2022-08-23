@@ -48,7 +48,7 @@ export default NextAuth({
           sessionName: data.sessionName,
           avatar: data.avatar,
           id: id,
-          type: user ? 'user' : 'business',
+          type: data.type,
           businessName: data.businessName,
         };
       },

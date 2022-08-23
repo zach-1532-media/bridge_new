@@ -214,6 +214,15 @@ export async function getServerSideProps(ctx) {
     };
   }
 
+  if (session.type === 'business') {
+    return {
+      redirect: {
+        destination: `/dashboards/business/${session.id}`,
+        permanent: false,
+      },
+    };
+  }
+
   const { id, search } = ctx.query;
 
   await dbConnect();
