@@ -318,17 +318,14 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
           open={open}
           fullScreen
           onClose={handleClose}
-          ariaDescription="pop-up-to-view-resume"
-          ariaLabel="resume-modal"
-          maxWidth="xl"
+          aria-labelledby="resume-dialog"
         >
           <iframe
             title="resume"
             allowFullScreen
-            src={resume}
+            src={`${resume}#view=fitH`}
             height="100%"
             width="100%"
-            position="relative"
           />
           <DialogActions>
             <Button autoFocus onClick={handleClose}>
