@@ -27,6 +27,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SaveIcon from '@mui/icons-material/Save';
 import IconButton from '@mui/material/IconButton';
 import LanguageIcon from '@mui/icons-material/Language';
+import Stack from '@mui/material/Stack';
 
 import MyModal from '../../../../../../shared/myModal';
 import { GeneralSnack } from '../../../../../../shared/snackbars';
@@ -319,7 +320,20 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
           ariaDescription="pop-up-to-view-resume"
           ariaLabel="resume-modal"
         >
-          <Iframe url={resume} height="100%" width="100%" position="relative" />
+          <Iframe
+            styles={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+            }}
+            allowFullScreen
+            url={resume}
+            height="100%"
+            width="100%"
+            position="relative"
+          />
         </MyModal>
       </Box>
     </>

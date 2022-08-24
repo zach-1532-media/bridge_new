@@ -2,8 +2,6 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import { signOut } from 'next-auth/client';
-
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -47,7 +45,6 @@ const BottomCOA = () => {
                   Join Now
                 </Button>
               </Link>
-              <Button onClick={() => signOut()}>Logout</Button>
             </Box>
           </Box>
         </Grid>
