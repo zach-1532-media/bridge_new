@@ -31,7 +31,8 @@ const Hero = () => {
                 letterSpacing: '-0.00833em',
               }}
             >
-              Finding work made simple
+              Finding {isMd ? null : <br />} work {isMd ? null : <br />} made{' '}
+              {isMd ? null : <br />} simple
             </Typography>
           </Box>
           <Box sx={{ mb: 3 }}>
