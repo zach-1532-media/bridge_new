@@ -1,13 +1,19 @@
 /* eslint-disable spaced-comment */
 import { React, useEffect } from 'react';
 
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { alpha, useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Container from '../../../front_components/container';
 
 const Hero = () => {
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
+
   useEffect(() => {
     const jarallaxInit = async () => {
       const jarallaxElems = document.querySelectorAll('.jarallax');
@@ -71,6 +77,7 @@ const Hero = () => {
       <Container position="relative" zIndex={2}>
         <Typography
           variant="h1"
+          align={isMd ? 'left' : 'center'}
           sx={{
             fontWeight: 900,
             fontSize: '3.75rem',

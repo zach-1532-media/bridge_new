@@ -37,6 +37,7 @@ const JobHero = ({ searchBar, image, exploreButton }) => {
           >
             <Box marginBottom={2}>
               <Typography
+                align={isMd ? 'left' : 'center'}
                 variant="h2"
                 sx={{
                   fontWeight: 700,

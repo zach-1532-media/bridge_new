@@ -16,7 +16,11 @@ const ExploreButton = () => {
   return (
     <>
       <Box marginBottom={3}>
-        <Typography variant="h6" component="span" color="text.secondary">
+        <Typography
+          align={isMd ? 'left' : 'center'}
+          variant="h6"
+          color="text.secondary"
+        >
           We use individuallized data points that only match you with what fits
           your needs
         </Typography>

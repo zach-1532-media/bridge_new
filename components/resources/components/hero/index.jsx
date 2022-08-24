@@ -4,11 +4,15 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Container from '../../../front_components/container';
 
 const Hero = () => {
   const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
 
   return (
     <Box
@@ -48,7 +52,7 @@ const Hero = () => {
           <Box sx={{ mb: 2 }}>
             <Typography
               variant="h2"
-              align="center"
+              align={isMd ? 'left' : 'center'}
               sx={{
                 fontWeight: 400,
                 color: theme.palette.common.white,
