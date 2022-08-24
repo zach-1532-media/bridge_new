@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 
 import PropTypes from 'prop-types';
 
-import Iframe from 'react-iframe';
-
 import Box from '@mui/material/Box';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
@@ -27,18 +25,21 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SaveIcon from '@mui/icons-material/Save';
 import IconButton from '@mui/material/IconButton';
 import LanguageIcon from '@mui/icons-material/Language';
-import Stack from '@mui/material/Stack';
+import Dialog from '@mui/material/Dialog';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import DialogActions from '@mui/material/DialogActions';
 
-import MyModal from '../../../../../../shared/myModal';
 import { GeneralSnack } from '../../../../../../shared/snackbars';
 
 const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [showLoadingButton, setShowLoadingButton] = useState(false);
   const [generalError, setGeneralError] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [form, setForm] = useState({
     twitter,
     instagram,
@@ -46,7 +47,6 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
     webSite,
   });
   const [mongoLoad, setMongoLoad] = useState(false);
-  const theme = useTheme();
   const router = useRouter();
   const style = {
     ml: '5em',
@@ -314,11 +314,13 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
         >
           Update
         </LoadingButton>
-        <MyModal
+        <Dialog
           open={open}
-          handleClose={handleClose}
+          fullScreen
+          onClose={handleClose}
           ariaDescription="pop-up-to-view-resume"
           ariaLabel="resume-modal"
+          maxWidth="xl"
         >
           <iframe
             title="resume"
@@ -328,7 +330,12 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
             width="100%"
             position="relative"
           />
-        </MyModal>
+          <DialogActions>
+            <Button autoFocus onClick={handleClose}>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </>
   );
