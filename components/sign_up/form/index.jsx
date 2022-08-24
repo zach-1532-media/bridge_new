@@ -32,7 +32,6 @@ import { GeneralSnack } from '../../shared/snackbars';
 const SignUpForm = ({ businessName }) => {
   const theme = useTheme();
   const router = useRouter();
-  const user = router.pathname === '/signUp/user';
   const userType = router.pathname === '/signUp/user' ? 'users' : 'business';
 
   const [form, setForm] = useState({
@@ -332,10 +331,7 @@ const SignUpForm = ({ businessName }) => {
                   }}
                 >
                   Already have an account?{' '}
-                  <NextLink
-                    href={user ? '/login/user' : '/login/business'}
-                    passHref
-                  >
+                  <NextLink href="/login" passHref>
                     <Link
                       underline="none"
                       sx={{ '&:hover': { cursor: 'pointer' } }}
