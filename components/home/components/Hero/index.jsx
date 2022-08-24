@@ -21,11 +21,12 @@ const Hero = () => {
         <Box data-aos={isMd ? 'fade-right' : 'fade-up'}>
           <Box>
             <Typography
+              align={isMd ? 'left' : 'center'}
               color="text.primary"
               gutterBottom
               sx={{
                 fontWeight: 700,
-                fontSize: '3.75rem',
+                fontSize: { xs: '4.5rem', md: '3.75rem' },
                 lineHeight: 1.2,
                 letterSpacing: '-0.00833em',
               }}
@@ -35,6 +36,7 @@ const Hero = () => {
           </Box>
           <Box sx={{ mb: 3 }}>
             <Typography
+              align={isMd ? 'left' : 'center'}
               variant="h6"
               component="p"
               sx={{
