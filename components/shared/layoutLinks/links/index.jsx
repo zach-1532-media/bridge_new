@@ -13,7 +13,7 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 
 import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
@@ -57,9 +57,17 @@ const UserBoxDescription = styled(Typography)(
 `,
 );
 
-const UserBoxLinks = ({ id, type, avatar, sessionName, businessName }) => {
+const UserBoxLinks = ({
+  id,
+  type,
+  avatar,
+  sessionName,
+  businessName,
+  colorInvert,
+}) => {
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
+  const theme = useTheme();
 
   const handleOpen = () => {
     setOpen(true);
@@ -132,7 +140,14 @@ const UserBoxLinks = ({ id, type, avatar, sessionName, businessName }) => {
           }}
         >
           <UserBoxText>
-            <UserBoxLabel variant="body1">{sessionName}</UserBoxLabel>
+            <UserBoxLabel
+              variant="body1"
+              sx={{
+                color: colorInvert ? 'white' : theme.palette.text.secondary,
+              }}
+            >
+              {sessionName}
+            </UserBoxLabel>
             <UserBoxDescription variant="body2">
               {businessName ?? ''}
             </UserBoxDescription>
@@ -147,6 +162,8 @@ const UserBoxLinks = ({ id, type, avatar, sessionName, businessName }) => {
           <ExpandMoreTwoToneIcon
             sx={{
               ml: 1,
+              mt: '.3em',
+              color: colorInvert ? 'white' : theme.palette.text.secondary,
             }}
           />
         </Box>
@@ -215,11 +232,13 @@ UserBoxLinks.propTypes = {
   businessName: PropTypes.string,
   sessionName: PropTypes.string.isRequired,
   avatar: PropTypes.string,
+  colorInvert: PropTypes.bool,
 };
 
 UserBoxLinks.defaultProps = {
   businessName: '',
   avatar: '',
+  colorInvert: false,
 };
 
 export default UserBoxLinks;

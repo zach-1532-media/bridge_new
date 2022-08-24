@@ -31,7 +31,7 @@ function SecurityTab() {
   const [confirmText, setConfirmText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [generalError, setGeneralError] = useState('');
+  const [generalError, setGeneralError] = useState(false);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,

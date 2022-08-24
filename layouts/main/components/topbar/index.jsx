@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Link from 'next/link';
 
@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import Stack from '@mui/material/Stack';
+import { useTheme } from '@mui/material/styles';
 
 import UserBoxLinks from '../../../../components/shared/layoutLinks/links';
 import NavItem from './navItem';
@@ -18,6 +19,7 @@ import Logo from '../../../../components/shared/logo';
 
 const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
   const [session] = useSession();
+  const theme = useTheme();
 
   const navItems = [
     {
@@ -72,6 +74,7 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
               businessName={session.businessName ?? ''}
               avatar={session.avatar}
               sessionName={session.sessionName}
+              colorInvert={colorInvert}
             />
           ) : (
             <Button variant="contained" size="large" sx={{ ml: '4em' }}>
@@ -93,11 +96,22 @@ const Topbar = ({ openSidebar, onSidebarOpen, colorInvert = false }) => {
         ) : (
           <IconButton
             disableRipple
-            color="primary"
             onClick={() => onSidebarOpen(true)}
             aria-label="Menu"
           >
-            {!openSidebar ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
+            {!openSidebar ? (
+              <MenuTwoToneIcon
+                sx={{
+                  color: colorInvert ? 'white' : theme.palette.primary.main,
+                }}
+              />
+            ) : (
+              <CloseTwoToneIcon
+                sx={{
+                  color: colorInvert ? 'white' : theme.palette.primary.main,
+                }}
+              />
+            )}
           </IconButton>
         )}
       </Box>

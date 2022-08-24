@@ -320,16 +320,10 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
           ariaDescription="pop-up-to-view-resume"
           ariaLabel="resume-modal"
         >
-          <Iframe
-            styles={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-            }}
+          <iframe
+            title="resume"
             allowFullScreen
-            url={resume}
+            src={resume}
             height="100%"
             width="100%"
             position="relative"
