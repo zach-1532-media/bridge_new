@@ -10,6 +10,7 @@ import Image from 'next/image';
 
 import Typed from 'react-typed';
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -23,12 +24,27 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 
+const listItems = [
+  {
+    item: 'Job Market News',
+  },
+  {
+    item: 'Interview Tips',
+  },
+  {
+    item: 'Local Networking Events',
+  },
+  {
+    item: 'And Much More!',
+  },
+];
+
 const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
   const theme = useTheme();
-
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
   });
 
@@ -91,14 +107,6 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
     const regEmail = new RegExp(
       /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
     ).test(form.email);
-
-    if (!form.firstName) {
-      err.firstName = 'Please enter your first name';
-    }
-
-    if (!form.lastName) {
-      err.lastName = 'Please enter your last name';
-    }
 
     if (!form.email) {
       err.email = 'Please enter your email';
@@ -182,33 +190,6 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
                     <TextField
                       required
                       fullWidth
-                      id="first-name"
-                      name="firstName"
-                      label="First Name"
-                      value={form.firstName}
-                      onChange={handleChange}
-                      error={errors.firstName ? true : null}
-                      helperText={errors.firstName ? errors.firstName : null}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="last-name"
-                      name="lastName"
-                      label="Last Name"
-                      value={form.lastName}
-                      onChange={handleChange}
-                      error={errors.lastName ? true : null}
-                      helperText={errors.lastName ? errors.lastName : null}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
                       id="email"
                       name="email"
                       label="Email"
@@ -254,7 +235,12 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
         >
           <Box>
             <Box marginBottom={2}>
-              <Typography variant="h2" sx={{ fontWeight: 700 }} gutterBottom>
+              <Typography
+                align={isMd ? 'left' : 'center'}
+                variant="h2"
+                sx={{ fontWeight: 700 }}
+                gutterBottom
+              >
                 The most useful resource ever created for{' '}
                 <Typography color="primary" component="span" variant="inherit">
                   <Typed
@@ -264,37 +250,27 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
                   />
                 </Typography>
               </Typography>
-              <Typography color="text.secondary">
+              <Typography
+                align={isMd ? 'left' : 'center'}
+                color="text.secondary"
+              >
                 Connect At The Bridge - Our bi-monthly newsletter that provides
                 you with insight on the current job market, tips to become a
                 better candidate, and keeps you up to date with industry events
                 in your area.
               </Typography>
             </Box>
-            <Grid container spacing={1}>
-              {[
-                'Job Market News',
-                'Interview Tips',
-                'Local Networking Events',
-                'And Much More!',
-              ].map((item) => (
-                <Grid item xs={12} sm={6} key={item}>
-                  <Box
-                    component={ListItem}
-                    disableGutters
-                    width="auto"
-                    padding={0}
-                  >
-                    <Box
-                      component={ListItemAvatar}
-                      minWidth="auto !important"
-                      marginRight={2}
-                    >
-                      <Box
-                        component={Avatar}
-                        bgcolor={theme.palette.tertiary.main}
-                        width={20}
-                        height={20}
+            <Box>
+              <Box width="100%" justifyContent="center" alignItems="center">
+                {listItems.map((item) => (
+                  <ListItem key={item.item}>
+                    <ListItemAvatar>
+                      <Avatar
+                        sx={{
+                          background: theme.palette.tertiary.main,
+                          height: 20,
+                          width: 20,
+                        }}
                       >
                         <svg
                           width={12}
@@ -309,13 +285,13 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
                             clipRule="evenodd"
                           />
                         </svg>
-                      </Box>
-                    </Box>
-                    <ListItemText primary={item} />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={item.item} />
+                  </ListItem>
+                ))}
+              </Box>
+            </Box>
           </Box>
         </Grid>
       </Grid>

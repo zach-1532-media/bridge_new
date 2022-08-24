@@ -5,7 +5,7 @@ import React from 'react';
 
 import { useRouter } from 'next/router';
 
-import { useSession, getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/client';
 
 import PropTypes from 'prop-types';
 
@@ -20,8 +20,6 @@ import Profile from '../../../../components/dash/profile';
 const ProfilePage = ({ data }) => {
   const router = useRouter();
   const { id } = router.query;
-  const [session] = useSession();
-  console.log(session);
 
   return (
     <Dash

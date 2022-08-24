@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import User from '../../../../models/User';
+import Newsletter from '../../../../models/Newsletter';
 import dbConnect from '../../../../lib/dbConnect';
 
 const client = require('@sendgrid/client');
@@ -9,7 +10,7 @@ client.setApiKey(process.env.SENDGRID);
 const UserEmailHandler = async (req, res) => {
   const { method } = req;
 
-  const { operation, email, firstName, lastName, id, newsletter } = req.body;
+  const { operation, email, id, newsletter } = req.body;
 
   if (method === 'PUT') {
     switch (operation) {
@@ -70,17 +71,23 @@ const UserEmailHandler = async (req, res) => {
           await dbConnect();
 
           const user = await User.findOne({ email });
+          const existingNewsletter = await Newsletter.findOne({ email });
 
-          if (!user) {
-            await User.create({
+          if (!user && !existingNewsletter) {
+            await Newsletter.create({
               email,
-              firstName,
-              lastName,
               newsletter: true,
+              dateSubscribed: new Date(),
             });
           }
 
-          await User.findOneAndUpdate({ email }, { newsletter: true });
+          if (user && !user.newsletter) {
+            await User.findOneAndUpdate(
+              { email },
+              { newsletter: true },
+              { new: true, runValidators: true },
+            );
+          }
           res
             .status(200)
             .json({ case: 1, success: true, message: "You're signed up!" });

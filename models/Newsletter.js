@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 const newsletterSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
   email: String,
   newsletter: Boolean,
-  dateCreated: Date,
+  dateSubscribed: Date,
+  dateUnsubscribed: Date,
 });
 
 module.exports =

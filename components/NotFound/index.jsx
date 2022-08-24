@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -17,6 +17,11 @@ const NotFound = () => {
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
+
+  const handleMail = () => {
+    window.location.href =
+      'mailto:support@connectatthebridge.com?subject=Bad Link';
+  };
 
   return (
     <Main>
@@ -59,10 +64,18 @@ const NotFound = () => {
                   >
                     Oops! Looks like you followed a bad link.
                     <br />
-                    If you think this is a problem with us, please{' '}
-                    <Link href="/" underline="none">
+                    If you think this is an issue on our end, please{' '}
+                    <Button
+                      sx={{
+                        ml: '-0.7em',
+                        mb: '0.2em',
+                        fontSize: '1.25rem',
+                        '&:hover': { background: 'transparent' },
+                      }}
+                      onClick={handleMail}
+                    >
                       tell us
-                    </Link>
+                    </Button>
                   </Typography>
                   <Box
                     sx={{
@@ -71,9 +84,11 @@ const NotFound = () => {
                       mt: 4,
                     }}
                   >
-                    <Button variant="contained" color="primary" size="large">
-                      Back Home
-                    </Button>
+                    <Link href="/" passHref>
+                      <Button variant="contained" color="primary" size="large">
+                        Back Home
+                      </Button>
+                    </Link>
                   </Box>
                 </Box>
               </Container>
