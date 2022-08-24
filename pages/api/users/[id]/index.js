@@ -41,6 +41,14 @@ const UserHandler = async (req, res) => {
     } catch (err) {
       res.status(400).json({ code: 3, success: false });
     }
+  } else if (method === 'DELETE') {
+    try {
+      await User.findByIdAndDelete(id);
+
+      res.status(200).json({ case: 1 });
+    } catch (err) {
+      res.status(400).json({ case: 2 });
+    }
   }
 };
 
