@@ -42,9 +42,8 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
   });
   const router = useRouter();
   const handleOpen = () => {
-    setOpen(true);
     // eslint-disable-next-line no-unused-expressions
-    // isMd ? setOpen(true) : window.open(`${resume}`, '_blank');
+    isMd ? setOpen(true) : window.open(`${resume}`, '_blank');
   };
   const handleClose = () => setOpen(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));

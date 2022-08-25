@@ -9,8 +9,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import Main from '../../layouts/main';
-import Container from '../front_components/container';
+import Main from '../../../layouts/main';
+import Container from '../../front_components/container';
 
 const NotFound = () => {
   const theme = useTheme();
