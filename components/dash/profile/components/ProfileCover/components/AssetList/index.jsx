@@ -37,7 +37,15 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
   const [showLoadingButton, setShowLoadingButton] = useState(false);
   const [generalError, setGeneralError] = useState(false);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
+  const router = useRouter();
+  const handleOpen = () => {
+    setOpen(true);
+    // eslint-disable-next-line no-unused-expressions
+    // isMd ? setOpen(true) : window.open(`${resume}`, '_blank');
+  };
   const handleClose = () => setOpen(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [form, setForm] = useState({
@@ -47,7 +55,6 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
     webSite,
   });
   const [mongoLoad, setMongoLoad] = useState(false);
-  const router = useRouter();
   const style = {
     ml: '5em',
     alignSelf: 'center',

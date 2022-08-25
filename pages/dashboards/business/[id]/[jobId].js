@@ -19,6 +19,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Dash from '../../../../layouts/dash';
 import dbConnect from '../../../../lib/dbConnect';
@@ -43,7 +45,14 @@ const ViewApplicants = ({ sessionData, job, applicants }) => {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [generalError, setGeneralError] = useState(false);
   const [message, setMessage] = useState('');
-  const handleOpen = () => setOpen(true);
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
+  const handleOpen = () => {
+    // eslint-disable-next-line no-unused-expressions
+    isMd ? setOpen(true) : window.open(`${resumeUrl}`, '_blank');
+  };
   const handleClose = () => setOpen(false);
   const router = useRouter();
   const { id } = router.query;
