@@ -12,11 +12,19 @@ import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 import Checkbox from '../myCheckBox';
 
-const LQV = ({ job, children, bio, avatar, businessName }) => {
+const LQV = ({ job, children, bio, avatar, businessName, handleClose }) => {
   const router = useRouter();
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
   const listItems = [
     {
       text: 'Who we are:',
@@ -76,28 +84,51 @@ const LQV = ({ job, children, bio, avatar, businessName }) => {
   ];
   return (
     <Box id="LQV-Box">
-      <Box
-        id="LQVHeader-Box"
-        display="flex"
-        justifyContent="space-between"
-        alignItems={{ xs: 'flex-start', sm: 'center' }}
-        flexDirection={{ xs: 'column', sm: 'row' }}
-      >
-        <Box>
-          <Typography fontWeight={700} variant="h4" gutterBottom>
-            {job.jobTitle}
-          </Typography>
-          <Typography variant="h6">
-            {job.workType === 'Work From Home'
-              ? 'Anywhere'
-              : `${job.city}, ${job.state}`}{' '}
-            - {job.job}
-          </Typography>
-        </Box>
-        <Box display="flex" marginTop={{ xs: 2, md: 0 }}>
-          {children}
-        </Box>
-      </Box>
+      <Stack direction="column" spacing={4}>
+        <Stack direction="row" justifyContent="space-between">
+          <Stack direction="column">
+            <Typography fontWeight={700} variant="h4" gutterBottom>
+              {job.jobTitle}
+            </Typography>
+            <Typography variant="h6">
+              {job.workType === 'Work From Home'
+                ? 'Anywhere'
+                : `${job.city}, ${job.state}`}{' '}
+              - {job.job}
+            </Typography>
+          </Stack>
+          <IconButton
+            sx={{ '&:hover': { background: 'transparent' } }}
+            onClick={handleClose}
+          >
+            <CloseIcon color="primary" />
+          </IconButton>
+        </Stack>
+        <Stack direction="row">
+          <Stack
+            direction="row"
+            justifyContent={{ xs: 'space-between', md: 'left' }}
+            spacing={2}
+          >
+            {children}
+          </Stack>
+          <Box sx={{ ml: 'auto' }}>
+            {isMd ? (
+              <Stack
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                spacing={2}
+              >
+                {avatar ? (
+                  <Avatar variant="rounded" alt="business logo" src={avatar} />
+                ) : null}
+                <Typography variant="body1">{businessName}</Typography>
+              </Stack>
+            ) : null}
+          </Box>
+        </Stack>
+      </Stack>
       <Divider sx={{ marginY: 4 }} />
       <Stack
         direction="row"
@@ -105,22 +136,25 @@ const LQV = ({ job, children, bio, avatar, businessName }) => {
         alignItems="center"
         sx={{ mb: '3em', mt: '-1.5em', width: '100%' }}
       >
-        <Box>
-          <Typography variant="h2">Job Details</Typography>
+        <Box sx={{ mt: '1em' }}>
+          <Typography variant="h2">
+            Job {isMd ? <br /> : null} Details
+          </Typography>
           <Divider />
         </Box>
-
-        <Stack
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          spacing={2}
-        >
-          {avatar ? (
-            <Avatar variant="rounded" alt="business logo" src={avatar} />
-          ) : null}
-          <Typography variant="body1">{businessName}</Typography>
-        </Stack>
+        {!isMd ? (
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            {avatar ? (
+              <Avatar variant="rounded" alt="business logo" src={avatar} />
+            ) : null}
+            <Typography variant="body1">{businessName}</Typography>
+          </Stack>
+        ) : null}
       </Stack>
       {listItems.map((item) => (
         <Box sx={{ mb: 3 }} key={item.text}>
@@ -162,6 +196,7 @@ LQV.propTypes = {
   }).isRequired,
   bio: PropTypes.string,
   children: PropTypes.node,
+  handleClose: PropTypes.func.isRequired,
 };
 
 LQV.defaultProps = {

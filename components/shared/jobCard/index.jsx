@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, cloneElement } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -96,7 +96,7 @@ const JobCard = ({ job, height, width, children, avatar }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={modalStyle}>{children}</Box>
+        <Box sx={modalStyle}>{cloneElement(children, { handleClose })}</Box>
       </Modal>
     </Box>
   );
