@@ -90,14 +90,29 @@ const ProfileCover = ({ data }) => {
   const [tempCoverImg, setTempCoverImg] = useState('');
   const [generalError, setGeneralError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const id = data._id;
   const router = useRouter();
+  const user = router.pathname === '/dashboards/user/[id]';
+  const { id } = router.query;
   const theme = useTheme();
   const indicator = (
     <CircularProgress size={16} sx={{ color: theme.palette.tertiary.main }} />
   );
 
-  const user = router.pathname === '/dashboards/user/[id]';
+  const percent = () => {
+    const signup = 1;
+    const resume = !data.resume ? 0 : 1;
+    const bio = !data.bio ? 0 : 1;
+    const travel = !data.travel ? 0 : 1;
+    const benefits = !data.benefits ? 0 : 1;
+    const job = !data.job ? 0 : 1;
+    const workType = !data.workType ? 0 : 1;
+    const salary = !data.salary ? 0 : 1;
+    const product =
+      ((signup + bio + travel + resume + benefits + job + workType + salary) /
+        8) *
+      100;
+    return Math.trunc(product);
+  };
 
   const handleAvatarOnChange = (changeEvent) => {
     const reader = new FileReader();
@@ -279,7 +294,7 @@ const ProfileCover = ({ data }) => {
             alignItems: 'center',
           }}
         >
-          <ProgressBar />
+          <ProgressBar percent={percent()} />
         </Box>
 
         {!user ? (

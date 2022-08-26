@@ -1,13 +1,12 @@
-import {
-  Card,
-  Typography,
-  Box,
-  alpha,
-  LinearProgress,
-  styled,
-  useTheme,
-  linearProgressClasses,
-} from '@mui/material';
+import React from 'react';
+
+import PropTypes from 'prop-types';
+
+import { LinearProgress, linearProgressClasses } from '@mui/material';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { alpha, useTheme, styled } from '@mui/material/styles';
 
 const ProfileLinearProgress = styled(LinearProgress)(
   ({ theme }) => `
@@ -25,7 +24,7 @@ const ProfileLinearProgress = styled(LinearProgress)(
       `,
 );
 
-const ProgressBar = () => {
+const ProgressBar = ({ percent }) => {
   const theme = useTheme();
 
   return (
@@ -43,14 +42,14 @@ const ProgressBar = () => {
             </Typography>
           </Box>
         </Box>
-        <ProfileLinearProgress variant="determinate" value={66.43} />
+        <ProfileLinearProgress variant="determinate" value={percent} />
         <Box
           display="flex"
           sx={{
             mt: 0.6,
           }}
           alignItems="center"
-          justifyContent="space-between"
+          justifyContent="right"
         >
           <Typography
             sx={{
@@ -58,20 +57,16 @@ const ProgressBar = () => {
             }}
             variant="subtitle2"
           >
-            Target
-          </Typography>
-          <Typography
-            sx={{
-              color: `${theme.colors.alpha.black[50]}`,
-            }}
-            variant="subtitle2"
-          >
-            100%
+            {`${percent}% Complete`}
           </Typography>
         </Box>
       </Box>
     </Card>
   );
+};
+
+ProgressBar.propTypes = {
+  percent: PropTypes.number.isRequired,
 };
 
 export default ProgressBar;

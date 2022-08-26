@@ -138,9 +138,8 @@ const LQV = ({ job, children, bio, avatar, businessName, handleClose }) => {
       >
         <Box sx={{ mt: '1em' }}>
           <Typography variant="h2">
-            Job {isMd ? <br /> : null} Details
+            Job {!isMd ? <br /> : null} Details
           </Typography>
-          <Divider />
         </Box>
         {!isMd ? (
           <Stack
@@ -162,7 +161,7 @@ const LQV = ({ job, children, bio, avatar, businessName, handleClose }) => {
             <Typography variant="h5" fontWeight={700} sx={{ mb: 1.5 }}>
               {item.text}
             </Typography>
-            <Divider sx={{ mb: '2em', width: '75%' }} />
+            <Divider sx={{ mt: '-.5em', mb: '2em', width: '75%' }} />
           </Box>
           <Typography variant="body1" sx={{ mb: 1 }}>
             {item.value}
