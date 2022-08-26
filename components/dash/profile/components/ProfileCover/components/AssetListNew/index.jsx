@@ -38,10 +38,7 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
   const [loading, setLoading] = useState(false);
   const [showLoadingButton, setShowLoadingButton] = useState(false);
   const [generalError, setGeneralError] = useState(false);
-  const [twitterLoading, setTwitterLoading] = useState(false);
-  const [instagramLoading, setInstagramLoading] = useState(false);
-  const [linkedinLoading, setLinkedinLoading] = useState(false);
-  const [webSiteLoading, setWebSiteLoading] = useState(false);
+  const [mongoLoad, setMongoLoad] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const handleOpen = () => {
@@ -56,16 +53,15 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
     webSite,
   });
 
-  const handleClick = async (e) => {
-    if (e.target.name === 'twitter') {
-      setTwitterLoading(true);
-    } else if (e.target.name === 'instagram') {
-      setInstagramLoading(true);
-    } else if (e.target.name === 'linkedin') {
-      setLinkedinLoading(true);
-    } else if (e.target.name === 'webSite') {
-      setWebSiteLoading(true);
-    }
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleClick = async () => {
+    setMongoLoad(true);
     const res = await fetch(`/api/uploadsMongo/user/${id}`, {
       method: 'PUT',
       headers: {
@@ -76,17 +72,11 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
     });
     const data = await res.json();
     if (data.status === 200) {
-      setTwitterLoading(false);
-      setInstagramLoading(false);
-      setLinkedinLoading(false);
-      setWebSiteLoading(false);
-      router.reload();
+      setMongoLoad(false);
+      router.replace(router.asPath);
     } else {
       setGeneralError(true);
-      setTwitterLoading(false);
-      setInstagramLoading(false);
-      setLinkedinLoading(false);
-      setWebSiteLoading(false);
+      setMongoLoad(false);
     }
   };
 
@@ -204,31 +194,16 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
       value: form.twitter,
       prop: twitter,
       field: (
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <Stack>
           <TextField
             placeholder="Enter Your Twitter Url..."
             fullWidth
             variant="standard"
             name="twitter"
             value={form.twitter}
-            onChange={(e) => setForm({ twitter: e.target.value })}
-            sx={{ minWidth: { md: '25vh' } }}
+            onChange={handleChange}
+            sx={{ minWidth: { md: '50vh' } }}
           />
-          <LoadingButton
-            fullWidth
-            startIcon={<SaveIcon />}
-            onClick={handleClick}
-            variant="contained"
-            loading={twitterLoading}
-            loadingIndicator={
-              <CircularProgress
-                size={16}
-                sx={{ color: theme.palette.tertiary.main }}
-              />
-            }
-          >
-            Save
-          </LoadingButton>
         </Stack>
       ),
     },
@@ -238,31 +213,16 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
       value: form.instagram,
       prop: instagram,
       field: (
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <Stack>
           <TextField
             placeholder="Enter Your Instagram Url..."
             fullWidth
             variant="standard"
             name="instagram"
             value={form.instagram}
-            onChange={(e) => setForm({ instagram: e.target.value })}
-            sx={{ minWidth: { md: '25vh' } }}
+            onChange={handleChange}
+            sx={{ minWidth: { md: '50vh' } }}
           />
-          <LoadingButton
-            fullWidth
-            startIcon={<SaveIcon />}
-            onClick={handleClick}
-            variant="contained"
-            loading={instagramLoading}
-            loadingIndicator={
-              <CircularProgress
-                size={16}
-                sx={{ color: theme.palette.tertiary.main }}
-              />
-            }
-          >
-            Save
-          </LoadingButton>
         </Stack>
       ),
     },
@@ -272,31 +232,16 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
       value: form.linkedin,
       prop: linkedin,
       field: (
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <Stack>
           <TextField
             placeholder="Enter Your LinkedIn Url..."
             fullWidth
             variant="standard"
             name="linkedin"
             value={form.linkedin}
-            onChange={(e) => setForm({ linkedin: e.target.value })}
-            sx={{ minWidth: { md: '25vh' } }}
+            onChange={handleChange}
+            sx={{ minWidth: { md: '50vh' } }}
           />
-          <LoadingButton
-            fullWidth
-            startIcon={<SaveIcon />}
-            onClick={handleClick}
-            variant="contained"
-            loading={linkedinLoading}
-            loadingIndicator={
-              <CircularProgress
-                size={16}
-                sx={{ color: theme.palette.tertiary.main }}
-              />
-            }
-          >
-            Save
-          </LoadingButton>
         </Stack>
       ),
     },
@@ -306,107 +251,117 @@ const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
       value: form.webSite,
       prop: webSite,
       field: (
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <Stack>
           <TextField
             placeholder="Enter Your Web Site Url..."
             fullWidth
             variant="standard"
             name="webSite"
             value={form.webSite}
-            onChange={(e) => setForm({ webSite: e.target.value })}
-            sx={{ minWidth: { md: '25vh' } }}
+            onChange={handleChange}
+            sx={{ minWidth: { md: '50vh' } }}
           />
-          <LoadingButton
-            fullWidth
-            startIcon={<SaveIcon />}
-            onClick={handleClick}
-            variant="contained"
-            loading={webSiteLoading}
-            loadingIndicator={
-              <CircularProgress
-                size={16}
-                sx={{ color: theme.palette.tertiary.main }}
-              />
-            }
-          >
-            Save
-          </LoadingButton>
         </Stack>
       ),
     },
   ];
   return (
-    <Card>
+    <>
+      <Card>
+        <Box
+          id="list-header"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: theme.colors.alpha.black[5],
+            p: 2,
+          }}
+        >
+          <Typography>My Stuff</Typography>
+        </Box>
+        <List disablePadding>
+          {items.map((item) => (
+            <Box key={item.name}>
+              <Divider />
+              <ListItem
+                sx={{
+                  justifyContent: 'space-between',
+                  display: { xs: 'block', sm: 'flex' },
+                  py: 2,
+                  px: 2.5,
+                }}
+              >
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={{ xs: 2, sm: 0 }}
+                  sx={{ width: '100%' }}
+                  justifyContent={isMd ? 'space-between' : null}
+                >
+                  <IconButton
+                    href={item.prop ? item.prop : null}
+                    target="_blank"
+                    sx={{ '&:hover': { background: 'transparent' } }}
+                  >
+                    <Stack direction="row" spacing={2}>
+                      {item.icon}
+                      <Typography>{item.name}</Typography>
+                    </Stack>
+                  </IconButton>
+                  {item.field}
+                </Stack>
+              </ListItem>
+            </Box>
+          ))}
+        </List>
+        <Dialog
+          open={open}
+          fullScreen
+          onClose={handleClose}
+          aria-labelledby="resume-dialog"
+        >
+          <iframe
+            title="resume"
+            src={`${resume}#view=fitH`}
+            height="100%"
+            width="100%"
+          />
+          <DialogActions>
+            <Button autoFocus onClick={handleClose}>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <GeneralSnack
+          generalError={generalError}
+          setGeneralError={setGeneralError}
+          message=""
+        />
+      </Card>
       <Box
-        id="list-header"
         sx={{
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: theme.colors.alpha.black[5],
-          p: 2,
+          justifyContent: 'right',
+          mt: '1em',
         }}
       >
-        <Typography>My Stuff</Typography>
+        <LoadingButton
+          size="large"
+          startIcon={<SaveIcon />}
+          variant="contained"
+          loading={mongoLoad}
+          onClick={handleClick}
+          loadingIndicator={
+            <CircularProgress
+              size={16}
+              sx={{ color: theme.palette.tertiary.main }}
+            />
+          }
+        >
+          Update
+        </LoadingButton>
       </Box>
-      <List disablePadding>
-        {items.map((item) => (
-          <Box key={item.name}>
-            <Divider />
-            <ListItem
-              sx={{
-                justifyContent: 'space-between',
-                display: { xs: 'block', sm: 'flex' },
-                py: 2,
-                px: 2.5,
-              }}
-            >
-              <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                spacing={{ xs: 2, sm: 0 }}
-                sx={{ width: '100%' }}
-                justifyContent={isMd ? 'space-between' : null}
-              >
-                <IconButton
-                  href={item.prop ? item.prop : null}
-                  target="_blank"
-                  sx={{ '&:hover': { background: 'transparent' } }}
-                >
-                  <Stack direction="row" spacing={2}>
-                    {item.icon}
-                    <Typography>{item.name}</Typography>
-                  </Stack>
-                </IconButton>
-                {item.field}
-              </Stack>
-            </ListItem>
-          </Box>
-        ))}
-      </List>
-      <Dialog
-        open={open}
-        fullScreen
-        onClose={handleClose}
-        aria-labelledby="resume-dialog"
-      >
-        <iframe
-          title="resume"
-          src={`${resume}#view=fitH`}
-          height="100%"
-          width="100%"
-        />
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <GeneralSnack
-        generalError={generalError}
-        setGeneralError={setGeneralError}
-        message=""
-      />
-    </Card>
+    </>
   );
 };
 
