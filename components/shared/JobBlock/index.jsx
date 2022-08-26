@@ -8,6 +8,9 @@
 import { React, useState } from 'react';
 
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+
+import { useSession } from 'next-auth/client';
 
 import PropTypes from 'prop-types';
 
@@ -23,6 +26,7 @@ import LQV from '../listingQuickView';
 
 const JobBlock = ({ jobs, setApplyId }) => {
   const [cardsPerPage, setCardsPerPage] = useState(9);
+  const [session] = useSession();
 
   const _DATA = usePagination(jobs, cardsPerPage);
 
@@ -61,12 +65,18 @@ const JobBlock = ({ jobs, setApplyId }) => {
                     businessName={job.business.businessName}
                     setApplyId={setApplyId}
                   >
-                    <Button
-                      variant="contained"
-                      onClick={() => setApplyId(job._id)}
-                    >
-                      Apply
-                    </Button>
+                    {!session ? (
+                      <Link href="/login" passHref>
+                        <Button variant="contained">Sign in to apply!</Button>
+                      </Link>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        onClick={setApplyId ? () => setApplyId(job._id) : null}
+                      >
+                        Apply
+                      </Button>
+                    )}
                   </LQV>
                 </JobCard>
               </Box>

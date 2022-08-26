@@ -23,6 +23,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme, styled } from '@mui/material/styles';
 
 import AssetList from './components/AssetListNew';
+import ProgressBar from './components/ProgressBar';
 import { GeneralSnack } from '../../../../shared/snackbars';
 
 const AvatarWrapper = styled(Card)(
@@ -270,6 +271,17 @@ const ProfileCover = ({ data }) => {
         >
           {data.city ?? ''} {data.city ? '|' : ''} {data.state ?? ''}
         </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ProgressBar />
+        </Box>
+
         {!user ? (
           <Box
             display={{ xs: 'block', md: 'flex' }}
