@@ -1,6 +1,9 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 
 import PropTypes from 'prop-types';
+
+import { useRouter } from 'next/router';
 
 import Box from '@mui/material/Box';
 
@@ -13,16 +16,18 @@ import Stack from '@mui/material/Stack';
 import Checkbox from '../myCheckBox';
 
 const LQV = ({ job, children, bio, avatar, businessName }) => {
+  const router = useRouter();
   const listItems = [
     {
       text: 'Who we are:',
-      value: !bio ? (
-        <Typography color="error">
-          Please enter your business bio in your profile!
-        </Typography>
-      ) : (
-        bio
-      ),
+      value:
+        !bio && router.pathname === '/dashboards/business/postAJob/[id]' ? (
+          <Typography color="error">
+            Please enter your business bio in your profile!
+          </Typography>
+        ) : !bio ? null : (
+          bio
+        ),
     },
     {
       text: "What we're looking for: ",

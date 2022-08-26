@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-regex-literals */
 import React, { useState, useEffect } from 'react';
 
@@ -23,6 +22,7 @@ import Avatar from '@mui/material/Avatar';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const listItems = [
   {
@@ -52,46 +52,45 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const addToNewsletterContact = async () => {
-    const newsletter = {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ operation: 'add contact', email: form.email }),
-    };
-    const res = await fetch('/api/emails/users', newsletter);
-    const data = await res.json();
-    if (data.case === 1) {
-      const newsletterMongo = {
-        method: 'POST',
+  useEffect(() => {
+    const addToNewsletterContact = async () => {
+      const newsletter = {
+        method: 'PUT',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ operation: 'mongo', email: form.email }),
+        body: JSON.stringify({ operation: 'add contact', email: form.email }),
       };
-      const mongoRes = await fetch('/api/emails/users', newsletterMongo);
-      const mongoData = await mongoRes.json();
-      if (mongoData.case === 1) {
-        setIsSubmitting(false);
-        setIsLoading(false);
-        setMessage(data.message);
-        setOpenSuccess(true);
-      } else {
+      const res = await fetch('/api/emails/users', newsletter);
+      const data = await res.json();
+      if (data.case === 1) {
+        const newsletterMongo = {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ operation: 'mongo', email: form.email }),
+        };
+        const mongoRes = await fetch('/api/emails/users', newsletterMongo);
+        const mongoData = await mongoRes.json();
+        if (mongoData.case === 1) {
+          setIsSubmitting(false);
+          setIsLoading(false);
+          setMessage(data.message);
+          setOpenSuccess(true);
+        } else {
+          setIsSubmitting(false);
+          setIsLoading(false);
+          setGeneralError(true);
+        }
+      } else if (data.case === 2) {
         setIsSubmitting(false);
         setIsLoading(false);
         setGeneralError(true);
       }
-    } else if (data.case === 2) {
-      setIsSubmitting(false);
-      setIsLoading(false);
-      setGeneralError(true);
-    }
-  };
-
-  useEffect(() => {
+    };
     if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
         setIsLoading(true);
@@ -100,7 +99,14 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
         setIsSubmitting(false);
       }
     }
-  }, [errors]);
+  }, [
+    errors,
+    form.email,
+    isSubmitting,
+    setGeneralError,
+    setMessage,
+    setOpenSuccess,
+  ]);
 
   const validate = () => {
     const err = {};
@@ -216,6 +222,12 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
                       fullWidth
                       onClick={formSubmit}
                       loading={isLoading}
+                      loadingIndicator={
+                        <CircularProgress
+                          size={16}
+                          sx={{ color: theme.palette.tertiary.main }}
+                        />
+                      }
                     >
                       Submit
                     </LoadingButton>
@@ -241,7 +253,8 @@ const Newsletter = ({ setOpenSuccess, setGeneralError, setMessage }) => {
                 sx={{ fontWeight: 700 }}
                 gutterBottom
               >
-                The most useful resource ever created for{' '}
+                The best resource ever created for
+                <br />{' '}
                 <Typography color="primary" component="span" variant="inherit">
                   <Typed
                     strings={['professionals', 'freelancers', 'success']}

@@ -22,7 +22,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme, styled } from '@mui/material/styles';
 
-import AssetList from './components/AssetList';
+import AssetList from './components/AssetListNew';
 import { GeneralSnack } from '../../../../shared/snackbars';
 
 const AvatarWrapper = styled(Card)(

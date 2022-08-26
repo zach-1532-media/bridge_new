@@ -33,20 +33,19 @@ import { GeneralSnack } from '../../../../../../shared/snackbars';
 
 const AssetList = ({ resume, twitter, instagram, linkedin, webSite, id }) => {
   const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
   const [loading, setLoading] = useState(false);
   const [showLoadingButton, setShowLoadingButton] = useState(false);
   const [generalError, setGeneralError] = useState(false);
   const [open, setOpen] = useState(false);
-  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
-    defaultMatches: true,
-  });
   const router = useRouter();
   const handleOpen = () => {
     // eslint-disable-next-line no-unused-expressions
     isMd ? setOpen(true) : window.open(`${resume}`, '_blank');
   };
   const handleClose = () => setOpen(false);
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [form, setForm] = useState({
     twitter,
     instagram,
