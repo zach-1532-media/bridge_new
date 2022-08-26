@@ -64,6 +64,7 @@ const JobCard = ({ job, height, width, children, avatar }) => {
               sx={{
                 background: color,
                 color: 'white',
+                mb: '1em',
               }}
             />
             {avatar ? (

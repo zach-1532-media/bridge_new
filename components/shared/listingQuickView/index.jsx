@@ -105,7 +105,11 @@ const LQV = ({ job, children, bio, avatar, businessName }) => {
         alignItems="center"
         sx={{ mb: '3em', mt: '-1.5em', width: '100%' }}
       >
-        <Typography variant="h2">Job Details: </Typography>
+        <Box>
+          <Typography variant="h2">Job Details</Typography>
+          <Divider />
+        </Box>
+
         <Stack
           direction="column"
           justifyContent="center"
@@ -120,9 +124,12 @@ const LQV = ({ job, children, bio, avatar, businessName }) => {
       </Stack>
       {listItems.map((item) => (
         <Box sx={{ mb: 3 }} key={item.text}>
-          <Typography variant="h5" fontWeight={700} sx={{ mb: 1.5 }}>
-            {item.text}
-          </Typography>
+          <Box>
+            <Typography variant="h5" fontWeight={700} sx={{ mb: 1.5 }}>
+              {item.text}
+            </Typography>
+            <Divider sx={{ mb: '2em', width: '75%' }} />
+          </Box>
           <Typography variant="body1" sx={{ mb: 1 }}>
             {item.value}
           </Typography>
