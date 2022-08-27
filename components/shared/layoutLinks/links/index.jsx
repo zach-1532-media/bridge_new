@@ -15,7 +15,6 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { styled, useTheme } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-
 import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
 import PostAddTwoToneIcon from '@mui/icons-material/PostAddTwoTone';
 import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
@@ -51,20 +50,7 @@ const UserBoxLabel = styled(Typography)(
 `,
 );
 
-const UserBoxDescription = styled(Typography)(
-  ({ theme }) => `
-        color: ${theme.palette.secondary.light}
-`,
-);
-
-const UserBoxLinks = ({
-  id,
-  type,
-  avatar,
-  sessionName,
-  businessName,
-  colorInvert,
-}) => {
+const UserBoxLinks = ({ id, type, avatar, sessionName, colorInvert }) => {
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
   const theme = useTheme();
@@ -148,9 +134,6 @@ const UserBoxLinks = ({
             >
               {sessionName}
             </UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              {businessName ?? ''}
-            </UserBoxDescription>
           </UserBoxText>
         </Box>
         <Box
@@ -185,21 +168,19 @@ const UserBoxLinks = ({
         <MenuUserBox
           sx={{
             minWidth: 210,
+            display: 'flex',
           }}
-          display="flex"
         >
           <Avatar
             variant="rounded"
             alt={sessionName}
             src={avatar === undefined ? sessionName[0] : avatar}
           />
-          <UserBoxText>
+          <UserBoxText sx={{ mt: '.5em' }}>
             <UserBoxLabel variant="body1">{sessionName}</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              {businessName ?? ''}
-            </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
+
         <Divider
           sx={{
             mb: 0,
@@ -229,14 +210,12 @@ const UserBoxLinks = ({
 UserBoxLinks.propTypes = {
   type: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  businessName: PropTypes.string,
   sessionName: PropTypes.string.isRequired,
   avatar: PropTypes.string,
   colorInvert: PropTypes.bool,
 };
 
 UserBoxLinks.defaultProps = {
-  businessName: '',
   avatar: '',
   colorInvert: false,
 };
