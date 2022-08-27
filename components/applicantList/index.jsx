@@ -87,6 +87,7 @@ const ApplicantList = ({ applicants, selectedRows, setSelectedRows }) => {
                 }}
               >
                 <Checkbox
+                  sx={{ mr: { xs: '1em' } }}
                   onChange={() => {
                     handleSelectedRows(applicant._id, applicant.email, i);
                   }}
@@ -110,7 +111,7 @@ const ApplicantList = ({ applicants, selectedRows, setSelectedRows }) => {
                     {`${applicant.firstName} ${applicant.lastName}`}
                   </Typography>
                 </Stack>
-
+                {!isMd ? <Divider /> : null}
                 <Stack
                   direction="row"
                   justifyContent="space-evenly"
