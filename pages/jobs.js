@@ -36,6 +36,7 @@ const JobPage = ({ jobs, user }) => {
   const [applyId, setApplyId] = useState('');
   const [favoriteId, setFavoriteId] = useState('');
   const [deleteFavoriteId, setDeleteFavoriteId] = useState('');
+  const id = session ? session._id : null;
 
   useEffect(() => {
     const deleteFavorite = async () => {
@@ -50,7 +51,7 @@ const JobPage = ({ jobs, user }) => {
             jobId: deleteFavoriteId,
           }),
         };
-        const response = await fetch(`/api/favorite/${user._id}`, deleteInfo);
+        const response = await fetch(`/api/favorite/${id}`, deleteInfo);
         const data = await response.json();
         if (data.status === 200) {
           router.replace(router.asPath);
@@ -75,7 +76,7 @@ const JobPage = ({ jobs, user }) => {
             jobId: favoriteId,
           }),
         };
-        const response = await fetch(`/api/favorite/${user._id}`, favoriteInfo);
+        const response = await fetch(`/api/favorite/${id}`, favoriteInfo);
         const data = await response.json();
         if (data.status === 200) {
           router.replace(router.asPath);
@@ -100,7 +101,7 @@ const JobPage = ({ jobs, user }) => {
             jobId: applyId,
           }),
         };
-        const response = await fetch(`/api/apply/${user._id}`, applyInfo);
+        const response = await fetch(`/api/apply/${id}`, applyInfo);
         const data = await response.json();
         if (data.status === 200) {
           router.replace(router.asPath);
@@ -120,7 +121,7 @@ const JobPage = ({ jobs, user }) => {
     } else if (deleteFavoriteId) {
       deleteFavorite();
     }
-  }, [applyId, favoriteId, deleteFavoriteId, user._id, router]);
+  }, [applyId, favoriteId, deleteFavoriteId, id, router]);
 
   return (
     <Main>

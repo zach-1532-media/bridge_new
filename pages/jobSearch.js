@@ -41,6 +41,7 @@ const JobSearchPage = ({ jobs, user }) => {
   const [favoriteId, setFavoriteId] = useState('');
   const [deleteFavoriteId, setDeleteFavoriteId] = useState('');
   const [cardsPerPage, setCardsPerPage] = useState(9);
+  const id = session ? session._id : null;
 
   const _DATA = usePagination(jobs, cardsPerPage);
 
@@ -57,7 +58,7 @@ const JobSearchPage = ({ jobs, user }) => {
             jobId: deleteFavoriteId,
           }),
         };
-        const response = await fetch(`/api/favorite/${user._id}`, deleteInfo);
+        const response = await fetch(`/api/favorite/${id}`, deleteInfo);
         const data = await response.json();
         if (data.status === 200) {
           router.replace(router.asPath);
@@ -82,7 +83,7 @@ const JobSearchPage = ({ jobs, user }) => {
             jobId: favoriteId,
           }),
         };
-        const response = await fetch(`/api/favorite/${user._id}`, favoriteInfo);
+        const response = await fetch(`/api/favorite/${id}`, favoriteInfo);
         const data = await response.json();
         if (data.status === 200) {
           router.replace(router.asPath);
@@ -107,7 +108,7 @@ const JobSearchPage = ({ jobs, user }) => {
             jobId: applyId,
           }),
         };
-        const response = await fetch(`/api/apply/${user._id}`, applyInfo);
+        const response = await fetch(`/api/apply/${id}`, applyInfo);
         const data = await response.json();
         if (data.status === 200) {
           router.replace(router.asPath);
@@ -127,7 +128,7 @@ const JobSearchPage = ({ jobs, user }) => {
     } else if (deleteFavoriteId) {
       deleteFavorite();
     }
-  }, [applyId, favoriteId, deleteFavoriteId, user._id, router]);
+  }, [applyId, favoriteId, deleteFavoriteId, id, router]);
 
   return (
     <Main>

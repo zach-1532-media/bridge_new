@@ -32,6 +32,7 @@ import { modalStyle } from '../../../../components/shared/data';
 import MenuItems from '../../../../components/shared/layoutLinks/items';
 import UserBoxLinks from '../../../../components/shared/layoutLinks/links';
 import ApplicantGrid from '../../../../components/applicantGrid';
+// import ApplicantList from '../../../../components/applicantList';
 import {
   SuccessSnack,
   GeneralSnack,
@@ -160,6 +161,16 @@ const ViewApplicants = ({ sessionData, job, applicants }) => {
             handleOpen={handleOpen}
             setResumeUrl={setResumeUrl}
           />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {/* <ApplicantList applicants={applicants} /> */}
+          </Box>
+
           {selectedRows.length > 0 ? (
             <Box
               sx={{

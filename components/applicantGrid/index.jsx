@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import CustomNoRowsOverlay from '../shared/noRows';
 
@@ -21,6 +22,9 @@ const ApplicantGrid = ({
   setResumeUrl,
 }) => {
   const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
 
   const handleMail = (email) => {
     window.location.href = `mailto:${email}?subject=Job posting follow up.`;
@@ -35,7 +39,7 @@ const ApplicantGrid = ({
       field: 'applicant',
       headerName: 'Applicant',
       minWidth: 200,
-      flex: 1,
+      flex: isMd ? 1 : null,
       renderCell: (params) => {
         return (
           <>
@@ -58,18 +62,18 @@ const ApplicantGrid = ({
               handleMail(params.value.email);
             }}
           >
-            {params.value.email}
+            {isMd ? params.value.email : 'Click to email'}
           </Button>
         );
       },
       minWidth: 230,
-      flex: 1,
+      flex: isMd ? 1 : null,
     },
     {
       field: 'resume',
       headerName: '',
       minWidth: 90,
-      flex: 1,
+      flex: isMd ? 1 : null,
       renderCell: (params) => {
         return (
           <Stack
