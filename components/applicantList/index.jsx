@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-shadow */
 import { React, useState } from 'react';
 
 import Card from '@mui/material/Card';
@@ -21,13 +23,31 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
-const ApplicantList = ({ applicants }) => {
+const ApplicantList = ({ applicants, selectedRows, setSelectedRows }) => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
   const [open, setOpen] = useState(false);
-  const [checked, setChecked] = useState({});
+
+  const handleSelectedRows = (id, email) => {
+    if (selectedRows.findIndex((e) => e.id === id) !== -1) {
+      const found = selectedRows.find((e) => e.id === id);
+      setSelectedRows((selectedRows) =>
+        selectedRows.filter((selectedRows) => {
+          return selectedRows !== found;
+        }),
+      );
+    } else if (selectedRows.findIndex((e) => e.id === id) === -1) {
+      setSelectedRows((setSelectedRows) => [
+        ...setSelectedRows,
+        {
+          id,
+          email,
+        },
+      ]);
+    }
+  };
 
   const handleClose = () => setOpen(false);
 
@@ -67,10 +87,8 @@ const ApplicantList = ({ applicants }) => {
                 }}
               >
                 <Checkbox
-                  checked={checked[i]}
-                  value={applicant._id}
-                  onChange={(e) => {
-                    setChecked({ [i]: e.target.checked });
+                  onChange={() => {
+                    handleSelectedRows(applicant._id, applicant.email, i);
                   }}
                   inputProps={{ 'aria-label': 'controlled' }}
                 />

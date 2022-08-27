@@ -19,7 +19,7 @@ const JobHandler = async (req, res) => {
 
   if (method === 'PUT') {
     switch (operation) {
-      case 'Delete Applicants':
+      case 'Delete':
         try {
           const objectIdArray = data.map((s) => mongoose.Types.ObjectId(s));
           await Jobs.findByIdAndUpdate(id, {

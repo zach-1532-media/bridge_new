@@ -12,7 +12,7 @@ const JobEmailHandler = async (req, res) => {
       case 'Interview':
         try {
           const msg = {
-            to: 'zach@connectatthebridge.com',
+            to: 'support@connectatthebridge.com',
             bcc: data,
             from: 'welcome@connectatthebridge.com',
             subject: `Interview for ${jobTitle}`,
@@ -29,10 +29,10 @@ const JobEmailHandler = async (req, res) => {
           res.status(400).json({ case: 2, success: false });
         }
         break;
-      case 'Reject':
+      case 'Delete':
         try {
           const msg = {
-            to: 'zach@connectatthebridge.com',
+            to: 'support@connectatthebridge.com',
             bcc: data,
             from: 'welcome@connectatthebridge.com',
             subject: `Update for ${jobTitle}`,
@@ -52,7 +52,7 @@ const JobEmailHandler = async (req, res) => {
       case 'Offer':
         try {
           const msg = {
-            to: 'zach@connectatthebridge.com',
+            to: 'support@connectatthebridge.com',
             bcc: data,
             from: 'welcome@connectatthebridge.com',
             subject: `Update for ${jobTitle}`,

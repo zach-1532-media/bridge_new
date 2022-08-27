@@ -4,35 +4,26 @@ import { useRouter } from 'next/router';
 
 import { getSession } from 'next-auth/client';
 
-import Iframe from 'react-iframe';
-
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Dash from '../../../../layouts/dash';
 import dbConnect from '../../../../lib/dbConnect';
 import Business from '../../../../models/Business';
 import Jobs from '../../../../models/Jobs';
 import User from '../../../../models/User';
-import { modalStyle } from '../../../../components/shared/data';
 
 import MenuItems from '../../../../components/shared/layoutLinks/items';
 import UserBoxLinks from '../../../../components/shared/layoutLinks/links';
-import ApplicantGrid from '../../../../components/applicantGrid';
-// import ApplicantList from '../../../../components/applicantList';
+import ApplicantList from '../../../../components/applicantList';
 import {
   SuccessSnack,
   GeneralSnack,
@@ -40,21 +31,11 @@ import {
 import Container from '../../../../components/front_components/container';
 
 const ViewApplicants = ({ sessionData, job, applicants }) => {
-  const [open, setOpen] = useState(false);
-  const [resumeUrl, setResumeUrl] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [generalError, setGeneralError] = useState(false);
   const [message, setMessage] = useState('');
-  const theme = useTheme();
-  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
-    defaultMatches: true,
-  });
-  const handleOpen = () => {
-    // eslint-disable-next-line no-unused-expressions
-    isMd ? setOpen(true) : window.open(`${resumeUrl}`, '_blank');
-  };
-  const handleClose = () => setOpen(false);
+
   const router = useRouter();
   const { id } = router.query;
 
@@ -110,13 +91,13 @@ const ViewApplicants = ({ sessionData, job, applicants }) => {
         operation,
       );
       emailApplicants(
-        selectedRows.map((row) => row.email.email),
-        'Reject',
+        selectedRows.map((row) => row.email),
+        operation,
         job.jobTitle,
       );
     } else {
       emailApplicants(
-        selectedRows.map((row) => row.email.email),
+        selectedRows.map((row) => row.email),
         operation,
         job.jobTitle,
       );
@@ -154,13 +135,7 @@ const ViewApplicants = ({ sessionData, job, applicants }) => {
         </Box>
         <Box width={1}>
           <Divider sx={{ marginY: 4 }} />
-          <ApplicantGrid
-            setSelectedRows={setSelectedRows}
-            selectedRows={selectedRows}
-            applicants={applicants}
-            handleOpen={handleOpen}
-            setResumeUrl={setResumeUrl}
-          />
+
           <Box
             sx={{
               display: 'flex',
@@ -168,90 +143,50 @@ const ViewApplicants = ({ sessionData, job, applicants }) => {
               alignItems: 'center',
             }}
           >
-            {/* <ApplicantList applicants={applicants} /> */}
+            <ApplicantList
+              applicants={applicants}
+              selectedRows={selectedRows}
+              setSelectedRows={setSelectedRows}
+            />
           </Box>
 
           {selectedRows.length > 0 ? (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'right',
-                alignItems: 'center',
-              }}
+            <Stack
+              direction={{ xs: 'column', md: 'row' }}
+              justifyContent={{ xs: 'center', md: 'right' }}
+              sx={{ mt: '2em' }}
+              spacing={2}
             >
-              <Stack direction="row" spacing={2}>
-                <Button
-                  startIcon={<ThumbDownOffAltIcon />}
-                  variant="contained"
-                  color="error"
-                  name="Delete"
-                  onClick={handleClick}
-                >
-                  Send Rejection Email
-                </Button>
-                <Button
-                  startIcon={<QuestionAnswerIcon />}
-                  variant="contained"
-                  color="primary"
-                  name="Interview"
-                  onClick={handleClick}
-                >
-                  Send Interview Email
-                </Button>
-                <Button
-                  startIcon={<HandshakeIcon />}
-                  variant="contained"
-                  color="success"
-                  name="Offer"
-                  onClick={handleClick}
-                >
-                  Send Offer Email
-                </Button>
-              </Stack>
-            </Box>
+              <Button
+                startIcon={<ThumbDownOffAltIcon />}
+                variant="contained"
+                color="error"
+                name="Delete"
+                onClick={handleClick}
+              >
+                Send Rejection Email
+              </Button>
+              <Button
+                startIcon={<QuestionAnswerIcon />}
+                variant="contained"
+                color="warning"
+                name="Interview"
+                onClick={handleClick}
+              >
+                Send Interview Email
+              </Button>
+              <Button
+                startIcon={<HandshakeIcon />}
+                variant="contained"
+                color="success"
+                name="Offer"
+                onClick={handleClick}
+              >
+                Send Offer Email
+              </Button>
+            </Stack>
           ) : null}
         </Box>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="resume-modal"
-          aria-describedby="pop-up-to-view-resume"
-        >
-          <Box
-            sx={{
-              ...modalStyle,
-              width: { xs: '99%', md: '75%' },
-              height: { xs: '99%', md: '75%' },
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'right',
-              }}
-            >
-              <IconButton
-                onClick={handleClose}
-                sx={{
-                  mt: '-1.5em',
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Box>
-            {resumeUrl ? (
-              <Iframe
-                url={resumeUrl}
-                height="100%"
-                width="100%"
-                position="relative"
-              />
-            ) : (
-              <Typography>No resume supplied</Typography>
-            )}
-          </Box>
-        </Modal>
         <SuccessSnack
           openSuccess={openSuccess}
           setOpenSuccess={setOpenSuccess}
