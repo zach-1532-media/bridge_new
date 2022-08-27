@@ -223,7 +223,7 @@ export async function getServerSideProps(ctx) {
         })
         .unwind('business')
         .project(
-          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
+          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications description',
         )
     : await Jobs.aggregate()
         .search({
@@ -242,7 +242,7 @@ export async function getServerSideProps(ctx) {
         })
         .unwind('business')
         .project(
-          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
+          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications description',
         );
 
   const jobsReverse = jobs.reverse();

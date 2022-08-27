@@ -104,7 +104,7 @@ const LQV = ({ job, children, bio, avatar, businessName, handleClose }) => {
             <CloseIcon color="primary" />
           </IconButton>
         </Stack>
-        <Stack direction="row">
+        {!isMd ? (
           <Stack
             direction="row"
             justifyContent={{ xs: 'space-between', md: 'left' }}
@@ -112,8 +112,18 @@ const LQV = ({ job, children, bio, avatar, businessName, handleClose }) => {
           >
             {children}
           </Stack>
-          <Box sx={{ ml: 'auto' }}>
-            {isMd ? (
+        ) : null}
+
+        {isMd ? (
+          <Stack direction="row">
+            <Stack
+              direction="row"
+              justifyContent={{ xs: 'space-between', md: 'left' }}
+              spacing={2}
+            >
+              {children}
+            </Stack>
+            <Box sx={{ ml: 'auto' }}>
               <Stack
                 direction="column"
                 justifyContent="center"
@@ -125,9 +135,9 @@ const LQV = ({ job, children, bio, avatar, businessName, handleClose }) => {
                 ) : null}
                 <Typography variant="body1">{businessName}</Typography>
               </Stack>
-            ) : null}
-          </Box>
-        </Stack>
+            </Box>
+          </Stack>
+        ) : null}
       </Stack>
       <Divider sx={{ marginY: 4 }} />
       <Stack

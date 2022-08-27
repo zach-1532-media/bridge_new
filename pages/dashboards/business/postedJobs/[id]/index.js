@@ -152,7 +152,7 @@ export async function getServerSideProps(ctx) {
     })
     .unwind('business')
     .project(
-      'jobTitle business.bio job workType city state responsibilities qualifications',
+      'jobTitle business.bio job workType city state responsibilities qualifications description',
     );
   const jobsReverse = jobs.reverse();
 

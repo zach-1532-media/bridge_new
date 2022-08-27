@@ -182,6 +182,7 @@ const DashJobSearch = ({ data, jobs }) => {
                     <GeneralSnack
                       generalError={generalError}
                       setGeneralError={setGeneralError}
+                      message=""
                     />
                   </LQV>
                 </JobCard>
@@ -241,7 +242,7 @@ export async function getServerSideProps(ctx) {
         })
         .unwind('business')
         .project(
-          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications',
+          'jobTitle business.bio business.avatar business.businessName job workType city state responsibilities qualifications description',
         )
     : await Jobs.aggregate()
         .search({
