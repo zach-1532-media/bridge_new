@@ -55,6 +55,7 @@ const ViewApplicants = ({ sessionData, job, applicants }) => {
     if (resData.case === 1) {
       router.replace(router.asPath);
       setOpenSuccess(true);
+      setSelectedRows([]);
     } else if (resData.case === 2) {
       setGeneralError(true);
     }
@@ -78,6 +79,7 @@ const ViewApplicants = ({ sessionData, job, applicants }) => {
       router.replace(router.asPath);
       setMessage(resData.message);
       setOpenSuccess(true);
+      setSelectedRows([]);
     } else if (resData.case === 2) {
       setGeneralError(true);
     }

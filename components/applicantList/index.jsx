@@ -70,7 +70,7 @@ const ApplicantList = ({ applicants, selectedRows, setSelectedRows }) => {
         <Typography>Applicants</Typography>
       </Box>
       <List disablePadding>
-        {applicants.map((applicant, i) => (
+        {applicants.map((applicant) => (
           <Box key={applicant._id}>
             <Divider />
             <ListItem
@@ -79,6 +79,7 @@ const ApplicantList = ({ applicants, selectedRows, setSelectedRows }) => {
                 display: 'flex',
                 py: 2,
                 px: 2.5,
+                minHeight: { sm: '10em' },
               }}
             >
               <Box
@@ -88,15 +89,21 @@ const ApplicantList = ({ applicants, selectedRows, setSelectedRows }) => {
               >
                 <Checkbox
                   sx={{ mr: { xs: '1em' } }}
+                  checked={
+                    // eslint-disable-next-line no-unneeded-ternary
+                    selectedRows.find((e) => e.id === applicant._id)
+                      ? true
+                      : false
+                  }
                   onChange={() => {
-                    handleSelectedRows(applicant._id, applicant.email, i);
+                    handleSelectedRows(applicant._id, applicant.email);
                   }}
                   inputProps={{ 'aria-label': 'controlled' }}
                 />
               </Box>
               <Stack
                 direction={{ xs: 'column', md: 'row' }}
-                spacing={{ xs: 3, sm: 0 }}
+                spacing={{ xs: 3, sm: 3 }}
                 sx={{ width: '100%' }}
                 justifyContent={isMd ? 'space-between' : null}
               >
