@@ -157,11 +157,7 @@ const JobSearchPage = ({ jobs, user }) => {
                     avatar={job.business.avatar}
                     businessName={job.business.businessName}
                   >
-                    {!session ? (
-                      <Link href="/login" passHref>
-                        <Button variant="contained">Sign in to apply!</Button>
-                      </Link>
-                    ) : (
+                    {session && user ? (
                       <>
                         <FavoriteButton
                           favoriteJobs={user.favoriteJobs}
@@ -179,6 +175,10 @@ const JobSearchPage = ({ jobs, user }) => {
                           setGeneralError={setGeneralError}
                         />
                       </>
+                    ) : (
+                      <Link href="/login" passHref>
+                        <Button variant="contained">Sign in to apply!</Button>
+                      </Link>
                     )}
                   </LQV>
                 </JobCard>
