@@ -499,7 +499,7 @@ const Content = () => {
           width: '100%',
         }}
       >
-        <Link href="/signUp" passHref>
+        <Link href="/signUp/user" passHref>
           <Button fullWidth={!isMd} variant="contained" size="large">
             Sign Up Today!
           </Button>
@@ -535,9 +535,6 @@ const Content = () => {
           </Box>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography sx={{ color: theme.palette.text.secondary }}>
-            Share:
-          </Typography>
           <Box sx={{ ml: 0.5 }}>
             {socials.map((social) => (
               <IconButton
