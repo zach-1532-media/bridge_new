@@ -16,7 +16,7 @@ const mock = {
     'https://res.cloudinary.com/dci8xvvvp/image/upload/v1663179077/blog/Change_lbhvtr.jpg',
   description:
     'A guide on what questions you need to ask yourself, how to stand out from the crowd, and what you can expect after you land your new role.',
-  title: "Are you're ready for a change at work? Part 1",
+  title: 'Are you ready for a change at work? Part 1',
   author: {
     name: 'Nolan Vannucci',
     avatar:

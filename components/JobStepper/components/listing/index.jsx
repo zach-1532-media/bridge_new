@@ -47,7 +47,6 @@ const JobInformation = ({
     setResponsibilities([...values]);
   };
 
-  // eslint-disable-next-line no-unused-vars
   const addQualification = () => {
     setQualifications([
       ...qualifications,
