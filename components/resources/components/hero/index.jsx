@@ -95,7 +95,7 @@ const Hero = () => {
         zIndex={2}
       >
         <path
-          fill={theme.palette.background.default}
+          fill={theme.palette.background.paper}
           d="M0,0c0,0,934.4,93.4,1920,0v100.1H0L0,0z"
         />
       </Box>

@@ -39,7 +39,7 @@ export default async (req, res) => {
           subject: 'Verify Email',
           html: `<h6>Below is the code to verify your email. 
             Please enter it on the page you were redirected to. If you no longer have access to that page, please 
-            follow the below link.</h6><h1>${randomNumber}</h1> <a href="http://localhost:3000/verifyEmail/${email}">
+            follow the below link.</h6><h1>${randomNumber}</h1> <a href="http://connectatthebridge/verifyEmail/${email}">
             Link to verify email</a>`,
         };
 

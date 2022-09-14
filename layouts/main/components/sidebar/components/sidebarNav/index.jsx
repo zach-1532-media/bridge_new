@@ -29,16 +29,12 @@ const SidebarNav = () => {
         <Box>
           <NavItem title="About" href="/about" />
         </Box>
-        {session ? (
-          <></>
-        ) : (
+        {session ? null : (
           <Box>
             <NavItem title="Looking to hire?" href="/business" />
           </Box>
         )}
-        {session ? (
-          <></>
-        ) : (
+        {session ? null : (
           <Stack
             direction="column"
             spacing={2}

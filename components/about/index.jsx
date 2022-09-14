@@ -9,23 +9,21 @@ import Hero from './components/hero';
 import Team from './components/team';
 import Contact from './components/contact';
 
-const About = () => {
-  return (
-    <Main colorInvert>
-      <Hero />
+const About = () => (
+  <Main colorInvert>
+    <Hero />
+    <Container>
+      <Team />
+    </Container>
+    <Container maxWidth={800} paddingY="0 !important">
+      <Divider />
+    </Container>
+    <Box bgcolor="alternate.main">
       <Container>
-        <Team />
+        <Contact />
       </Container>
-      <Container maxWidth={800} paddingY="0 !important">
-        <Divider />
-      </Container>
-      <Box bgcolor="alternate.main">
-        <Container>
-          <Contact />
-        </Container>
-      </Box>
-    </Main>
-  );
-};
+    </Box>
+  </Main>
+);
 
 export default About;

@@ -15,7 +15,6 @@ export default async (req, res) => {
 
   const userObjectId = mongoose.Types.ObjectId(id);
   const userArray = [userObjectId];
-
   const { jobId } = req.body;
   const jobObjectId = mongoose.Types.ObjectId(jobId);
   const jobArray = [jobObjectId];

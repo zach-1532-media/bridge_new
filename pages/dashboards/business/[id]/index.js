@@ -27,9 +27,9 @@ const ProfilePage = ({ data }) => {
       links={
         <UserBoxLinks
           id={id}
-          avatar={data.avatar}
-          sessionName={data.sessionName}
-          businessName={data.businessName}
+          avatar={data?.avatar}
+          sessionName={data?.sessionName}
+          businessName={data?.businessName}
           type="business"
         />
       }

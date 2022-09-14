@@ -9,7 +9,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import AOS from 'aos';
 
 import { theme } from '../../../theme';
-import { SidebarProvider } from '../../contexts/sidebar';
 
 export const useDarkMode = () => {
   const [themeMode, setTheme] = useState('light');
@@ -67,12 +66,10 @@ export default function Page({ children }) {
   }, [mountedComponent, themeMode]);
 
   return (
-    <SidebarProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </SidebarProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {children}
+    </ThemeProvider>
   );
 }
 

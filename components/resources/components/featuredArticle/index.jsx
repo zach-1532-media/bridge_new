@@ -12,13 +12,15 @@ import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 
 const mock = {
-  image: 'https://assets.maccarianagency.com/backgrounds/img4.jpg',
+  image:
+    'https://res.cloudinary.com/dci8xvvvp/image/upload/v1663179077/blog/Change_lbhvtr.jpg',
   description:
-    'After years of surfing man claims that the end of the interent contains a pot of gold and an angry little Irishman.',
-  title: 'Man finds the end of the internet',
+    'A guide on what questions you need to ask yourself, how to stand out from the crowd, and what you can expect after you land your new role.',
+  title: "Are you're ready for a change at work? Part 1",
   author: {
-    name: 'Zach Livingston',
-    avatar: 'https://assets.maccarianagency.com/avatars/img6.jpg',
+    name: 'Nolan Vannucci',
+    avatar:
+      'https://res.cloudinary.com/dci8xvvvp/image/upload/v1661125971/assets/nolan_gf0ss6.jpg',
   },
   date: '10 Aug 22',
 };
@@ -30,7 +32,7 @@ const FeaturedArticle = () => {
     <Box>
       <Box
         component="a"
-        href="/blogArticle"
+        href="/blog/changeAtWork"
         display="block"
         sx={{
           width: 1,
