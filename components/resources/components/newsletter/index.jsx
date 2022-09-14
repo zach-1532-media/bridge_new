@@ -9,11 +9,15 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { SuccessSnack, GeneralSnack } from '../../../shared/snackbars';
 
 const Newsletter = () => {
   const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -165,6 +169,7 @@ const Newsletter = () => {
               }
             />
             <LoadingButton
+              fullWidth={!isMd}
               onClick={handleSubmit}
               loading={isLoading}
               variant="contained"

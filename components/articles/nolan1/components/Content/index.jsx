@@ -47,14 +47,17 @@ const socials = [
   {
     ariaLabel: 'Facebook',
     icon: <FacebookIcon />,
+    link: 'https://www.facebook.com/ConnectAtTheBridge',
   },
   {
     ariaLabel: 'Instagram',
     icon: <InstagramIcon />,
+    link: 'https://twitter.com/_The_Bridge11',
   },
   {
     ariaLabel: 'Twitter',
     icon: <TwitterIcon />,
+    link: 'https://www.Instagram.com/connectatthebridge/',
   },
 ];
 
@@ -538,9 +541,11 @@ const Content = () => {
           <Box sx={{ ml: 0.5 }}>
             {socials.map((social) => (
               <IconButton
+                href={social.link}
                 key={social.ariaLabel}
                 disableRipple
                 aria-label={social.ariaLabel}
+                target="_blank"
               >
                 {social.icon}
               </IconButton>
